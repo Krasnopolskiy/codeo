@@ -20,6 +20,7 @@ REST_FRAMEWORK = {
 
 INSTALLED_APPS = [
     'notes.apps.NotesConfig',
+    'api',
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
