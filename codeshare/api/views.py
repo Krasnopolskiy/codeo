@@ -32,7 +32,6 @@ def note_create(request):
             author=author,
             language=payload["language"],
         )
-        serializer = NoteSerializer(note)
         with open(f'sources/{payload["name"]}', 'w+') as f:
             f.write(f'{payload["source"]}')
         return JsonResponse({"message": "ok"})
