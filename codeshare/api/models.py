@@ -16,7 +16,7 @@ class Note(models.Model):
     # name = "".join(choice(ascii_letters + digits) for _ in range(4))
 
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    language = models.CharField(max_length=20, default='plain-text')
+    language = models.CharField(max_length=20)
     collaborator_link = models.CharField(max_length=6, blank=True)
     published = models.BooleanField(default=False)
     protected = models.BooleanField(default=False)

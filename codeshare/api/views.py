@@ -25,10 +25,19 @@ def note_get(request, note_name):
 @csrf_exempt
 def note_create(request):
     payload = loads(request.body)
-    with open(f'sources/{payload["name"]}', 'w+') as f:
-        f.write(f'{payload["source"]}')
-    content = {"message": "created"}
-    return JsonResponse(content)
+    try:
+        author = Author.objects.get(uid=payload["author"])
+        note = Note.objects.create(
+            name=payload["name"],
+            author=author,
+            language=payload["language"],
+        )
+        serializer = NoteSerializer(note)
+        with open(f'sources/{payload["name"]}', 'w+') as f:
+            f.write(f'{payload["source"]}')
+        return JsonResponse({"message": "ok"})
+    except:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @ api_view(["GET"])
