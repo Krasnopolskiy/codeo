@@ -5,8 +5,13 @@ from random import choice
 class Author(models.Model):
     uid = models.CharField(max_length=16)
 
+    '''
     def __init__(self):
         self.uid = "".join(choice('0123456789abcdef') for _ in range(16))
+    '''
+
+    def __unicode__(self):
+        return self.uid
 
 
 class Note(models.Model):
