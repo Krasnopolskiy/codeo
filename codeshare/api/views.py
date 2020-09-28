@@ -27,7 +27,7 @@ def note_create(request):
     payload = loads(request.body)
     try:
         author = Author.objects.get(uid=payload["author"])
-        note = Note.objects.create(
+        Note.objects.create(
             name=payload["name"],
             author=author,
             language=payload["language"],
