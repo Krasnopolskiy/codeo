@@ -1,5 +1,5 @@
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view
+from json import loads
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
@@ -9,31 +9,37 @@ from .models import Note, Author
 
 @api_view(["GET"])
 @csrf_exempt
-@permission_classes([IsAuthenticated])
 def welcome(request):
-    content = {"message": "Welcome to the BookStore!"}
+    content = {"message": "Welcome to the codeshare api!"}
     return JsonResponse(content)
 
 
 @api_view(["GET"])
 @csrf_exempt
-@permission_classes([IsAuthenticated])
-def notes(request):
-    serializer = NoteSerializer(Note.objects.all(), many=True)
-    return JsonResponse({'notes': serializer.data}, safe=False, status=status.HTTP_200_OK)
-
-
-@api_view(["GET"])
-@csrf_exempt
-@permission_classes([IsAuthenticated])
-def note(request, note_name):
+def note_get(request, note_name):
     serializer = NoteSerializer(Note.objects.get(name=note_name))
     return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
 
 
+@api_view(["POST"])
+@csrf_exempt
+def note_create(request):
+    payload = loads(request.body)
+    with open(f'sources/{payload["name"]}', 'w+') as f:
+        f.write(f'{payload["source"]}')
+    content = {"message": "created"}
+    return JsonResponse(content)
+
+
 @ api_view(["GET"])
 @ csrf_exempt
-@ permission_classes([IsAuthenticated])
-def authors(request):
+def author_list(request):
     serializer = AuthorSerializer(Author.objects.all(), many=True)
     return JsonResponse({'authors': serializer.data}, safe=False, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@csrf_exempt
+def note_list(request):
+    serializer = NoteSerializer(Note.objects.all(), many=True)
+    return JsonResponse({'notes': serializer.data}, safe=False, status=status.HTTP_200_OK)
