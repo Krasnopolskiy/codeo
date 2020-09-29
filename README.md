@@ -1,1 +1,13 @@
 # codeshare
+```
+python -m venv venv
+source venv/bin/activate
+pip install Django
+pip install djangorestframework
+cd codeshare
+mkdir sources
+python manage.py makemigrations api
+python manage.py makemigrations notes
+python manage.py migrate
+python manage.py runserver
+```
