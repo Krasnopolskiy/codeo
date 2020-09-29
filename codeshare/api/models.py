@@ -1,6 +1,4 @@
 from django.db import models
-from random import choice
-from string import ascii_letters, digits
 
 
 class Author(models.Model):
