@@ -1,6 +1,5 @@
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 from django.http import JsonResponse
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
@@ -27,73 +26,93 @@ def generate_authorname():
     return name
 
 
+def get_note(notename, authorname=''):
+    note = None
+    author = None
+    if authorname != 'anonimous':
+        author = Author.objects.filter(uid=authorname)
+        if not author.exists():
+            author = None
+        else:
+            author = author[0]
+    published = Q(name=notename) & Q(published=True)
+    if author != None:
+        note = Note.objects.filter(
+            published | (Q(name=notename) & Q(author=author)))
+    else:
+        note = Note.objects.filter(published)
+    if not note.exists():
+        note = None
+    return note, author != None
+
+
 @api_view(["GET"])
 @csrf_exempt
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def welcome(request):
-    content = {"message": "Welcome to the codeshare api!"}
-    return JsonResponse(content, status=status.HTTP_200_OK)
+    return JsonResponse({"message": "Welcome to the codeshare api!"}, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@csrf_exempt
+@permission_classes([AllowAny])
+def note_retrieve(request, name):
+    payload = loads(dumps(request.data))
+    note, ismine = get_note(name, request.session["uid"])
+    note = note[0]
+    if ismine and note != None:
+        with open(f'sources/{note.name}', 'r') as f:
+            return JsonResponse({"source": f.read()}, status=status.HTTP_200_OK)
+    else:
+        return JsonResponse({"message": "Not Found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(["POST"])
 @csrf_exempt
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def note_create(request):
-    payload = loads(dumps(request.data))
-    name = generate_notename()
-    if 'uid' not in request.session.keys():
-        name = generate_authorname()
-        request.session['uid'] = name
-        author = Author(uid=name)
+    if request.session["uid"] == 'anonimous':
+        author = Author(uid=generate_authorname())
+        request.session['uid'] = author.uid
         author.save()
     author = Author.objects.get(uid=request.session["uid"])
-    Note.objects.create(
-        name=name,
+    note = Note(
+        name=generate_notename(),
         author=author,
-        language=payload["language"],
+        language='plain-text',
     )
-    with open(f'sources/{name}', 'w+') as f:
-        f.write(f'{payload["source"]}')
-    return JsonResponse({"message": "Created", "name": name})
+    note.save()
+    with open(f'sources/{note.name}', 'w+') as f:
+        f.write('')
+    return JsonResponse({"message": "Created", "name": note.name}, status=status.HTTP_200_OK)
 
 
 @api_view(["PUT"])
 @csrf_exempt
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def note_update(request):
     payload = loads(dumps(request.data))
-    print(payload)
-    note = Note.objects.filter(Q(name=payload["name"]) | Q(
-        author=Author.objects.get(uid=request.session["uid"])))
-
-    if not note.exists():
-        return JsonResponse({"message": "Not Found"})
-
+    note, ismine = get_note(payload["name"], request.session["uid"])
+    if not ismine or note == None:
+        return JsonResponse({"message": "Not Found"}, status=status.HTTP_404_NOT_FOUND)
     note = note[0]
     for key in payload.keys():
         if key in ['language', 'published', 'protected', 'collaborator_link']:
             setattr(note, key, payload[key])
-
     if 'source' in payload.keys():
         with open(f'sources/{payload["name"]}', 'w+') as f:
             f.write(f'{payload["source"]}')
-
     if payload["onclose"]:
         if len(payload["source"]) == 0:
             if path.exists(f'sources/{payload["name"]}'):
                 remove(f'sources/{payload["name"]}')
             note.delete()
-
-    return JsonResponse({"message": "Updated", "name": payload["name"]})
+    return JsonResponse({"message": "Updated"}, status=status.HTTP_200_OK)
 
 
 @api_view(["DELETE"])
 @csrf_exempt
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def note_delete(request):
     payload = loads(request.body)
     try:
@@ -105,19 +124,3 @@ def note_delete(request):
         return JsonResponse({"message": "Deleted"}, status=status.HTTP_200_OK)
     except Note.DoesNotExist:
         return JsonResponse({"message": "Not Found"}, status=status.HTTP_404_NOT_FOUND)
-
-
-@api_view(["GET"])
-@csrf_exempt
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
-def note_list(request):
-    try:
-        payload = loads(request.body)
-        author = Author.objects.get(uid=payload["author"])
-        notes = Note.objects.filter(Q(published=True) | Q(
-            author=author))
-    except:
-        notes = Note.objects.filter(published=True)
-    serializer = NoteSerializer(notes, many=True)
-    return JsonResponse({'notes': serializer.data}, safe=False, status=status.HTTP_200_OK)
