@@ -1,0 +1,47 @@
+<html>
+<head>
+        <style type ="text/css">
+            .sidenav{
+                height: 100%;
+                width: 160px;
+                position: fixed;
+                z-index:1;
+                top: 0;
+                right: 0;
+                background-color:rgb(48, 48, 48);
+                overflow-x:hidden;
+                padding-top:20px;
+
+
+            }
+            .sidenav a{
+                padding:10px 8px 16px 20px;
+                text-decoration:none;
+                color:#818181;
+                display:block;
+                font-size:20px;
+
+            }
+            .sidenav a:hover{
+                color:#f1f1f1;
+            }
+            .main{
+                padding: 0px 16px;
+                margin-left:160px; 
+            }
+
+        </style>
+
+        <title>codeshare</title>
+</head>
+<body>
+    <div class =  "sidenav">
+        <a href = "home">Home</a>
+        <a href = "Notes">Notes</a>
+    </div>
+    <div id = "content", name = "content", class = "main">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

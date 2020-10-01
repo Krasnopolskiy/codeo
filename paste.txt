@@ -1,0 +1,1 @@
+<input type="button" value="Бесплатные курсы по OpenCart" onClick='location.href="https://ваша_ссылка. html/"'>
