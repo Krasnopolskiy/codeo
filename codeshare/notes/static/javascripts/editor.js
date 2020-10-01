@@ -1,12 +1,12 @@
 const url = new URL(window.location.href)
 const notename = url.pathname.split('/')[1]
-const editor = ace.edit("editor")
 const api = new Api_tunnel(Cookies.get('csrftoken'), notename)
+const editor = ace.edit("editor")
 
-editor.setTheme("ace/theme/monokai")
-editor.session.setTabSize(4)
-editor.session.setUseSoftTabs(false);
 editor.session.setMode("ace/mode/plain_text")
+editor.setTheme("ace/theme/monokai")
+editor.session.setUseSoftTabs(false)
+editor.session.setTabSize(4)
 editor.setReadOnly(true)
 
 if (notename.length > 0) {
@@ -33,7 +33,7 @@ $('#editor').click(() => {
         if (url.pathname != '/')
             body = {
                 "source": editor.getValue(),
-                "language": api.language
+                "language": editor.session.getMode().$id
             }
         api.create(body)
             .then(data => {
@@ -52,7 +52,7 @@ $('#editor').keyup(() => {
 })
 
 $(window).on("beforeunload", () => {
-    if (api.ismine)
+    if (api.ismine && !editor.getReadOnly())
         api.update(editor.getValue(), true)
             .then(data => {
                 console.log(data)

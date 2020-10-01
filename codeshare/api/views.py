@@ -60,6 +60,7 @@ def note_update(payload, note):
     for key in payload.keys():
         if key in allowed_keys:
             setattr(note, key, payload[key])
+    note.save()
     if 'source' in payload.keys():
         with open(f'sources/{note.name}', 'w+') as f:
             f.write(f'{payload["source"]}')
@@ -108,7 +109,9 @@ def api_note_create(request):
     note.save()
     with open(f'sources/{note.name}', 'w+') as f:
         f.write('')
+    print(note, payload, note.language)
     note_update(payload, note)
+    print(note, payload, note.language)
     return JsonResponse({"message": "created", "notename": note.name}, status=status.HTTP_200_OK)
 
 
@@ -124,19 +127,3 @@ def api_note_update(request):
         return JsonResponse({"message": "info", "event": "you cannot edit this note, create new"}, status=status.HTTP_403_FORBIDDEN)
     note_update(payload, note)
     return JsonResponse({"message": "updated"}, status=status.HTTP_200_OK)
-
-
-@api_view(["DELETE"])
-@csrf_exempt
-@permission_classes([AllowAny])
-def api_note_delete(request):
-    payload = loads(request.body)
-    try:
-        note = Note.objects.get(
-            name=payload["name"], author=Author.objects.get(uid=payload["author"]))
-        if path.exists(f'sources/{payload["name"]}'):
-            remove(f'sources/{payload["name"]}')
-        note.delete()
-        return JsonResponse({"message": "Deleted"}, status=status.HTTP_200_OK)
-    except Note.DoesNotExist:
-        return JsonResponse({"message": "Not Found"}, status=status.HTTP_404_NOT_FOUND)
