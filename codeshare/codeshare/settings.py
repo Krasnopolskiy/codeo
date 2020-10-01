@@ -1,4 +1,5 @@
 from pathlib import Path
+from os import path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -99,5 +100,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+PROJECT_DIR = path.dirname(path.abspath(__file__))
+STATIC_ROOT = path.join(PROJECT_DIR, 'static')
 STATIC_URL = '/static/'
