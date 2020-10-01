@@ -1,8 +1,6 @@
 class Api_tunnel {
-    constructor(csrftoken, notename, ismine = true) {
+    constructor(csrftoken) {
         this.csrftoken = csrftoken
-        this.notename = notename
-        this.ismine = ismine
     }
 
     create = async (body = {}) => {
@@ -17,19 +15,19 @@ class Api_tunnel {
         return await res.json()
     }
 
-    retrieve = async () => {
-        let res = await fetch('/api/note/retrieve/' + this.notename, {
+    retrieve = async (notename) => {
+        let res = await fetch('/api/note/retrieve/' + notename, {
             "method": "GET",
             "headers": { 'X-CSRFToken': this.csrftoken }
         })
         return await res.json()
     }
 
-    update = async (source, onclose = false) => {
+    update = async (notename, source, onclose = false) => {
         let res = await fetch('/api/note/update', {
             method: 'PUT',
             body: JSON.stringify({
-                "name": this.notename,
+                "name": notename,
                 "source": source,
                 "onclose": onclose
             }),

@@ -109,9 +109,7 @@ def api_note_create(request):
     note.save()
     with open(f'sources/{note.name}', 'w+') as f:
         f.write('')
-    print(note, payload, note.language)
     note_update(payload, note)
-    print(note, payload, note.language)
     return JsonResponse({"message": "created", "notename": note.name}, status=status.HTTP_200_OK)
 
 
@@ -124,6 +122,20 @@ def api_note_update(request):
     if note == None:
         return JsonResponse({"message": "error", "event": "not found"}, status=status.HTTP_404_NOT_FOUND)
     if not ismine:
-        return JsonResponse({"message": "info", "event": "you cannot edit this note, create new"}, status=status.HTTP_403_FORBIDDEN)
+        return JsonResponse({"message": "error", "event": "you cannot edit this note"}, status=status.HTTP_403_FORBIDDEN)
     note_update(payload, note)
     return JsonResponse({"message": "updated"}, status=status.HTTP_200_OK)
+
+
+@api_view(["DELETE"])
+@csrf_exempt
+@permission_classes([AllowAny])
+def api_note_delete(request):
+    payload = loads(dumps(request.data))
+    note, ismine = note_retrieve(payload["name"], request.session["uid"])
+    if note == None or not ismine:
+        return JsonResponse({"message": "error", "event": "not found"}, status=status.HTTP_404_NOT_FOUND)
+    if path.exists(f'sources/{note.name}'):
+        remove(f'sources/{note.name}')
+    note.delete()
+    return JsonResponse({"message": "deleted"}, status=status.HTTP_200_OK)
