@@ -1,4 +1,5 @@
 from pathlib import Path
+from os import path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -10,9 +11,22 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
+    ]
+}
 
 INSTALLED_APPS = [
     'notes.apps.NotesConfig',
+    'api',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -86,5 +100,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+PROJECT_DIR = path.dirname(path.abspath(__file__))
+STATIC_ROOT = path.join(PROJECT_DIR, 'static')
 STATIC_URL = '/static/'

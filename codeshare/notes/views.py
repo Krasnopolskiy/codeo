@@ -1,8 +1,10 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.template import loader
-from . import models
+from api.models import Note, Author
+from django.db.models import Q
 
 
-def index(request):
-    return HttpResponse('Hello, world')
+def index(request, name=''):
+    if 'uid' not in request.session.keys():
+        request.session["uid"] = "anonimous"
+    return render(request, 'index.html')
