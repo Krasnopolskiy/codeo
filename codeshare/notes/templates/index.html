@@ -26,10 +26,10 @@
                     </button>
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav mr-auto">
+                        <ul class="navbar-nav mr-auto" style="width: 100%;">
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="dropdown-settings-menu" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle {{ ismine }}" href="#" id="dropdown-settings-menu"
+                                    role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Settings
                                 </a>
                                 <div class="dropdown-menu bg-dark" aria-labelledby="dropdown-settings-menu"
@@ -47,6 +47,17 @@
                                         id="note_delete_btn">
                                         Delete
                                     </button>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="dropdown-settings-menu" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Language</a>
+                                <div class="dropdown-menu bg-dark" aria-labelledby="dropdown-settings-menu"
+                                    style="height: 40vh; overflow-y: scroll">
+                                    {% for el in languages %}
+                                    <a class="dropdown-item bg-dark language-item"
+                                        style="color: rgba(255, 255, 255, 0.5);" href="#">{{ el }}</a>
+                                    {% endfor %}
                                 </div>
                             </li>
                             <li class="nav-item">

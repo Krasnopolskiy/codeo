@@ -3,18 +3,25 @@ const notename = url.pathname.split('/')[1]
 const api = new Api_tunnel(Cookies.get('csrftoken'), notename)
 const editor = ace.edit("editor")
 
-
-editor.session.setMode("ace/mode/plain_text")
-editor.setTheme("ace/theme/monokai")
-editor.session.setUseSoftTabs(false)
-editor.setShowPrintMargin(false)
-editor.session.setTabSize(4)
-editor.setReadOnly(true)
-editor.setFontSize(18)
+editor.setOptions({
+    showPrintMargin: false,
+    readOnly: true,
+    fontSize: 18,
+    theme: "ace/theme/monokai"
+})
+editor.session.setOptions({
+    tabSize: 4,
+    useSoftTabs: true,
+    mode: "ace/mode/plain_text"
+})
+editor.$enableAutoIndent
 
 
 let error = false
+
+
 let update = () => {
+    console.log(editor.session.getMode().$id)
     if (!editor.getReadOnly())
         api.update({
             "source": editor.getValue(),
@@ -30,7 +37,6 @@ let update = () => {
                 }
             })
 }
-
 
 if (notename.length > 0) {
     api.retrieve()
@@ -72,16 +78,19 @@ $('#editor').click(() => {
 })
 
 $('#editor').keyup(() => { update() })
+
 $('#note_protect_btn').click(() => {
     if (!editor.getReadOnly())
         $('#note_protected')[0].checked = !$('#note_protected')[0].checked
     update()
 })
+
 $('#note_publish_btn').click(() => {
     if (!editor.getReadOnly())
         $('#note_published')[0].checked = !$('#note_published')[0].checked
     update()
 })
+
 $('#note_delete_btn').click(() => {
     api.delete()
         .then(data => {
@@ -91,10 +100,17 @@ $('#note_delete_btn').click(() => {
         })
 })
 
-$(window).on("beforeunload", () => {
+$(window).on('beforeunload', () => {
     if (api.ismine && !editor.getReadOnly() && !error)
         api.update({ "source": editor.getValue() }, true)
             .then(data => {
                 console.log(data)
             })
+})
+
+$(document).ready(() => {
+    $('.language-item').click(el => {
+        editor.session.setMode("ace/mode/" + el.currentTarget.innerText.toLowerCase())
+        setTimeout(() => { update() }, 1000)
+    })
 })
