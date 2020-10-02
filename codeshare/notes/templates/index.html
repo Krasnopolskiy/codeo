@@ -27,12 +27,6 @@
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav mr-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/login">Log in</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/signup">Sign up</a>
-                            </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="dropdown-settings-menu" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -40,16 +34,26 @@
                                 </a>
                                 <div class="dropdown-menu bg-dark" aria-labelledby="dropdown-settings-menu"
                                     style="padding: 10px">
-                                    <button class="btn btn-secondary" style="width: 100%" id="note_published_btn">
+                                    <button class="btn btn-secondary" style="width: 100%" id="note_publish_btn">
                                         <input type="checkbox" style="margin-right: 10px" id="note_published">
                                         Published
                                     </button>
                                     <button class="btn btn-secondary" style="width: 100%; margin-top: 15px"
-                                        id="note_protected_btn">
+                                        id="note_protect_btn">
                                         <input type="checkbox" style="margin-right: 10px" id="note_protected">
                                         Protected
                                     </button>
+                                    <button class="btn btn-danger" style="width: 100%; margin-top: 15px"
+                                        id="note_delete_btn">
+                                        Delete
+                                    </button>
                                 </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/login">Log in</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/signup">Sign up</a>
                             </li>
                         </ul>
                     </div>

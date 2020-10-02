@@ -72,13 +72,23 @@ $('#editor').click(() => {
 })
 
 $('#editor').keyup(() => { update() })
-$('#note_protected_btn').click(() => {
-    $('#note_protected')[0].checked = !$('#note_protected')[0].checked
+$('#note_protect_btn').click(() => {
+    if (!editor.getReadOnly())
+        $('#note_protected')[0].checked = !$('#note_protected')[0].checked
     update()
 })
-$('#note_published_btn').click(() => {
-    $('#note_published')[0].checked = !$('#note_published')[0].checked
+$('#note_publish_btn').click(() => {
+    if (!editor.getReadOnly())
+        $('#note_published')[0].checked = !$('#note_published')[0].checked
     update()
+})
+$('#note_delete_btn').click(() => {
+    api.delete()
+        .then(data => {
+            console.log(data)
+            if (data["message"] == "deleted")
+                location = url.origin
+        })
 })
 
 $(window).on("beforeunload", () => {

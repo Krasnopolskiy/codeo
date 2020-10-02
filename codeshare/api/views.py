@@ -132,6 +132,7 @@ def api_note_update(request):
 @permission_classes([AllowAny])
 def api_note_delete(request):
     payload = loads(dumps(request.data))
+    print(payload)
     note, ismine = note_retrieve(payload["name"], request.session["uid"])
     if note == None or not ismine:
         return JsonResponse({"message": "error", "event": "not found"}, status=status.HTTP_404_NOT_FOUND)

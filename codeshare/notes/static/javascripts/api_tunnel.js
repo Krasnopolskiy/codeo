@@ -25,16 +25,24 @@ class Api_tunnel {
     }
 
     update = async (body, onclose = false) => {
-        console.log(JSON.stringify(Object.assign({
-            "name": this.notename,
-            "onclose": onclose
-        }, body)))
         let res = await fetch('/api/note/update', {
             method: 'PUT',
             body: JSON.stringify(Object.assign({
                 "name": this.notename,
                 "onclose": onclose
             }, body)),
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': this.csrftoken
+            },
+        })
+        return await res.json()
+    }
+
+    delete = async () => {
+        let res = await fetch('/api/note/delete', {
+            method: 'DELETE',
+            body: JSON.stringify({ "name": this.notename }),
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': this.csrftoken
