@@ -63,6 +63,8 @@ db.sqlite3-journal
 migrations
 sources
 secretkey.txt
+paste.txt
+ideas
 
 # Flask stuff:
 instance/
