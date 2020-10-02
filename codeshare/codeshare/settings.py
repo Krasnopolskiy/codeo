@@ -22,17 +22,18 @@ REST_FRAMEWORK = {
 INSTALLED_APPS = [
     'notes.apps.NotesConfig',
     'api',
+    'signup',
+    'crispy_forms',
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'register.apps.RegisterConfig',
-    'crispy_forms',
-
+    'django.contrib.staticfiles'
 ]
+
+
 CRISPY_TEMPLATE_PACK="bootstrap4"
 
 
