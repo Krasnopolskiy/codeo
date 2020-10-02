@@ -14,29 +14,17 @@ ALLOWED_HOSTS = []
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
-<<<<<<< HEAD
     'DEFAULT_PERMISSION_CLASSES': [
         # After testing change it to 'IsAuthenticated'
         'rest_framework.permissions.AllowAny'
-=======
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated'
->>>>>>> dev
     ]
 }
 
 INSTALLED_APPS = [
     'notes.apps.NotesConfig',
     'api',
-<<<<<<< HEAD
     'signup',
     'crispy_forms',
-=======
->>>>>>> dev
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
