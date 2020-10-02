@@ -26,58 +26,80 @@ def generate_authorname():
     return name
 
 
-def get_note(notename, authorname=''):
+def note_retrieve(notename, authorname='anonimous'):
     note = None
     author = None
+
     if authorname != 'anonimous':
         author = Author.objects.filter(uid=authorname)
         if not author.exists():
             author = None
         else:
             author = author[0]
-    published = Q(name=notename) & Q(published=True)
     if author != None:
-        note = Note.objects.filter(
-            published | (Q(name=notename) & Q(author=author)))
-    else:
-        note = Note.objects.filter(published)
-    if not note.exists():
-        note = None
+        note = Note.objects.filter(Q(name=notename) & Q(author=author))
+        if note.exists():
+            note = note[0]
+        else:
+            note = None
+            author = None
+
+    if note == None:
+        note = Note.objects.filter(Q(name=notename) & Q(published=True))
+        author = None
+        if note.exists():
+            note = note[0]
+        else:
+            note = None
+
     return note, author != None
 
 
-@api_view(["GET"])
-@csrf_exempt
-@permission_classes([AllowAny])
-def welcome(request):
-    return JsonResponse({"message": "ok"}, status=status.HTTP_200_OK)
+def note_update(payload, note):
+    allowed_keys = ['language', 'published', 'protected', 'collaborator_link']
+    for key in payload.keys():
+        if key in allowed_keys:
+            setattr(note, key, payload[key])
+    note.save()
+    if 'source' in payload.keys():
+        with open(f'sources/{note.name}', 'w+') as f:
+            f.write(f'{payload["source"]}')
+    if "onclose" in payload.keys() and payload["onclose"]:
+        if len(payload["source"]) == 0:
+            if path.exists(f'sources/{note.name}'):
+                remove(f'sources/{note.name}')
+            note.delete()
 
 
 @api_view(["GET"])
 @csrf_exempt
 @permission_classes([AllowAny])
-def note_retrieve(request, name):
-    payload = loads(dumps(request.data))
-    note, ismine = get_note(name, request.session["uid"])
-    if ismine and note != None:
-        note = note[0]
+def api_welcome(request):
+    return JsonResponse({"message": "Api is working"}, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@csrf_exempt
+@permission_classes([AllowAny])
+def api_note_retrieve(request, name):
+    note, ismine = note_retrieve(name, request.session["uid"])
+    if note != None:
         serializer = NoteSerializer(note)
         with open(f'sources/{note.name}', 'r') as f:
-            return JsonResponse({"message": "retrieved", "note": serializer.data, "source": f.read()}, status=status.HTTP_200_OK)
+            return JsonResponse({"message": "retrieved", "note": serializer.data, "source": f.read(), "ismine": ismine}, status=status.HTTP_200_OK)
     else:
-        return JsonResponse({"message": "error", "error": "not found"}, status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse({"message": "error", "event": "not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(["POST"])
 @csrf_exempt
 @permission_classes([AllowAny])
-def note_create(request):
-    print(request.session["uid"])
+def api_note_create(request):
+    payload = loads(dumps(request.data))
     if request.session["uid"] == 'anonimous':
         author = Author(uid=generate_authorname())
         request.session['uid'] = author.uid
         author.save()
-        print(author)
     author = Author.objects.get(uid=request.session["uid"])
     note = Note(
         name=generate_notename(),
@@ -87,44 +109,33 @@ def note_create(request):
     note.save()
     with open(f'sources/{note.name}', 'w+') as f:
         f.write('')
-    return JsonResponse({"message": "created", "name": note.name}, status=status.HTTP_200_OK)
+    note_update(payload, note)
+    return JsonResponse({"message": "created", "notename": note.name}, status=status.HTTP_200_OK)
 
 
 @api_view(["PUT"])
 @csrf_exempt
 @permission_classes([AllowAny])
-def note_update(request):
+def api_note_update(request):
     payload = loads(dumps(request.data))
-    note, ismine = get_note(payload["name"], request.session["uid"])
-    if not ismine or note == None:
-        return JsonResponse({"message": "error", "error": "not found"}, status=status.HTTP_404_NOT_FOUND)
-    note = note[0]
-    allowed_keys = ['language', 'published', 'protected', 'collaborator_link']
-    for key in payload.keys():
-        if key in allowed_keys:
-            setattr(note, key, payload[key])
-    if 'source' in payload.keys():
-        with open(f'sources/{payload["name"]}', 'w+') as f:
-            f.write(f'{payload["source"]}')
-    if payload["onclose"]:
-        if len(payload["source"]) == 0:
-            if path.exists(f'sources/{payload["name"]}'):
-                remove(f'sources/{payload["name"]}')
-            note.delete()
+    note, ismine = note_retrieve(payload["name"], request.session["uid"])
+    if note == None:
+        return JsonResponse({"message": "error", "event": "not found"}, status=status.HTTP_404_NOT_FOUND)
+    if not ismine:
+        return JsonResponse({"message": "error", "event": "you cannot edit this note"}, status=status.HTTP_403_FORBIDDEN)
+    note_update(payload, note)
     return JsonResponse({"message": "updated"}, status=status.HTTP_200_OK)
 
 
 @api_view(["DELETE"])
 @csrf_exempt
 @permission_classes([AllowAny])
-def note_delete(request):
-    payload = loads(request.body)
-    try:
-        note = Note.objects.get(
-            name=payload["name"], author=Author.objects.get(uid=payload["author"]))
-        if path.exists(f'sources/{payload["name"]}'):
-            remove(f'sources/{payload["name"]}')
-        note.delete()
-        return JsonResponse({"message": "Deleted"}, status=status.HTTP_200_OK)
-    except Note.DoesNotExist:
-        return JsonResponse({"message": "Not Found"}, status=status.HTTP_404_NOT_FOUND)
+def api_note_delete(request):
+    payload = loads(dumps(request.data))
+    note, ismine = note_retrieve(payload["name"], request.session["uid"])
+    if note == None or not ismine:
+        return JsonResponse({"message": "error", "event": "not found"}, status=status.HTTP_404_NOT_FOUND)
+    if path.exists(f'sources/{note.name}'):
+        remove(f'sources/{note.name}')
+    note.delete()
+    return JsonResponse({"message": "deleted"}, status=status.HTTP_200_OK)
