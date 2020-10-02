@@ -28,8 +28,8 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav mr-auto" style="width: 100%;">
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle {{ ismine }}" href="#" id="dropdown-settings-menu"
-                                    role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" id="dropdown-settings-menu" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Settings
                                 </a>
                                 <div class="dropdown-menu bg-dark" aria-labelledby="dropdown-settings-menu"
@@ -50,15 +50,18 @@
                                 </div>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="dropdown-settings-menu" role="button"
+                                <a class="nav-link dropdown-toggle" href="#" id="dropdown-language-menu" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Language</a>
-                                <div class="dropdown-menu bg-dark" aria-labelledby="dropdown-settings-menu"
+                                <div class="dropdown-menu bg-dark" aria-labelledby="dropdown-language-menu"
                                     style="height: 40vh; overflow-y: scroll">
                                     {% for el in languages %}
                                     <a class="dropdown-item bg-dark language-item"
                                         style="color: rgba(255, 255, 255, 0.5);" href="#">{{ el }}</a>
                                     {% endfor %}
                                 </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Invite collaborator</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/login">Log in</a>
