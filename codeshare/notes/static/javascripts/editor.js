@@ -38,14 +38,16 @@ if (notename.length > 0) {
             if (data["message"] == "retrieved") {
                 editor.setValue(data.source)
                 editor.session.setMode(data.note.language)
+                $('#note_published')[0].checked = data.note.published
+                $('#note_protected')[0].checked = data.note.protected
                 editor.clearSelection()
                 editor.navigateFileEnd()
                 editor.focus()
-                if (!data["ismine"])
+                if (!data.ismine)
                     editor.setReadOnly(true)
                 else
                     editor.setReadOnly(false)
-                api.ismine = data["ismine"]
+                api.ismine = data.ismine
             } else {
                 error = true
                 location = url.origin
