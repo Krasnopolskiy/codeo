@@ -1,74 +1,11 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from django.http import JsonResponse
-from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from json import loads, dumps
-from os import remove, path
-from random import choice
-from string import ascii_letters, digits
-from .serializers import NoteSerializer, AuthorSerializer
-from .models import Note, Author
-
-
-def generate_notename():
-    name = "".join(choice(ascii_letters + digits) for _ in range(4))
-    while Note.objects.filter(name=name).exists():
-        name = "".join(choice(ascii_letters + digits) for _ in range(4))
-    return name
-
-
-def generate_authorname():
-    name = "".join(choice(ascii_letters + digits) for _ in range(16))
-    while Author.objects.filter(uid=name).exists():
-        name = "".join(choice(ascii_letters + digits) for _ in range(16))
-    return name
-
-
-def note_retrieve(notename, authorname='anonimous'):
-    note = None
-    author = None
-
-    if authorname != 'anonimous':
-        author = Author.objects.filter(uid=authorname)
-        if not author.exists():
-            author = None
-        else:
-            author = author[0]
-    if author != None:
-        note = Note.objects.filter(Q(name=notename) & Q(author=author))
-        if note.exists():
-            note = note[0]
-        else:
-            note = None
-            author = None
-
-    if note == None:
-        note = Note.objects.filter(Q(name=notename) & Q(published=True))
-        author = None
-        if note.exists():
-            note = note[0]
-        else:
-            note = None
-
-    return note, author != None
-
-
-def note_update(payload, note):
-    allowed_keys = ['language', 'published', 'protected', 'collaborator_link']
-    for key in payload.keys():
-        if key in allowed_keys:
-            setattr(note, key, payload[key])
-    note.save()
-    if 'source' in payload.keys():
-        with open(f'sources/{note.name}', 'w+') as f:
-            f.write(f'{payload["source"]}')
-    if "onclose" in payload.keys() and payload["onclose"]:
-        if len(payload["source"]) == 0:
-            if path.exists(f'sources/{note.name}'):
-                remove(f'sources/{note.name}')
-            note.delete()
+from .serializers import NoteSerializer
+from .controllers import *
 
 
 @api_view(["GET"])
@@ -82,7 +19,7 @@ def api_welcome(request):
 @csrf_exempt
 @permission_classes([AllowAny])
 def api_note_retrieve(request, name):
-    note, ismine = note_retrieve(name, request.session["uid"])
+    note, ismine = note_retrieve(name, request.session)
     if note != None:
         serializer = NoteSerializer(note)
         with open(f'sources/{note.name}', 'r') as f:
@@ -96,23 +33,8 @@ def api_note_retrieve(request, name):
 @permission_classes([AllowAny])
 def api_note_create(request):
     payload = loads(dumps(request.data))
-    author = None
-    if "uid" in request.session.keys():
-        author = Author.objects.filter(uid=request.session["uid"])
-        if not author.exists():
-            author = None
-    if author == None
-        author = Author(uid=generate_authorname())
-        request.session['uid'] = author.uid
-        author.save()
-    note = Note(
-        name=generate_notename(),
-        author=author,
-        language='ace/mode/plain_text',
-    )
-    note.save()
-    with open(f'sources/{note.name}', 'w+') as f:
-        f.write('')
+    author, request = author_retrieve_or_create(request)
+    note = note_create(author)
     note_update(payload, note)
     return JsonResponse({"message": "created", "notename": note.name}, status=status.HTTP_200_OK)
 
@@ -122,11 +44,11 @@ def api_note_create(request):
 @permission_classes([AllowAny])
 def api_note_update(request):
     payload = loads(dumps(request.data))
-    note, ismine = note_retrieve(payload["name"], request.session["uid"])
+    note, ismine = note_retrieve(payload["name"], request.session)
     if note == None:
         return JsonResponse({"message": "error", "event": "not found"}, status=status.HTTP_404_NOT_FOUND)
     if not ismine:
-        return JsonResponse({"message": "error", "event": "you cannot edit this note"}, status=status.HTTP_403_FORBIDDEN)
+        return JsonResponse({"message": "error", "event": "forbidden"}, status=status.HTTP_403_FORBIDDEN)
     note_update(payload, note)
     return JsonResponse({"message": "updated"}, status=status.HTTP_200_OK)
 
@@ -136,11 +58,10 @@ def api_note_update(request):
 @permission_classes([AllowAny])
 def api_note_delete(request):
     payload = loads(dumps(request.data))
-    print(payload)
-    note, ismine = note_retrieve(payload["name"], request.session["uid"])
-    if note == None or not ismine:
+    note, ismine = note_retrieve(payload["name"], request.session)
+    if note == None:
         return JsonResponse({"message": "error", "event": "not found"}, status=status.HTTP_404_NOT_FOUND)
-    if path.exists(f'sources/{note.name}'):
-        remove(f'sources/{note.name}')
-    note.delete()
+    if not ismine:
+        return JsonResponse({"message": "error", "event": "forbidden"}, status=status.HTTP_403_FORBIDDEN)
+    note_delete(note)
     return JsonResponse({"message": "deleted"}, status=status.HTTP_200_OK)

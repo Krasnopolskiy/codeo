@@ -5,7 +5,7 @@ from api.models import Note, Author
 
 def index(request, name=''):
     if 'uid' not in request.session.keys():
-        request.session["uid"] = "anonimous"
+        request.session["uid"] = None
     languages = []
     with open('notes/templates/ace_modes.txt', 'r') as f:
         languages = f.read().split('\n')
