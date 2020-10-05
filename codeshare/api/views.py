@@ -96,11 +96,15 @@ def api_note_retrieve(request, name):
 @permission_classes([AllowAny])
 def api_note_create(request):
     payload = loads(dumps(request.data))
-    if request.session["uid"] == 'anonimous':
+    author = None
+    if "uid" in request.session.keys():
+        author = Author.objects.filter(uid=request.session["uid"])
+        if not author.exists():
+            author = None
+    if author == None
         author = Author(uid=generate_authorname())
         request.session['uid'] = author.uid
         author.save()
-    author = Author.objects.get(uid=request.session["uid"])
     note = Note(
         name=generate_notename(),
         author=author,
