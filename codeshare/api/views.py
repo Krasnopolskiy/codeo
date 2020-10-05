@@ -56,6 +56,7 @@ def note_retrieve(notename, authorname='anonimous'):
 
 
 def note_update(payload, note):
+
     allowed_keys = ['language', 'published', 'protected', 'collaborator_link']
     for key in payload.keys():
         if key in allowed_keys:

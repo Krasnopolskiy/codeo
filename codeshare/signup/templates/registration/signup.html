@@ -4,10 +4,11 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<h1>codeshare signup</h1>
+<h1>Codeshare Registration</h1>
 <form method="POST" class="form-group">
 	{% csrf_token %}
 	{{ form|crispy }}
-	<p><button type="submit" class="btn btn-success">signup</button></p>
+	<p>Already have an account? Log In <a href="/login">here</a></p>
+	<p><button type="submit" class="btn btn-success">Sign Up</button></p>
 </form>
 {% endblock %}

@@ -6,8 +6,6 @@ class Author(models.Model):
     uid = models.CharField(max_length=16)
     def __str__(self):
         return self.uid
-
-
 class Note(models.Model):
     name = models.CharField(max_length=4)
 
