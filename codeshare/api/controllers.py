@@ -12,6 +12,13 @@ def generate_notename():
     return name
 
 
+def generate_collab_link():
+    name = "".join(choice(ascii_letters + digits) for _ in range(8))
+    while Note.objects.filter(collab_link=name).exists():
+        name = "".join(choice(ascii_letters + digits) for _ in range(8))
+    return name
+
+
 def generate_authorname():
     name = "".join(choice(ascii_letters + digits) for _ in range(16))
     while Author.objects.filter(uid=name).exists():
@@ -76,7 +83,7 @@ def note_retrieve(notename, session):
 
 
 def note_update(payload, note):
-    allowed_keys = ['language', 'published', 'protected', 'collaborator_link']
+    allowed_keys = ['language', 'published', 'protected', 'collab_link']
     for key in payload.keys():
         if key in allowed_keys:
             setattr(note, key, payload[key])
@@ -95,3 +102,10 @@ def note_delete(note):
     if path.exists(f'sources/{note.name}'):
         remove(f'sources/{note.name}')
     note.delete()
+
+
+def note_invite_collaborator(note):
+    if len(note.collab_link) == 0:
+        link = generate_collab_link()
+        note.collab_link = link
+        note.save()

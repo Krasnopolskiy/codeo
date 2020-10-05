@@ -23,7 +23,11 @@ def api_note_retrieve(request, name):
     if note != None:
         serializer = NoteSerializer(note)
         with open(f'sources/{note.name}', 'r') as f:
-            return JsonResponse({"message": "retrieved", "note": serializer.data, "source": f.read(), "ismine": ismine}, status=status.HTTP_200_OK)
+            context = {"message": "retrieved", "note": serializer.data,
+                       "source": f.read(), "ismine": ismine}
+            if ismine:
+                context["collab_link"] = note.collab_link
+            return JsonResponse(context, status=status.HTTP_200_OK)
     else:
         return JsonResponse({"message": "error", "event": "not found"}, status=status.HTTP_404_NOT_FOUND)
 
@@ -65,3 +69,18 @@ def api_note_delete(request):
         return JsonResponse({"message": "error", "event": "forbidden"}, status=status.HTTP_403_FORBIDDEN)
     note_delete(note)
     return JsonResponse({"message": "deleted"}, status=status.HTTP_200_OK)
+
+
+@api_view(["PUT"])
+@csrf_exempt
+@permission_classes([AllowAny])
+def api_note_invite_collaborator(request):
+    payload = loads(dumps(request.data))
+    note, ismine = note_retrieve(payload["name"], request.session)
+    if note == None:
+        return JsonResponse({"message": "error", "event": "not found"}, status=status.HTTP_404_NOT_FOUND)
+    if not ismine:
+        return JsonResponse({"message": "error", "event": "forbidden"}, status=status.HTTP_403_FORBIDDEN)
+    note_invite_collaborator(note)
+    return JsonResponse({"message": "invited", "link": note.collab_link},
+                        status=status.HTTP_200_OK)

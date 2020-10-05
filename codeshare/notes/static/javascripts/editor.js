@@ -42,6 +42,7 @@ if (notename.length > 0) {
     api.retrieve()
         .then(data => {
             if (data["message"] == "retrieved") {
+                console.log(data)
                 editor.setValue(data.source)
                 editor.session.setMode(data.note.language)
                 $('#note_published')[0].checked = data.note.published
@@ -97,6 +98,13 @@ $('#note_delete_btn').click(() => {
             console.log(data)
             if (data["message"] == "deleted")
                 location = url.origin
+        })
+})
+
+$('#note_invite_btn').click(() => {
+    api.invite_collaborator()
+        .then(data => {
+            console.log(data)
         })
 })
 

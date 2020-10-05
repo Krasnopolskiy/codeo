@@ -50,4 +50,16 @@ class Api_tunnel {
         })
         return await res.json()
     }
+
+    invite_collaborator = async () => {
+        let res = await fetch('/api/note/invite_collaborator', {
+            method: 'PUT',
+            body: JSON.stringify({ "name": this.notename }),
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': this.csrftoken
+            },
+        })
+        return await res.json()
+    }
 }
