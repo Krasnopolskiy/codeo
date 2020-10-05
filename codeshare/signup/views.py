@@ -10,6 +10,5 @@ def signup(response):
             form.save()
         return redirect("/home")
     else:
-        form = UserCreationForm
-    form = UserCreationForm()
+        form = UserCreationForm()
     return render(response, "registration/signup.html", {"form":form})
