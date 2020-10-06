@@ -26,7 +26,7 @@ def api_note_retrieve(request, name):
             context = {"message": "retrieved", "note": serializer.data,
                        "source": f.read(), "ismine": ismine}
             if ismine:
-                context["collab_link"] = note.collab_link
+                context["collaborator_link"] = note.collaborator_link
             return JsonResponse(context, status=status.HTTP_200_OK)
     else:
         return JsonResponse({"message": "error", "event": "not found"}, status=status.HTTP_404_NOT_FOUND)

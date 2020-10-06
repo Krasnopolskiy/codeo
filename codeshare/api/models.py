@@ -15,7 +15,7 @@ class Note(models.Model):
     language = models.CharField(max_length=20)
     published = models.BooleanField(default=False)
     protected = models.BooleanField(default=False)
-    collab_link = models.CharField(max_length=8, blank=True)
+    collaborator_link = models.CharField(max_length=8, blank=True)
 
     def __str__(self):
         return self.name

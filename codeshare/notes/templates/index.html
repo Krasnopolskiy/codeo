@@ -10,6 +10,28 @@
         .col {
             padding: 0;
         }
+
+        #settings-drawer {
+            position: absolute;
+            z-index: 100;
+            background-color: #343a40;
+            right: 0;
+            top: 0;
+            width: 420px;
+            height: calc(100vh - 56px);
+            padding: 20px;
+            border-top: 1px solid #222;
+            color: #fff;
+            transition: 0.5s;
+            transform: translateX(420px);
+        }
+
+        #block-viewer-btn {
+            width: 154px;
+            display: none;
+            border-top-left-radius: .25rem;
+            border-bottom-left-radius: .25rem;
+        }
     </style>
 </head>
 
@@ -20,64 +42,53 @@
         <div class="row">
             <div class="col">
                 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                    <a class="navbar-brand" href="#">codeshare</a>
-                    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav mr-auto" style="width: 100%;">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="dropdown-settings-menu" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Settings
-                                </a>
-                                <div class="dropdown-menu bg-dark" aria-labelledby="dropdown-settings-menu"
-                                    style="padding: 10px">
-                                    <button class="btn btn-secondary" style="width: 100%" id="note_publish_btn">
-                                        <input type="checkbox" style="margin-right: 10px" id="note_published">
-                                        Published
-                                    </button>
-                                    <button class="btn btn-secondary" style="width: 100%; margin-top: 15px"
-                                        id="note_protect_btn">
-                                        <input type="checkbox" style="margin-right: 10px" id="note_protected">
-                                        Protected
-                                    </button>
-                                    <button class="btn btn-danger" style="width: 100%; margin-top: 15px"
-                                        id="note_delete_btn">
-                                        Delete
-                                    </button>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="dropdown-language-menu" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Language</a>
-                                <div class="dropdown-menu bg-dark" aria-labelledby="dropdown-language-menu"
-                                    style="height: 40vh; overflow-y: scroll">
-                                    {% for el in languages %}
-                                    <a class="dropdown-item bg-dark language-item"
-                                        style="color: rgba(255, 255, 255, 0.5);" href="#">{{ el }}</a>
-                                    {% endfor %}
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" id="note_invite_btn">Invite collaborator</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/login">Log in</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/signup">Sign up</a>
-                            </li>
-                        </ul>
-                    </div>
+                    <a class="navbar-brand" href="/">codeshare</a>
+                    <ul class="navbar-nav mr-auto"></ul>
+                    <button id="settings-btn" class="btn btn-secondary">Settings</button>
                 </nav>
             </div>
         </div>
 
-        <div class="row" style="position: relative;">
+        <div class="row" style="position: relative; overflow-x: hidden;">
             <div class="col" style="position: relative; height: calc(100vh - 56px);">
                 <div id="editor" style="position: absolute; height: 100%; width: 100%;"></div>
+            </div>
+            <div class="col" id="settings-drawer">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelectLanguage">Language</label>
+                    </div>
+                    <select class="custom-select" id="inputGroupSelectLanguage">
+                        {% for el in languages %}
+                        <option value="{{ el }}" class="language-item">{{ el }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <hr class="my-4">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-secondary" id="invite-viewer-btn" style="width: 154px;">Invite
+                            viewer</button>
+                        <button class="btn btn-danger" id="block-viewer-btn">Block
+                            viewer</button>
+                    </div>
+                    <input type="text" class="form-control" id="viewer-input" placeholder="No viewer's link" readonly>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-secondary" id="invite-collaborator-btn">Invite collaborator</button>
+                    </div>
+                    <input type="text" class="form-control" id="collaborator-input" placeholder="No collaborator's link"
+                        readonly>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-secondary" id="protect-btn" style="width: 154px;">Protect</button>
+                    </div>
+                    <input type="text" class="form-control" id="password-input" placeholder="No password" readonly>
+                </div>
+                <hr class="my-4">
+                <button class="btn btn-block btn-outline-danger">Delete</button>
             </div>
         </div>
     </div>
@@ -87,8 +98,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
     <script src="https://pagecdn.io/lib/ace/1.4.12/ace.js"></script>
-    <script src="{% static 'javascripts/api_tunnel.js' %}"></script>
-    <script src="{% static 'javascripts/editor.js' %}"></script>
+    <script src="{% static 'javascripts/main/api_tunnel.js' %}"></script>
+    <script src="{% static 'javascripts/main/main.js' %}"></script>
+
 
 </body>
 
