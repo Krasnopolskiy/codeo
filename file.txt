@@ -1,0 +1,26 @@
+Signup
+===================================================================================================================
+{% extends "registration/base.html" %}
+
+{% block title %}Create an Account{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1>Codeshare Registration</h1>
+<form method="POST" class="form-group">
+	{% csrf_token %}
+	{{ form|crispy }}
+	<p>Already have an account? Log In <a href="/login">here</a></p>
+	<p><button type="submit" class="btn btn-success">Sign Up</button></p>
+</form>
+{% endblock %}
+=====================================================================================================================
+HnpiEeTTK3mBWKIw
+Cnvlw73u7qX4Dmf8
+d3nBZsBjT7K5nWKY
+FcANNe3hZN76ezKa
+tfUHxOl9EEmU23BN
+0YsNsg3y2GOdSTlQ
+LlGGXLARtKHDdzmi
+HaIT25Ea6AH0gHi1
+QacXAnyNLeX3hJxT

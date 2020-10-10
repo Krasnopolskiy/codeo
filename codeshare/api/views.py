@@ -6,6 +6,7 @@ from rest_framework import status
 from json import loads, dumps
 from .serializers import NoteSerializer
 from .controllers import *
+from django.contrib.auth.models import User
 
 
 @api_view(["GET"])
@@ -19,7 +20,7 @@ def api_welcome(request):
 @csrf_exempt
 @permission_classes([AllowAny])
 def api_note_retrieve(request, name):
-    note, ismine = note_retrieve(name, request.session)
+    note, ismine, request = note_retrieve(name, request.session, request)
     if note != None:
         serializer = NoteSerializer(note)
         with open(f'sources/{note.name}', 'r') as f:
@@ -48,7 +49,7 @@ def api_note_create(request):
 @permission_classes([AllowAny])
 def api_note_update(request):
     payload = loads(dumps(request.data))
-    note, ismine = note_retrieve(payload["name"], request.session)
+    note, ismine, request = note_retrieve(payload["name"], request.session, request)
     if note == None:
         return JsonResponse({"message": "error", "event": "not found"}, status=status.HTTP_404_NOT_FOUND)
     if not ismine:

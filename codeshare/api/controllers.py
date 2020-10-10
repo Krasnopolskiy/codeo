@@ -3,6 +3,7 @@ from .models import Note, Author
 from string import ascii_letters, digits
 from os import remove, path
 from django.db.models import Q
+from django.contrib.auth.models import User
 
 
 def generate_notename():
@@ -28,7 +29,14 @@ def generate_authorname():
 
 def author_retrieve_or_create(request):
     author = None
-    if "uid" in request.session.keys():
+    if request.user.is_authenticated:
+            try:
+                author = request.user.author
+            except:
+                author = Author(uid=generate_authorname(), user = request.user)
+                request.session['uid'] = author.uid
+                author.save()   
+    if "uid" in request.session.keys() and author == None:
         author = Author.objects.filter(uid=request.session["uid"])
         if not author.exists():
             author = None
@@ -53,11 +61,12 @@ def note_create(author):
     return note
 
 
-def note_retrieve(notename, session):
+def note_retrieve(notename, session, request):
     note = None
     author = None
-
-    if "uid" in session.keys():
+    if request.user.is_authenticated:
+        author = request.user.author
+    if "uid" in session.keys() and author == None:
         author = Author.objects.filter(uid=session["uid"])
         if not author.exists():
             author = None
@@ -78,8 +87,7 @@ def note_retrieve(notename, session):
             note = note[0]
         else:
             note = None
-
-    return note, author != None
+    return note, author != None, request
 
 
 def note_update(payload, note):
