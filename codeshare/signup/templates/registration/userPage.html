@@ -1,24 +1,83 @@
 {%  extends 'registration/main.html' %}
 {% block content %}
-{%  include 'registration/status.html' %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <title>codeshare</title>
+    <style>
+		body,
+		html {
+			margin: 0;
+			padding: 0;
+			height: 100%;
+			background: rgb(30, 30, 30) !important;
+		}
+        .col {
+            padding: 0;
+        }
 
-<div class="row">
-	<div class="col-md">
-		<div class="card card-body">
-			<table class="table table-sm">
-				<tr>
-					<th>Note</th>
-				</tr>
-				{% for note in notes %}
-				<tr>
-					
-					<td><a href = '/{{note.name}}'>{{note.name}}</a></td>
-				</tr>
-				{% endfor %}
+        #settings-drawer {
+            position: absolute;
+            z-index: 100;
+            background-color: #343a40;
+            right: 0;
+            top: 0;
+            width: 420px;
+            height: calc(100vh - 56px);
+            padding: 20px;
+            border-top: 1px solid #222;
+            color: #fff;
+            transition: 0.5s;
+            transform: translateX(420px);
+        }
 
-			</table>
+        #block-viewer-btn {
+            width: 154px;
+            display: none;
+            border-top-left-radius: .25rem;
+            border-bottom-left-radius: .25rem;
+        }
+        a.button1{
+            text-decoration: none;
+            padding: 0px 10px 0px 10px;
+            color:#fff;
+            font-size: 18px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+	<body class="container container-fluid" style="max-width: 100vw;">
+		<div class="row">
+			<div class="col">
+				<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+					<a class="navbar-brand" href="/">codeshare</a>
+					<ul class="navbar-nav mr-auto"></ul>
+					<a href = '/logout' class = 'button1'>Log Out</a>
+					<a href = '/' class = 'button1'>New Note</a>
+					<button id="settings-btn" class="btn btn-secondary">Settings</button>
+				</nav>
+			</div>
+		</div>
+	<div class="row">
+		<div class="col-md" style  = 'top:20px'>
+			<div class="card card-body" >
+				<table class="table table-sm" >
+					<tr>
+						<th>Notes</th>
+					</tr>
+					{% for note in notes %}
+					<tr>
+
+						<td><a href = '/{{note.name}}' style = 'color:#0033FF'>{{note.name}}</a></td>
+					</tr>
+					{% endfor %}
+
+				</table>
+			</div>
 		</div>
 	</div>
-</div>
+</body>
 
 {% endblock content %}
