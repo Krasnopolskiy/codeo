@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import include, path
-from signup import views as v
+from notes import views as v
 
 
 urlpatterns = [

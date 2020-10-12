@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.template import loader
 from api.models import Note, Author
+from .forms import CreateUserForm
+from api.controllers import generate_authorname
+from django.contrib.auth.decorators import login_required
 
 
 def index(request, name=''):
@@ -14,4 +17,40 @@ def index(request, name=''):
         "languages": languages
     }
     print(request.session['uid'])
-    return render(request, 'index.html', context)
+    return render(request, 'notes/index.html', context)
+def signup(request):
+    form = CreateUserForm()
+    if request.method == "POST":
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            author = None
+            if "uid" in request.session.keys():
+                author = Author.objects.filter(uid=request.session["uid"])
+                if not author.exists():
+                    author = None
+                else:
+                    author = author[0]
+                    user.author = author
+                    author.user = user
+                    author.save()
+            if author == None:
+                author = Author(uid=generate_authorname(), user=user)
+                request.session['uid'] = author.uid
+                user.Author = author
+                author.save()
+            return redirect('/login')
+        return redirect("/home")
+    else:
+        form = CreateUserForm()
+    return render(request, "notes/signup.html", {"form": form})
+
+
+@login_required(login_url='login')
+def userPage(request):
+    try:
+        notes = request.user.author.note_set.all()
+    except:
+        notes = None
+    context = {'notes': notes}
+    return render(request, "notes/userPage.html", context)
