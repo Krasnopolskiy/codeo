@@ -4,64 +4,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <title>codeshare</title>
-    <style type="text/css" media="screen">
-        #editor {
+    <style>
+        .col {
+            padding: 0;
+        }
+
+        #settings-drawer {
             position: absolute;
+            z-index: 100;
+            background-color: #343a40;
             right: 0;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 93%;
-            font-size: 20px;
-        }
-
-        .sidenav {
-            height: 7%;
-            width: 100%;
-            position: fixed;
-            z-index: 1;
             top: 0;
-            right: 0;
-            left: 0;
-            background-color: rgb(48, 48, 48);
-            overflow-x: hidden;
-            /*padding-top:20px;*/
+            width: 420px;
+            height: calc(100vh - 56px);
+            padding: 20px;
+            border-top: 1px solid #222;
+            color: #fff;
+            transition: 0.5s;
+            transform: translateX(420px);
         }
 
-        .sidenav a {
-            padding: 12px 4px 6px 24px;
+        #block-viewer-btn {
+            width: 154px;
+            display: none;
+            border-top-left-radius: .25rem;
+            border-bottom-left-radius: .25rem;
+        }
+
+        a.button1 {
             text-decoration: none;
-            color: #818181;
-            display: inline-flex;
-            font-size: 24px;
-
-        }
-
-        .sidenav a:hover {
-            color: #f1f1f1;
+            padding: 0px 10px 0px 10px;
+            color: #fff;
+            font-size: 18px;
+            display: block;
         }
     </style>
-
 </head>
 
 
 <body>
     {% load static %}
-    <div class="sidenav">
-        <a href="/login">Login</a>
-        <a href="/signup">Signup</a>
-    </div>
+    <div class="container container-fluid" style="max-width: 100vw;">
+        <div class="row">
+            <div class="col">
+                <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                    <a class="navbar-brand" href="/">codeshare</a>
+                    <ul class="navbar-nav mr-auto"></ul>
+                    {% if user.is_authenticated %}
+                    <a href='/logout' class='button1'>Log Out</a>
+                    <a href='/userpage' class='button1'>Userpage</a>
+                    {% else %}
+                    <a href='/login' class='button1'>Log In</a>
+                    <a href='/signup' class='button1'>Sign Up</a>
+                    {% endif %}
+                    <a href='/' class='button1'>New Note</a>
+                    <button id="settings-btn" class="btn btn-secondary">Settings</button>
+                </nav>
+            </div>
+        </div>
 
-    <div id="editor"></div>
+        <div class="row" style="position: relative; overflow-x: hidden;">
+            <div class="col" style="position: relative; height: calc(100vh - 56px);">
+                <div id="editor" style="position: absolute; height: 100%; width: 100%;"></div>
+            </div>
+            <div class="col" id="settings-drawer">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelectLanguage">Language</label>
+                    </div>
+                    <select class="custom-select" id="inputGroupSelectLanguage">
+                        {% for el in languages %}
+                        <option value="{{ el }}" class="language-item">{{ el }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <hr class="my-4">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-secondary" id="invite-viewer-btn" style="width: 154px;">Invite
+                            viewer</button>
+                        <button class="btn btn-danger" id="block-viewer-btn">Block
+                            viewer</button>
+                    </div>
+                    <input type="text" class="form-control" id="viewer-input" placeholder="No viewer's link" readonly>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-secondary" id="invite-collaborator-btn">Invite collaborator</button>
+                    </div>
+                    <input type="text" class="form-control" id="collaborator-input" placeholder="No collaborator's link"
+                        readonly>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-secondary" id="protect-btn" style="width: 154px;">Protect</button>
+                    </div>
+                    <input type="text" class="form-control" id="password-input" placeholder="No password" readonly>
+                </div>
+                <hr class="my-4">
+                <button class="btn btn-block btn-outline-danger">Delete</button>
+            </div>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
     <script src="https://pagecdn.io/lib/ace/1.4.12/ace.js"></script>
-    <script src="{% static 'javascripts/api_tunnel.js' %}"></script>
-    <script src="{% static 'javascripts/editor.js' %}"></script>
+    <script src="{% static 'javascripts/main/api_tunnel.js' %}"></script>
+    <script src="{% static 'javascripts/main/main.js' %}"></script>
+
 
 </body>
 
