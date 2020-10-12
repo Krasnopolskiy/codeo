@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from api.controllers import generate_authorname
 from .forms import CreateUserForm
 #from .decorators import allowed_users
+
+
 def signup(request):
     form = CreateUserForm()
     if request.method == "POST":
@@ -26,16 +28,14 @@ def signup(request):
         return redirect("/home")
     else:
         form = CreateUserForm()
-    return render(request, "registration/signup.html", {"form":form})
+    return render(request, "registration/signup.html", {"form": form})
 
-@login_required(login_url = 'login')
+
+@login_required(login_url='login')
 def userPage(request):
     try:
         notes = request.user.author.note_set.all()
     except:
         notes = None
-    context = {'notes':notes}
-    return render (request, "registration/userPage.html", context)
-
-
-
+    context = {'notes': notes}
+    return render(request, "registration/userPage.html", context)

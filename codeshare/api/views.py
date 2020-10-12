@@ -49,7 +49,8 @@ def api_note_create(request):
 @permission_classes([AllowAny])
 def api_note_update(request):
     payload = loads(dumps(request.data))
-    note, ismine, request = note_retrieve(payload["name"], request.session, request)
+    note, ismine, request = note_retrieve(
+        payload["name"], request.session, request)
     if note == None:
         return JsonResponse({"message": "error", "event": "not found"}, status=status.HTTP_404_NOT_FOUND)
     if not ismine:

@@ -32,10 +32,11 @@
             border-top-left-radius: .25rem;
             border-bottom-left-radius: .25rem;
         }
-        a.button1{
+
+        a.button1 {
             text-decoration: none;
             padding: 0px 10px 0px 10px;
-            color:#fff;
+            color: #fff;
             font-size: 18px;
             display: block;
         }
@@ -52,13 +53,13 @@
                     <a class="navbar-brand" href="/">codeshare</a>
                     <ul class="navbar-nav mr-auto"></ul>
                     {% if user.is_authenticated %}
-                            <a href = '/logout' class = 'button1'>Log Out</a>
-                            <a href = '/userpage' class = 'button1'>Userpage</a>
-                    {% else %}    
-                            <a href = '/login' class = 'button1'>Log In</a>
-                            <a href = '/signup' class = 'button1'>Sign Up</a>
+                    <a href='/logout' class='button1'>Log Out</a>
+                    <a href='/userpage' class='button1'>Userpage</a>
+                    {% else %}
+                    <a href='/login' class='button1'>Log In</a>
+                    <a href='/signup' class='button1'>Sign Up</a>
                     {% endif %}
-                    <a href = '/' class = 'button1'>New Note</a>
+                    <a href='/' class='button1'>New Note</a>
                     <button id="settings-btn" class="btn btn-secondary">Settings</button>
                 </nav>
             </div>

@@ -30,12 +30,13 @@ def generate_authorname():
 def author_retrieve_or_create(request):
     author = None
     if request.user.is_authenticated:
-            try:
-                author = request.user.author
-            except:
-                author = Author(uid=generate_authorname(), user = request.user)
-                request.session['uid'] = author.uid
-                author.save()   
+        author = None
+        if 'author' in request.user.keys():
+            author = request.user.author
+        else:
+            author = Author(uid=generate_authorname(), user=request.user)
+            request.session['uid'] = author.uid
+            author.save()
     if "uid" in request.session.keys() and author == None:
         author = Author.objects.filter(uid=request.session["uid"])
         if not author.exists():
