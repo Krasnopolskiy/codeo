@@ -23,7 +23,6 @@ REST_FRAMEWORK = {
 INSTALLED_APPS = [
     'notes.apps.NotesConfig',
     'api',
-    'signup',
     'crispy_forms',
     'rest_framework',
     'django.contrib.admin',
