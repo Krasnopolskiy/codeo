@@ -14,6 +14,7 @@ def signup(request):
         form = CreateUserForm(request.POST)
         if form.is_valid():
             user = form.save()
+            author = None
             if "uid" in request.session.keys():
                 author = Author.objects.filter(uid=request.session["uid"])
                 if not author.exists():
@@ -23,7 +24,11 @@ def signup(request):
                     user.author = author
                     author.user = user
                     author.save()
-
+            if author == None:
+                author = Author(uid=generate_authorname(), user=user)
+                request.session['uid'] = author.uid
+                user.Author = author
+                author.save()
             return redirect('/login')
         return redirect("/home")
     else:
