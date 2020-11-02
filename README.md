@@ -4,7 +4,6 @@ python -m venv venv
 source venv/bin/activate
 pip install Django
 pip install djangorestframework
-pip install django-crispy-forms
 cd codeshare
 mkdir sources
 echo '{secretkey}' > secretkey.txt
