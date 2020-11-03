@@ -12,13 +12,16 @@ class Author(models.Model):
 
 
 class Note(models.Model):
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+
+    read = models.BooleanField(default=False)
     name = models.CharField(max_length=4)
 
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    edit = models.BooleanField(default=False)
+    edit_link = models.CharField(max_length=6, blank=True)
+
     language = models.CharField(max_length=20, default='')
-    published = models.BooleanField(default=False)
     protected = models.BooleanField(default=False)
-    collaborator_link = models.CharField(max_length=6, blank=True)
 
     def __str__(self):
         return self.name

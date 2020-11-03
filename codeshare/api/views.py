@@ -9,39 +9,45 @@ from .controllers import *
 from django.contrib.auth.models import User
 
 
-@api_view(["GET"])
+@api_view(["POST"])
 @csrf_exempt
 @permission_classes([AllowAny])
-def api_welcome(request):
-    return JsonResponse({"message": "Api is working"}, status=status.HTTP_200_OK)
+def api_note_create(request):
+    payload = loads(dumps(request.data))
+
+    author = author_retrieve(request)
+    if not author:
+        author, request = author_create(request)
+
+    note = note_create(author)
+    note_update(note, author, payload)
+    return JsonResponse({'message': 'created', 'name': note.name}, status=status.HTTP_200_OK)
 
 
 @api_view(["GET"])
 @csrf_exempt
 @permission_classes([AllowAny])
 def api_note_retrieve(request, name):
-    note, ismine, request = note_retrieve(name, request.session, request)
-    if note != None:
+    note = note_retrieve(name)
+    if not note:
+        return JsonResponse({'message': 'error', 'event': 'not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    author = author_retrieve(request)
+    if not author:
+        author, request = author_create(request)
+    ismine = note.author == author
+
+    if not note.read:
+        if note.author != author:
+            return JsonResponse({'message': 'error', 'event': 'forbidden'}, status=status.HTTP_403_FORBIDDEN)
+
+    with open(f'sources/{note.name}', 'r') as f:
         serializer = NoteSerializer(note)
-        with open(f'sources/{note.name}', 'r') as f:
-            context = {"message": "retrieved", "note": serializer.data,
-                       "source": f.read(), "ismine": ismine}
-            if ismine:
-                context["collaborator_link"] = note.collaborator_link
-            return JsonResponse(context, status=status.HTTP_200_OK)
-    else:
-        return JsonResponse({"message": "error", "event": "not found"}, status=status.HTTP_404_NOT_FOUND)
-
-
-@api_view(["POST"])
-@csrf_exempt
-@permission_classes([AllowAny])
-def api_note_create(request):
-    payload = loads(dumps(request.data))
-    author, request = author_retrieve_or_create(request)
-    note = note_create(author)
-    note_update(payload, note)
-    return JsonResponse({"message": "created", "notename": note.name}, status=status.HTTP_200_OK)
+        context = {'message': 'retrieved', 'note': serializer.data,
+                   'source': f.read(), 'ismine': ismine}
+        context["edit_link"] = [
+            None, note.edit_link][ismine or name == note.edit_link]
+        return JsonResponse(context, status=status.HTTP_200_OK)
 
 
 @api_view(["PUT"])
@@ -49,14 +55,20 @@ def api_note_create(request):
 @permission_classes([AllowAny])
 def api_note_update(request):
     payload = loads(dumps(request.data))
-    note, ismine, request = note_retrieve(
-        payload["name"], request.session, request)
-    if note == None:
-        return JsonResponse({"message": "error", "event": "not found"}, status=status.HTTP_404_NOT_FOUND)
-    if not ismine:
-        return JsonResponse({"message": "error", "event": "forbidden"}, status=status.HTTP_403_FORBIDDEN)
-    note_update(payload, note)
-    return JsonResponse({"message": "updated"}, status=status.HTTP_200_OK)
+
+    note = note_retrieve(payload["name"])
+    if not note:
+        return JsonResponse({'message': 'error', 'event': 'not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    author = author_retrieve(request)
+    if not author:
+        author, request = author_create(request)
+
+    if author != note.author and payload["name"] != note.edit_link:
+        return JsonResponse({'message': 'error', 'event': 'forbidden'}, status=status.HTTP_403_FORBIDDEN)
+
+    note_update(note, author, payload)
+    return JsonResponse({'message': 'updated'}, status=status.HTTP_200_OK)
 
 
 @api_view(["DELETE"])
@@ -64,25 +76,17 @@ def api_note_update(request):
 @permission_classes([AllowAny])
 def api_note_delete(request):
     payload = loads(dumps(request.data))
-    note, ismine = note_retrieve(payload["name"], request.session)
-    if note == None:
-        return JsonResponse({"message": "error", "event": "not found"}, status=status.HTTP_404_NOT_FOUND)
-    if not ismine:
-        return JsonResponse({"message": "error", "event": "forbidden"}, status=status.HTTP_403_FORBIDDEN)
+
+    note = note_retrieve(payload["name"])
+    if not note:
+        return JsonResponse({'message': 'error', 'event': 'not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    author = author_retrieve(request)
+    if not author:
+        author, request = author_create(request)
+
+    if note.author != author:
+        return JsonResponse({'message': 'error', 'event': 'forbidden'}, status=status.HTTP_403_FORBIDDEN)
+
     note_delete(note)
-    return JsonResponse({"message": "deleted"}, status=status.HTTP_200_OK)
-
-
-@api_view(["PUT"])
-@csrf_exempt
-@permission_classes([AllowAny])
-def api_note_invite_collaborator(request):
-    payload = loads(dumps(request.data))
-    note, ismine = note_retrieve(payload["name"], request.session)
-    if note == None:
-        return JsonResponse({"message": "error", "event": "not found"}, status=status.HTTP_404_NOT_FOUND)
-    if not ismine:
-        return JsonResponse({"message": "error", "event": "forbidden"}, status=status.HTTP_403_FORBIDDEN)
-    note_invite_collaborator(note)
-    return JsonResponse({"message": "invited", "link": note.collab_link},
-                        status=status.HTTP_200_OK)
+    return JsonResponse({'message': 'deleted'}, status=status.HTTP_200_OK)
