@@ -42,7 +42,7 @@ def signup(request):
                 user.Author = author
                 author.save()
             return redirect('/login')
-        return redirect("/home")
+        return redirect("/")
     else:
         form = CreateUserForm()
     return render(request, "notes/signup.html", {"form": form})
@@ -60,7 +60,7 @@ def userPage(request):
 @login_required(login_url='login')
 def logout_view(request):
     logout(request)
-    return redirect('/home')
+    return redirect('/')
 
 
 
@@ -74,7 +74,7 @@ def login_page(request):
 
         if user is not None:
             login(request, user)
-            return(redirect('/home'))
+            return(redirect('/'))
         else:
             messages.info(request, 'Username or Password is incorrect')
     context = {
