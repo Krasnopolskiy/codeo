@@ -37,10 +37,7 @@ def author_create(request):
 def author_retrieve(request):
     author = None
     if request.user.is_authenticated:
-        try:
-            author = request.user.author
-        except:
-            pass
+        author = request.user.author
     if "uid" in request.session.keys() and author == None:
         author = Author.objects.filter(uid=request.session["uid"])
         if author.exists():
