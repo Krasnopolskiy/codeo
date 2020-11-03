@@ -11,4 +11,4 @@ class AuthorSerializer(serializers.ModelSerializer):
 class NoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
-        fields = ['language', 'published', 'protected']
+        fields = ['language', 'read', 'edit', 'protected']

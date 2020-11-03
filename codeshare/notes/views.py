@@ -9,15 +9,15 @@ from django.contrib.auth.decorators import login_required
 def index(request, name=''):
     if 'uid' not in request.session.keys():
         request.session["uid"] = None
-    languages = []
     with open('notes/templates/ace_modes.txt', 'r') as f:
         languages = f.read().split('\n')
-    context = {
-        "settings": "disabled",
-        "languages": languages
-    }
-    print(request.session['uid'])
-    return render(request, 'notes/index.html', context)
+        context = {
+            "settings": "disabled",
+            "languages": languages
+        }
+        return render(request, 'notes/index.html', context)
+
+
 def signup(request):
     form = CreateUserForm()
     if request.method == "POST":
@@ -29,12 +29,12 @@ def signup(request):
                 author = Author.objects.filter(uid=request.session["uid"])
                 if not author.exists():
                     author = None
-                else:
+                if author:
                     author = author[0]
                     user.author = author
                     author.user = user
                     author.save()
-            if author == None:
+            if not author:
                 author = Author(uid=generate_authorname(), user=user)
                 request.session['uid'] = author.uid
                 user.Author = author

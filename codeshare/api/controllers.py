@@ -13,10 +13,10 @@ def generate_notename():
     return name
 
 
-def generate_collab_link():
-    name = "".join(choice(ascii_letters + digits) for _ in range(8))
-    while Note.objects.filter(collab_link=name).exists():
-        name = "".join(choice(ascii_letters + digits) for _ in range(8))
+def generate_edit_link():
+    name = "".join(choice(ascii_letters + digits) for _ in range(6))
+    while Note.objects.filter(edit_link=name).exists():
+        name = "".join(choice(ascii_letters + digits) for _ in range(6))
     return name
 
 
@@ -27,26 +27,33 @@ def generate_authorname():
     return name
 
 
-def author_retrieve_or_create(request):
+def author_create(request):
+    author = Author(uid=generate_authorname())
+    request.session['uid'] = author.uid
+    author.save()
+    return author, request
+
+
+def author_retrieve(request):
     author = None
     if request.user.is_authenticated:
-        author = request.user.author
+        try:
+            author = request.user.author
+        except:
+            pass
     if "uid" in request.session.keys() and author == None:
         author = Author.objects.filter(uid=request.session["uid"])
-        if not author.exists():
-            author = None
-        else:
+        if author.exists():
             author = author[0]
-    if author == None:
-        author = Author(uid=generate_authorname())
-        request.session['uid'] = author.uid
-        author.save()
-    return author, request
+        else:
+            author = None
+    return author
 
 
 def note_create(author):
     note = Note(
         name=generate_notename(),
+        edit_link=generate_edit_link(),
         author=author,
         language='ace/mode/plain_text',
     )
@@ -56,59 +63,32 @@ def note_create(author):
     return note
 
 
-def note_retrieve(notename, session, request):
-    note = None
-    author = None
-    if request.user.is_authenticated:
-        author = request.user.author
-    if "uid" in session.keys() and author == None:
-        author = Author.objects.filter(uid=session["uid"])
-        if not author.exists():
-            author = None
-        else:
-            author = author[0]
-    if author != None:
-        note = Note.objects.filter(Q(name=notename) & Q(author=author))
-        if note.exists():
-            note = note[0]
-        else:
-            note = None
-            author = None
-
-    if note == None:
-        note = Note.objects.filter(Q(name=notename) & Q(published=True))
-        author = None
-        if note.exists():
-            note = note[0]
-        else:
-            note = None
-    return note, author != None, request
+def note_retrieve(name):
+    note = Note.objects.filter(Q(name=name) | (
+        Q(edit_link=name) & Q(edit=True)))
+    if not note.exists():
+        return None
+    return note[0]
 
 
-def note_update(payload, note):
-    allowed_keys = ['language', 'published', 'protected', 'collab_link']
-    for key in payload.keys():
-        if key in allowed_keys:
-            setattr(note, key, payload[key])
-    note.save()
+def note_update(note, author, payload):
+    if 'language' in payload.keys():
+        note.language = payload["language"]
     if 'source' in payload.keys():
         with open(f'sources/{note.name}', 'w+') as f:
             f.write(f'{payload["source"]}')
-    if "onclose" in payload.keys() and payload["onclose"]:
-        if len(payload["source"]) == 0:
-            if path.exists(f'sources/{note.name}'):
-                remove(f'sources/{note.name}')
-            note.delete()
+    if author == note.author:
+        settings = ['read', 'edit']
+        for key in payload.keys():
+            if key in settings:
+                setattr(note, key, payload[key])
+        if 'onclose' in payload.keys() and payload["onclose"]:
+            if len(payload["source"]) == 0:
+                note_delete(note)
+    note.save()
 
 
 def note_delete(note):
     if path.exists(f'sources/{note.name}'):
         remove(f'sources/{note.name}')
     note.delete()
-
-
-def note_invite_collaborator(note):
-    if len(note.collab_link) == 0:
-        link = generate_collab_link()
-        note.collab_link = link
-        note.save()

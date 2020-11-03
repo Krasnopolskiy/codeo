@@ -1,40 +1,41 @@
 const url = new URL(window.location.href)
-const notename = url.pathname.split('/')[1]
-const api = new Api_tunnel(Cookies.get('csrftoken'), notename)
-const editor = ace.edit("editor")
+const name = url.pathname.split('/')[1]
+const api = new Api_tunnel(Cookies.get('csrftoken'), name)
+const editor = ace.edit('editor')
+
+
 let ismine = false,
-    published = false,
-    protected = false
+    read = false,
+    edit = false,
+    edit_link = '',
+    error = false
 
 
 editor.setOptions({
     showPrintMargin: false,
     readOnly: true,
     fontSize: 18,
-    theme: "ace/theme/monokai"
+    theme: 'ace/theme/monokai'
 })
 editor.session.setOptions({
     tabSize: 4,
     useSoftTabs: true,
-    mode: "ace/mode/plain_text"
+    mode: 'ace/mode/plain_text'
 })
 editor.$enableAutoIndent
 
 
-let error = false
-
-
-let update = () => {
-    if (ismine)
+let update = (onclose = false) => {
+    if (edit || ismine)
         api.update({
-            "source": editor.getValue(),
-            "language": editor.session.getMode().$id,
-            "published": published,
-            "protected": protected
-        })
+            'source': editor.getValue(),
+            'language': editor.session.getMode().$id,
+            'read': read,
+            'edit': edit
+        }, onclose)
             .then(data => {
                 console.log(data)
-                if (data["message"] == "error") {
+                if (data['message'] == 'error') {
                     error = true
                     location = url.origin
                 }
@@ -42,64 +43,67 @@ let update = () => {
 }
 
 $('#editor').click(() => {
-    if (!ismine) {
+    if ((!edit || name != edit_link) && !ismine) {
         let body = {}
         if (url.pathname != '/')
             body = {
-                "source": editor.getValue(),
-                "language": editor.session.getMode().$id
+                'source': editor.getValue(),
+                'language': editor.session.getMode().$id,
+                'read': read,
+                'edit': edit
             }
         api.create(body)
             .then(data => {
-                if (data["message"] == "created")
-                    location = url.origin + '/' + data["notename"]
+                if (data['message'] == 'created')
+                    location = url.origin + '/' + data['name']
             })
     }
 })
 
 $('#editor').keyup(() => { update() })
 
-$(window).on('beforeunload', () => {
-    if (ismine && !error)
-        api.update({ "source": editor.getValue() }, true)
-            .then(data => {
-                console.log(data)
-            })
-})
+$(window).on('beforeunload', () => { if (ismine && !error) update(true) })
 
 $(document).ready(() => {
     $('#inputGroupSelectLanguage').click(() => {
-        editor.session.setMode("ace/mode/" + $('#inputGroupSelectLanguage')[0].value)
+        editor.session.setMode('ace/mode/' + $('#inputGroupSelectLanguage')[0].value)
         setTimeout(() => { update() }, 1000)
     })
-    if (notename.length > 0) {
+    if (name.length > 0) {
         api.retrieve()
             .then(data => {
-                if (data["message"] == "retrieved") {
+                if (data['message'] == 'retrieved') {
                     console.log(data)
+
+                    ismine = data.ismine
+                    read = data.note.read
+                    edit = data.note.edit
+                    edit_link = data.edit_link
 
                     editor.setValue(data.source)
                     editor.session.setMode(data.note.language)
                     editor.clearSelection()
                     editor.navigateFileEnd()
                     editor.focus()
-                    if (!data.ismine)
-                        editor.setReadOnly(true)
-                    else
-                        editor.setReadOnly(false)
+                    editor.setReadOnly(!ismine && (!edit || name != edit_link))
 
-                    ismine = data.ismine
-                    published = data.note.published
-                    protected = data.note.protected
-
-                    if (!ismine)
+                    if (!ismine && (!edit || name != edit_link))
                         $('#settings-btn').prop('disabled', true)
+                    if (!ismine)
+                        $('#main-settings-block').css('display', 'none')
 
                     $('#inputGroupSelectLanguage')[0].value = data.note.language.split('/')[2]
-                    if (published) {
-                        $('#viewer-input')[0].value = url.href.replace('http://', '')
-                        $('#invite-viewer-btn').css('display', 'none')
-                        $('#block-viewer-btn').css('display', 'block')
+
+                    if (read) {
+                        $('#read-link-input')[0].value = url.origin.replace('http://', '') + '/' + name
+                        $('#allow-reading-btn').css('display', 'none')
+                        $('#disallow-reading-btn').css('display', 'block')
+                    }
+
+                    if (edit && name == edit_link) {
+                        $('#edit-link-input')[0].value = url.origin.replace('http://', '') + '/' + edit_link
+                        $('#allow-editing-btn').css('display', 'none')
+                        $('#disallow-editing-btn').css('display', 'block')
                     }
                 } else {
                     error = true
@@ -110,25 +114,57 @@ $(document).ready(() => {
 })
 
 $('#settings-btn').click(() => {
-    console.log($('#settings-drawer').css('transform'))
     if ($('#settings-drawer').css('transform') == 'matrix(1, 0, 0, 1, 420, 0)')
         $('#settings-drawer').css('transform', 'translateX(0)')
     else
         $('#settings-drawer').css('transform', 'translateX(420px)')
 })
 
-$('#invite-viewer-btn').click(() => {
-    published = true
-    $('#viewer-input')[0].value = url.href.replace('http://', '')
-    $('#invite-viewer-btn').css('display', 'none')
-    $('#block-viewer-btn').css('display', 'block')
+$('#allow-reading-btn').click(() => {
+    read = true
+    $('#read-link-input')[0].value = url.origin.replace('http://', '') + '/' + name
+    $('#allow-reading-btn').css('display', 'none')
+    $('#disallow-reading-btn').css('display', 'block')
     update()
 })
 
-$('#block-viewer-btn').click(() => {
-    published = false
-    $('#viewer-input')[0].value = ''
-    $('#invite-viewer-btn').css('display', 'block')
-    $('#block-viewer-btn').css('display', 'none')
+$('#disallow-reading-btn').click(() => {
+    read = false
+    $('#read-link-input')[0].value = ''
+    $('#allow-reading-btn').css('display', 'block')
+    $('#disallow-reading-btn').css('display', 'none')
+
+    edit = false
+    $('#edit-link-input')[0].value = ''
+    $('#allow-editing-btn').css('display', 'block')
+    $('#disallow-editing-btn').css('display', 'none')
+
     update()
+})
+
+$('#allow-editing-btn').click(() => {
+    read = true
+    $('#read-link-input')[0].value = url.origin.replace('http://', '') + '/' + name
+    $('#allow-reading-btn').css('display', 'none')
+    $('#disallow-reading-btn').css('display', 'block')
+
+    edit = true
+    $('#edit-link-input')[0].value = url.origin.replace('http://', '') + '/' + edit_link
+    $('#allow-editing-btn').css('display', 'none')
+    $('#disallow-editing-btn').css('display', 'block')
+
+    update()
+})
+
+$('#disallow-editing-btn').click(() => {
+    edit = false
+    $('#edit-link-input')[0].value = ''
+    $('#allow-editing-btn').css('display', 'block')
+    $('#disallow-editing-btn').css('display', 'none')
+    update()
+})
+
+$('#delete-btn').click(() => {
+    api.delete()
+    location = '/'
 })
