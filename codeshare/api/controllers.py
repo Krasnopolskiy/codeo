@@ -28,9 +28,15 @@ def generate_authorname():
 
 
 def author_create(request):
-    author = Author(uid=generate_authorname())
-    request.session['uid'] = author.uid
-    author.save()
+    if request.user.is_superuser:
+        author = Author(uid=generate_authorname(), user=request.user)
+        request.session['uid'] = author.uid
+        request.user.Author = author
+        author.save()
+    else:
+        author = Author(uid=generate_authorname())
+        request.session['uid'] = author.uid
+        author.save()
     return author, request
 
 
@@ -40,7 +46,7 @@ def author_retrieve(request):
         try:
             author = request.user.author
         except:
-            pass
+            author, request = author_create(request)
     if "uid" in request.session.keys() and author == None:
         author = Author.objects.filter(uid=request.session["uid"])
         if author.exists():
