@@ -26,7 +26,14 @@
             transform: translateX(420px);
         }
 
-        #block-viewer-btn {
+        #disallow-reading-btn {
+            width: 154px;
+            display: none;
+            border-top-left-radius: .25rem;
+            border-bottom-left-radius: .25rem;
+        }
+
+        #disallow-editing-btn {
             width: 154px;
             display: none;
             border-top-left-radius: .25rem;
@@ -59,7 +66,6 @@
                     <a href='/login' class='button1'>Log In</a>
                     <a href='/signup' class='button1'>Sign Up</a>
                     {% endif %}
-                    <a href='/' class='button1'>New Note</a>
                     <button id="settings-btn" class="btn btn-secondary">Settings</button>
                 </nav>
             </div>
@@ -80,31 +86,38 @@
                         {% endfor %}
                     </select>
                 </div>
-                <hr class="my-4">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <button class="btn btn-secondary" id="invite-viewer-btn" style="width: 154px;">Invite
-                            viewer</button>
-                        <button class="btn btn-danger" id="block-viewer-btn">Block
-                            viewer</button>
+                <div id="main-settings-block">
+                    <hr class="my-4">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <button class="btn btn-secondary" id="allow-reading-btn" style="width: 154px;">Allow
+                                reading</button>
+                            <button class="btn btn-danger" id="disallow-reading-btn" style="width: 154px;">Disallow
+                                reading</button>
+                        </div>
+                        <input type="text" class="form-control" id="read-link-input" placeholder="No link for reading"
+                            readonly>
                     </div>
-                    <input type="text" class="form-control" id="viewer-input" placeholder="No viewer's link" readonly>
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <button class="btn btn-secondary" id="invite-collaborator-btn">Invite collaborator</button>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <button class="btn btn-secondary" id="allow-editing-btn" style="width: 154px;">Allow
+                                editing</button>
+                            <button class="btn btn-danger" id="disallow-editing-btn" style="width: 154px;">Disallow
+                                editing</button>
+
+                        </div>
+                        <input type="text" class="form-control" id="edit-link-input" placeholder="No link for editing"
+                            readonly>
                     </div>
-                    <input type="text" class="form-control" id="collaborator-input" placeholder="No collaborator's link"
-                        readonly>
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <button class="btn btn-secondary" id="protect-btn" style="width: 154px;">Protect</button>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <button class="btn btn-secondary" id="protect-btn" style="width: 154px;">Protect</button>
+                        </div>
+                        <input type="text" class="form-control" id="password-input" placeholder="No password" readonly>
                     </div>
-                    <input type="text" class="form-control" id="password-input" placeholder="No password" readonly>
+                    <hr class="my-4">
+                    <button class="btn btn-block btn-outline-danger" id="delete-btn">Delete</button>
                 </div>
-                <hr class="my-4">
-                <button class="btn btn-block btn-outline-danger">Delete</button>
             </div>
         </div>
     </div>
