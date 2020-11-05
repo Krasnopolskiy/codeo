@@ -22,8 +22,7 @@ editor.session.setOptions({
     useSoftTabs: true,
     mode: 'ace/mode/plain_text'
 })
-editor.$enableAutoIndent
-
+$('#settings-btn').prop('disabled', true)
 
 let update = (onclose = false) => {
     if (edit || ismine)
@@ -87,8 +86,8 @@ $(document).ready(() => {
                     editor.focus()
                     editor.setReadOnly(!ismine && (!edit || name != edit_link))
 
-                    if (!ismine && (!edit || name != edit_link))
-                        $('#settings-btn').prop('disabled', true)
+                    if (ismine || (edit && name == edit_link))
+                        $('#settings-btn').prop('disabled', false)
                     if (!ismine)
                         $('#main-settings-block').css('display', 'none')
 
@@ -125,6 +124,11 @@ $('#allow-reading-btn').click(() => {
     $('#read-link-input')[0].value = url.origin.replace('http://', '') + '/' + name
     $('#allow-reading-btn').css('display', 'none')
     $('#disallow-reading-btn').css('display', 'block')
+
+    $('#read-link-input')[0].select()
+    document.execCommand('copy')
+    window.getSelection().removeAllRanges()
+
     update()
 })
 
@@ -153,6 +157,11 @@ $('#allow-editing-btn').click(() => {
     $('#allow-editing-btn').css('display', 'none')
     $('#disallow-editing-btn').css('display', 'block')
 
+
+    $('#edit-link-input')[0].select()
+    document.execCommand('copy')
+    window.getSelection().removeAllRanges()
+
     update()
 })
 
@@ -167,4 +176,8 @@ $('#disallow-editing-btn').click(() => {
 $('#delete-btn').click(() => {
     api.delete()
     location = '/'
+})
+
+$(function () {
+    $('[data-toggle="popover"]').popover()
 })
