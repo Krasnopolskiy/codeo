@@ -1,7 +1,8 @@
-class Api_tunnel {
-    constructor(csrftoken, name) {
+class ApiTunnel {
+    constructor(csrftoken, name, host) {
         this.csrftoken = csrftoken
         this.name = name
+        this.websocket = new WebSocket('ws://' + host + '/ws/note/update')
     }
 
     create = async (body = {}) => {
@@ -25,18 +26,8 @@ class Api_tunnel {
     }
 
     update = async (body, onclose = false) => {
-        let res = await fetch('/api/note/update', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': this.csrftoken
-            },
-            body: JSON.stringify(Object.assign({
-                'name': this.name,
-                'onclose': onclose
-            }, body))
-        })
-        return await res.json()
+        this.websocket.send(JSON.stringify(body))
+        this.websocket.onmessage = (event) => { console.log(event) }
     }
 
     delete = async () => {

@@ -9,7 +9,7 @@ with open('secretkey.txt') as f:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.ngrok.io']
+ALLOWED_HOSTS = ['.ngrok.io', '127.0.0.1']
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'api',
     'crispy_forms',
     'rest_framework',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -66,7 +67,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'codeshare.wsgi.application'
-
+ASGI_APPLICATION = 'codeshare.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 DATABASES = {
     'default': {

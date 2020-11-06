@@ -1,6 +1,6 @@
 const url = new URL(window.location.href)
 const name = url.pathname.split('/')[1]
-const api = new Api_tunnel(Cookies.get('csrftoken'), name)
+const api = new ApiTunnel(Cookies.get('csrftoken'), name, url.host)
 const editor = ace.edit('editor')
 
 
@@ -22,7 +22,7 @@ editor.session.setOptions({
     useSoftTabs: true,
     mode: 'ace/mode/plain_text'
 })
-editor.$enableAutoIndent
+$('#settings-btn').prop('disabled', true)
 
 
 let update = (onclose = false) => {
@@ -87,8 +87,8 @@ $(document).ready(() => {
                     editor.focus()
                     editor.setReadOnly(!ismine && (!edit || name != edit_link))
 
-                    if (!ismine && (!edit || name != edit_link))
-                        $('#settings-btn').prop('disabled', true)
+                    if (ismine || (edit && name == edit_link))
+                        $('#settings-btn').prop('disabled', false)
                     if (!ismine)
                         $('#main-settings-block').css('display', 'none')
 
@@ -125,6 +125,11 @@ $('#allow-reading-btn').click(() => {
     $('#read-link-input')[0].value = url.origin.replace('http://', '') + '/' + name
     $('#allow-reading-btn').css('display', 'none')
     $('#disallow-reading-btn').css('display', 'block')
+
+    $('#read-link-input')[0].select()
+    document.execCommand('copy')
+    window.getSelection().removeAllRanges()
+
     update()
 })
 
@@ -152,6 +157,10 @@ $('#allow-editing-btn').click(() => {
     $('#edit-link-input')[0].value = url.origin.replace('http://', '') + '/' + edit_link
     $('#allow-editing-btn').css('display', 'none')
     $('#disallow-editing-btn').css('display', 'block')
+
+    $('#edit-link-input')[0].select()
+    document.execCommand('copy')
+    window.getSelection().removeAllRanges()
 
     update()
 })
