@@ -23,6 +23,8 @@ editor.session.setOptions({
     mode: 'ace/mode/plain_text'
 })
 $('#settings-btn').prop('disabled', true)
+editor.$enableAutoIndent
+
 
 let update = (onclose = false) => {
     if (edit || ismine)
@@ -176,8 +178,4 @@ $('#disallow-editing-btn').click(() => {
 $('#delete-btn').click(() => {
     api.delete()
     location = '/'
-})
-
-$(function () {
-    $('[data-toggle="popover"]').popover()
 })
