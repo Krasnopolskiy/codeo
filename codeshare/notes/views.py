@@ -4,6 +4,8 @@ from api.models import Note, Author
 from .forms import CreateUserForm
 from api.controllers import generate_authorname
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout, authenticate, login
+from django.contrib import messages
 
 
 def index(request, name=''):
@@ -40,7 +42,7 @@ def signup(request):
                 user.Author = author
                 author.save()
             return redirect('/login')
-        return redirect("/home")
+        return redirect("/")
     else:
         form = CreateUserForm()
     return render(request, "notes/signup.html", {"form": form})
@@ -54,3 +56,31 @@ def userPage(request):
         notes = None
     context = {'notes': notes}
     return render(request, "notes/userPage.html", context)
+
+@login_required(login_url='login')
+def logout_view(request):
+    logout(request)
+    return redirect('/')
+
+
+
+
+def login_page(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username = username, password = password)
+
+        if user is not None:
+            login(request, user)
+            return(redirect('/'))
+        else:
+            messages.info(request, 'Username or Password is incorrect')
+    context = {
+
+    }
+    return render(request, 'notes/login.html', context)
+
+
+
