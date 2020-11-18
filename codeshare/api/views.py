@@ -21,7 +21,7 @@ def api_note_create(request):
 
     note = note_create(author)
     note_update(note, author, payload)
-    return JsonResponse({'message': 'created', 'name': note.name}, status=status.HTTP_200_OK)
+    return JsonResponse({'message': 'created', 'name': note.name, 'edit_link': note.edit_link}, status=status.HTTP_200_OK)
 
 
 @api_view(["GET"])

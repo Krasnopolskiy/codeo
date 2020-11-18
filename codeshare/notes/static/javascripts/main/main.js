@@ -1,118 +1,3 @@
-const url = new URL(window.location.href)
-const name = url.pathname.split('/')[1]
-const api = new ApiTunnel(Cookies.get('csrftoken'), name, url.host)
-const editor = ace.edit('editor')
-
-
-let ismine = false,
-    read = false,
-    edit = false,
-    edit_link = '',
-    error = false
-
-
-editor.setOptions({
-    showPrintMargin: false,
-    readOnly: true,
-    fontSize: 18,
-    theme: 'ace/theme/monokai'
-})
-editor.session.setOptions({
-    tabSize: 4,
-    useSoftTabs: true,
-    mode: 'ace/mode/plain_text'
-})
-$('#settings-btn').prop('disabled', true)
-
-
-let update = (onclose = false) => {
-    if (edit || ismine)
-        api.update({
-            'source': editor.getValue(),
-            'language': editor.session.getMode().$id,
-            'read': read,
-            'edit': edit
-        }, onclose)
-            .then(data => {
-                console.log(data)
-                if (data['message'] == 'error') {
-                    error = true
-                    location = url.origin
-                }
-            })
-}
-
-$('#editor').click(() => {
-    if ((!edit || name != edit_link) && !ismine) {
-        let body = {}
-        if (url.pathname != '/')
-            body = {
-                'source': editor.getValue(),
-                'language': editor.session.getMode().$id,
-                'read': read,
-                'edit': edit
-            }
-        api.create(body)
-            .then(data => {
-                if (data['message'] == 'created')
-                    location = url.origin + '/' + data['name']
-            })
-    }
-})
-
-$('#editor').keyup(() => { update() })
-
-$(window).on('beforeunload', () => { if (ismine && !error) update(true) })
-
-$(document).ready(() => {
-    $('#inputGroupSelectLanguage').click(() => {
-        editor.session.setMode('ace/mode/' + $('#inputGroupSelectLanguage')[0].value)
-        setTimeout(() => { update() }, 1000)
-    })
-    if (name.length > 0) {
-        api.retrieve()
-            .then(data => {
-                if (data['message'] == 'retrieved') {
-                    console.log(data)
-
-                    ismine = data.ismine
-                    read = data.note.read
-                    edit = data.note.edit
-                    edit_link = data.edit_link
-
-                    editor.setValue(data.source)
-                    editor.session.setMode(data.note.language)
-                    editor.clearSelection()
-                    editor.navigateFileEnd()
-                    editor.focus()
-                    editor.setReadOnly(!ismine && (!edit || name != edit_link))
-
-                    if (ismine || (edit && name == edit_link))
-                        $('#settings-btn').prop('disabled', false)
-                    if (!ismine)
-                        $('#main-settings-block').css('display', 'none')
-
-                    $('#inputGroupSelectLanguage')[0].value = data.note.language.split('/')[2]
-
-                    if (read) {
-                        $('#read-link-input')[0].value = url.origin.replace('http://', '') + '/' + name
-                        $('#allow-reading-btn').css('display', 'none')
-                        $('#disallow-reading-btn').css('display', 'block')
-                    }
-
-                    if (edit && name == edit_link) {
-                        $('#edit-link-input')[0].value = url.origin.replace('http://', '') + '/' + edit_link
-                        $('#allow-editing-btn').css('display', 'none')
-                        $('#disallow-editing-btn').css('display', 'block')
-                    }
-                } else {
-                    error = true
-                    location = url.origin
-                }
-            })
-    }
-})
-
 $('#settings-btn').click(() => {
     if ($('#settings-drawer').css('transform') == 'matrix(1, 0, 0, 1, 420, 0)')
         $('#settings-drawer').css('transform', 'translateX(0)')
@@ -120,60 +5,96 @@ $('#settings-btn').click(() => {
         $('#settings-drawer').css('transform', 'translateX(420px)')
 })
 
-$('#allow-reading-btn').click(() => {
-    read = true
-    $('#read-link-input')[0].value = url.origin.replace('http://', '') + '/' + name
-    $('#allow-reading-btn').css('display', 'none')
-    $('#disallow-reading-btn').css('display', 'block')
+break_all = () => {
+    error = true
+    location = '/'
+}
 
-    $('#read-link-input')[0].select()
-    document.execCommand('copy')
-    window.getSelection().removeAllRanges()
+process_update_message = (body) => {
+    data = JSON.parse(body.data)
+    if (data['editor'] == Cookies.get('csrftoken'))
+        return
+    console.log(data)
+    note.read = data['note']['read']
+    note.edit = data['note']['edit']
+    note.language = data['note']['language']
+    editor.setValue(data['source'])
+    editor.clearSelection()
+}
 
-    update()
+create = (body = {}) => {
+    api.create(body)
+        .then(data => {
+            console.log(data)
+            if (data['message'] === 'created') {
+                note.ismine = true
+                note.read_link = url.origin + '/' + data['name']
+                note.edit_link = url.origin + '/' + data['edit_link']
+                window.history.replaceState('', '', note.read_link)
+            }
+            else break_all()
+        })
+}
+
+retrieve = () => {
+    api.retrieve()
+        .then(data => {
+            console.log(data)
+            if (data['message'] === 'retrieved') {
+                note.ismine = data['ismine']
+                note.read_link = url.origin + '/' + note.name
+                note.read = data['note']['read']
+                note.edit = data['note']['edit']
+
+                if (note.ismine)
+                    note.edit_link = data['edit_link']
+
+                note.language = data['note']['language']
+                editor.setValue(data['source'])
+                editor.setReadOnly(!note.ismine && !note.edit)
+                editor.clearSelection()
+                editor.session.setMode(note.language)
+
+                if (note.ismine || note.edit)
+                    $('#settings-btn').prop('disabled', false)
+            }
+            else break_all()
+        })
+}
+
+update = (body, onclose = false) => {
+    api.update(body, onclose)
+}
+
+$(document).ready(() => {
+    if (note.name.length !== 0)
+        retrieve()
 })
 
-$('#disallow-reading-btn').click(() => {
-    read = false
-    $('#read-link-input')[0].value = ''
-    $('#allow-reading-btn').css('display', 'block')
-    $('#disallow-reading-btn').css('display', 'none')
-
-    edit = false
-    $('#edit-link-input')[0].value = ''
-    $('#allow-editing-btn').css('display', 'block')
-    $('#disallow-editing-btn').css('display', 'none')
-
-    update()
+$('#editor').click(() => {
+    if (!note.edit) {
+        if (note.name.length === 0)
+            create()
+    }
 })
 
-$('#allow-editing-btn').click(() => {
-    read = true
-    $('#read-link-input')[0].value = url.origin.replace('http://', '') + '/' + name
-    $('#allow-reading-btn').css('display', 'none')
-    $('#disallow-reading-btn').css('display', 'block')
-
-    edit = true
-    $('#edit-link-input')[0].value = url.origin.replace('http://', '') + '/' + edit_link
-    $('#allow-editing-btn').css('display', 'none')
-    $('#disallow-editing-btn').css('display', 'block')
-
-    $('#edit-link-input')[0].select()
-    document.execCommand('copy')
-    window.getSelection().removeAllRanges()
-
-    update()
-})
-
-$('#disallow-editing-btn').click(() => {
-    edit = false
-    $('#edit-link-input')[0].value = ''
-    $('#allow-editing-btn').css('display', 'block')
-    $('#disallow-editing-btn').css('display', 'none')
-    update()
+$('#editor').keyup(() => {
+    if (note.edit || note.ismine) {
+        setTimeout(update({
+            'name': note.name,
+            'source': editor.getValue(),
+            'language': note.language,
+            'edit': note.edit,
+            'read': note.read
+        }), 1000)
+    }
 })
 
 $('#delete-btn').click(() => {
-    api.delete()
-    location = '/'
+    api.delete().then(() => break_all())
+})
+
+$('#inputGroupSelectLanguage').change(() => {
+    note.language = 'ace/mode/' + $('#inputGroupSelectLanguage').val()
+    editor.session.setMode(note.language)
 })

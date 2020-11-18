@@ -1,11 +1,16 @@
 class ApiTunnel {
     constructor(csrftoken, name, host) {
         this.csrftoken = csrftoken
-        this.name = name
-        this.websocket = new WebSocket('ws://' + host + '/ws/note/update')
+        this.name = ['0000', name][(name.length !== 0) + 0]
+        this.websocket = new WebSocket(
+            'ws://'
+            + host
+            + '/ws/note/update/'
+            + this.name
+        )
     }
 
-    create = async (body = {}) => {
+    create = async (body) => {
         let res = await fetch('/api/note/create', {
             method: 'POST',
             headers: {
@@ -25,9 +30,9 @@ class ApiTunnel {
         return await res.json()
     }
 
-    update = async (body, onclose = false) => {
+    update = async (body, onclose) => {
         this.websocket.send(JSON.stringify(body))
-        this.websocket.onmessage = (event) => { console.log(event) }
+        this.websocket.onmessage = (event) => { process_update_message(event) }
     }
 
     delete = async () => {

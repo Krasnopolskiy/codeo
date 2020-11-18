@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 
 def generate_notename():
     name = "".join(choice(ascii_letters + digits) for _ in range(4))
-    while Note.objects.filter(name=name).exists():
+    while Note.objects.filter(name=name).exists() or name == '0000':
         name = "".join(choice(ascii_letters + digits) for _ in range(4))
     return name
 
