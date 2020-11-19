@@ -48,3 +48,13 @@ def api_note_retrieve(request, name):
         context["edit_link"] = [
             None, note.edit_link][ismine or name == note.edit_link]
         return JsonResponse(context, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@csrf_exempt
+@permission_classes([AllowAny])
+def api_author_set(request):
+    author = author_retrieve(request)
+    if not author:
+        author, request = author_create(request)
+    return JsonResponse({'message': 'set', 'name': author.uid}, status=status.HTTP_200_OK)

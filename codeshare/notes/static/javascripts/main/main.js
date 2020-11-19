@@ -10,22 +10,44 @@ break_all = () => {
     location = '/'
 }
 
-process_update_message = (body) => {
-    data = JSON.parse(body.data)
-    if (data['editor'] == Cookies.get('csrftoken'))
-        return
-    console.log(data)
+update_setting_btns = () => {
+    if (note.read) {
+        $('#read-link-input')[0].value = note.read_link
+        $('#allow-reading-btn').css('display', 'none')
+        $('#disallow-reading-btn').css('display', 'block')
+    } else {
+        $('#read-link-input')[0].value = ''
+        $('#allow-reading-btn').css('display', 'block')
+        $('#disallow-reading-btn').css('display', 'none')
+    }
+    if (note.edit) {
+        $('#edit-link-input')[0].value = note.edit_link
+        $('#allow-editing-btn').css('display', 'none')
+        $('#disallow-editing-btn').css('display', 'block')
+    } else {
+        $('#edit-link-input')[0].value = ''
+        $('#allow-editing-btn').css('display', 'block')
+        $('#disallow-editing-btn').css('display', 'none')
+    }
+}
+
+process_update_message = (event) => {
+    data = JSON.parse(JSON.parse(event['data']).message)
     note.read = data['note']['read']
     note.edit = data['note']['edit']
+    update_setting_btns()
+    if (data['client'] === api.client)
+        return
     note.language = data['note']['language']
     editor.setValue(data['source'])
     editor.clearSelection()
+    editor.focus()
+    editor.navigateFileEnd()
 }
 
 create = (body = {}) => {
     api.create(body)
         .then(data => {
-            console.log(data)
             if (data['message'] === 'created') {
                 note.ismine = true
                 note.read_link = url.origin + '/' + data['name']
@@ -39,7 +61,6 @@ create = (body = {}) => {
 retrieve = () => {
     api.retrieve()
         .then(data => {
-            console.log(data)
             if (data['message'] === 'retrieved') {
                 note.ismine = data['ismine']
                 note.read_link = url.origin + '/' + note.name
@@ -47,23 +68,33 @@ retrieve = () => {
                 note.edit = data['note']['edit']
 
                 if (note.ismine)
-                    note.edit_link = data['edit_link']
+                    note.edit_link = url.origin + '/' + data['edit_link']
 
                 note.language = data['note']['language']
                 editor.setValue(data['source'])
                 editor.setReadOnly(!note.ismine && !note.edit)
                 editor.clearSelection()
                 editor.session.setMode(note.language)
+                editor.focus()
+                editor.navigateFileEnd()
 
                 if (note.ismine || note.edit)
                     $('#settings-btn').prop('disabled', false)
+
+                update_setting_btns()
             }
             else break_all()
         })
 }
 
-update = (body, onclose = false) => {
-    api.update(body, onclose)
+update = (onclose = false) => {
+    api.update({
+        'name': note.name,
+        'source': editor.getValue(),
+        'language': note.language,
+        'edit': note.edit,
+        'read': note.read
+    }, onclose)
 }
 
 $(document).ready(() => {
@@ -79,15 +110,30 @@ $('#editor').click(() => {
 })
 
 $('#editor').keyup(() => {
-    if (note.edit || note.ismine) {
-        setTimeout(update({
-            'name': note.name,
-            'source': editor.getValue(),
-            'language': note.language,
-            'edit': note.edit,
-            'read': note.read
-        }), 1000)
-    }
+    if (note.edit || note.ismine)
+        update()
+})
+
+$('#allow-reading-btn').click(() => {
+    note.read = true
+    update()
+})
+
+$('#disallow-reading-btn').click(() => {
+    note.read = false
+    note.edit = false
+    update()
+})
+
+$('#allow-editing-btn').click(() => {
+    note.read = true
+    note.edit = true
+    update()
+})
+
+$('#disallow-editing-btn').click(() => {
+    note.edit = false
+    update()
 })
 
 $('#delete-btn').click(() => {

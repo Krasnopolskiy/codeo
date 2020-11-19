@@ -1,12 +1,15 @@
 class ApiTunnel {
     constructor(csrftoken, name, host) {
         this.csrftoken = csrftoken
-        this.name = ['0000', name][(name.length !== 0) + 0]
+        this.name = [name, 'blank'][(name.length === 0) + 0]
+        this.client = uuid.v4()
         this.websocket = new WebSocket(
             'ws://'
             + host
             + '/ws/note/update/'
             + this.name
+            + '/'
+            + this.client
         )
     }
 

@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 
 def generate_notename():
     name = "".join(choice(ascii_letters + digits) for _ in range(4))
-    while Note.objects.filter(name=name).exists() or name == '0000':
+    while Note.objects.filter(name=name).exists():
         name = "".join(choice(ascii_letters + digits) for _ in range(4))
     return name
 
@@ -83,7 +83,7 @@ def note_update(note, author, payload):
     if 'source' in payload.keys():
         with open(f'sources/{note.name}', 'w+') as f:
             f.write(f'{payload["source"]}')
-    if author == note.author:
+    if author.id == note.author_id:
         settings = ['read', 'edit']
         for key in payload.keys():
             if key in settings:
