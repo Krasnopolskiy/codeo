@@ -43,7 +43,7 @@ class NoteConsumer(AsyncWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         print(f'[WS] received from room {self.room_group_name}', flush=True)
-        print(f'Data: {text_data}', flush=True)
+        # print(f'Data: {text_data}', flush=True)
 
         payload = json.loads(text_data)
         request = Request(self.scope)

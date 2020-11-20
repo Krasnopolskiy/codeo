@@ -10,7 +10,10 @@ break_all = () => {
     location = '/'
 }
 
-update_setting_btns = () => {
+update_frontend = () => {
+    editor.setReadOnly(!note.ismine && !note.edit)
+    $('#settings-btn').prop('disabled', !note.ismine && !note.edit)
+    console.log(note)
     if (note.read) {
         $('#read-link-input')[0].value = note.read_link
         $('#allow-reading-btn').css('display', 'none')
@@ -35,7 +38,7 @@ process_update_message = (event) => {
     data = JSON.parse(JSON.parse(event['data']).message)
     note.read = data['note']['read']
     note.edit = data['note']['edit']
-    update_setting_btns()
+    update_frontend()
     if (data['client'] === api.client)
         return
     note.language = data['note']['language']
@@ -48,11 +51,16 @@ process_update_message = (event) => {
 create = (body = {}) => {
     api.create(body)
         .then(data => {
+            console.log(data)
             if (data['message'] === 'created') {
                 note.ismine = true
+                note.name = data['name']
                 note.read_link = url.origin + '/' + data['name']
                 note.edit_link = url.origin + '/' + data['edit_link']
                 window.history.replaceState('', '', note.read_link)
+                update_frontend()
+                api.name = note.name
+                api.connect()
             }
             else break_all()
         })
@@ -72,16 +80,14 @@ retrieve = () => {
 
                 note.language = data['note']['language']
                 editor.setValue(data['source'])
-                editor.setReadOnly(!note.ismine && !note.edit)
                 editor.clearSelection()
                 editor.session.setMode(note.language)
                 editor.focus()
                 editor.navigateFileEnd()
 
-                if (note.ismine || note.edit)
-                    $('#settings-btn').prop('disabled', false)
-
-                update_setting_btns()
+                update_frontend()
+                api.name = note.name
+                api.connect()
             }
             else break_all()
         })
