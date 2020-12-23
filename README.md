@@ -22,6 +22,7 @@
     ```
 5. Apply migrations:
     ```bash
+    cd codeshare
     python manage.py migrate
     ```
 
