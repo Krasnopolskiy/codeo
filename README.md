@@ -17,12 +17,11 @@
 4. Generate secret key (python shell):
     ```python
     from django.core.management.utils import get_random_secret_key  
-    with open('codeshare/secretkey.txt', 'w') as f:
+    with open('secretkey.txt', 'w') as f:
         f.write(get_random_secret_key())
     ```
 5. Apply migrations:
     ```bash
-    cd codeshare
     python manage.py migrate
     ```
 
