@@ -60,9 +60,26 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
           <a class="navbar-brand" href="/">codeshare</a>
           <ul class="navbar-nav mr-auto"></ul>
+          <a href="/user/logout" class="button1">Log Out</a>
+          <a href="/" class="button1">New Note</a>
+          <button id="settings-btn" class="btn btn-secondary">Settings</button>
+        </nav>
+      </div>
+    </div>
+    
+        <div class="card-deck">
+            {% for note in notes %}
+            <div class="card" style="min-width: 18rem; max-width: 20.5rem;margin-left:1.55rem;margin-top: 1rem;">
+                <h5 class="card-header">{{note.name}}</h5>
+                <div class="card-body">
+                  <!--<h5 class="card-title">{{note.name}}</h5>-->
+                  <p class="card-text">description</p>
+                  <a href="/{{note.name}}" class="btn btn-primary btn-sm">{{note.name}}</a>
                 </div>
-            </div>
+              </div>
+            {% endfor %}
         </div>
-    </body>
+  </body>
 
-    {% endblock content %}
+  {% endblock content %}
+</body>
