@@ -3,10 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link
-    rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-  />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
   <title>codeshare</title>
   <style>
     body,
@@ -50,18 +47,41 @@
       font-size: 18px;
       display: block;
     }
-    .row > div[class*="col-"] {
-      display: flex;
+
+    .list-group-item {
+      width: 100%;
+      margin: 1% !important;
     }
-    .card-deck {
-      display: flex;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      grid-gap: 0.5rem;
+
+    @media (min-width: 600px) {
+      .list-group-item {
+        width: 50%;
+        min-height: 10rem;
+        margin: 1% !important;
+      }
     }
+
+    @media (min-width: 768px) {
+      .list-group-item {
+        width: 33%;
+        margin: 1% !important;
+      }
+    }
+
+    @media (min-width: 992px) {
+      .list-group-item {
+        width: 23%;
+        margin: 1% !important;
+      }
+    }
+
+
+    
   </style>
 </head>
 
 <body>
+
   <body class="container container-fluid" style="max-width: 100vw">
     <div class="row">
       <div class="col">
@@ -74,28 +94,23 @@
         </nav>
       </div>
     </div>
-    <div class="card-deck">
-      {% for note in notes %}
-      <div
-        class="card"
-        style="
-          min-width: 21rem;
-          max-width: 21rem;
-          margin-left: 1rem;
-          margin-top: 1rem;
-        "
-      >
-        <h5 class="card-header">{{note.name}}</h5>
-        <div class="card-body">
-          <h5 class="card-title">{{note.name}}</h5>
-          <p class="card-text">description</p>
-          <a href="/{{note.name}}" class="btn btn-primary btn-sm"
-            >{{note.name}}</a
-          >
-        </div>
-      </div>
-      {% endfor %}
-    </div>
+    <div class="container">
+      <section>
+        <ul class="list-group list-group-horizontal align-items-stretch flex-wrap">
+          {% for note in notes %}
+          <li class="list-group-item border-2" style="background: rgb(30, 30, 30) !important;">
+            <div class="card" style="min-width: 10rem;">
+              <img class="card-img" src="https://static.wikia.nocookie.net/who-made-me-princess/images/7/75/Athanasia_11.jpg/revision/latest?cb=20201017025305">
+              <div class="card-body">
+                <h4 class="card-title">Title</h4>
+                <p class="card-text">俺はルフィ!</p>
+                <a href = "/{{note.name}}" class="btn btn-primary" type="button">{{note.name}}</a>
+                <button type="button" class="btn btn-danger">delete</button>
+              </div>
+            </div>
+            {% endfor %}
+        </ul>
+      </section>
     </div>
   </body>
 
