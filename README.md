@@ -14,11 +14,9 @@
     ```bash
     pip install -r requirements.txt
     ```
-4. Generate secret key (python shell):
-    ```python
-    from django.core.management.utils import get_random_secret_key  
-    with open('secretkey.txt', 'w') as f:
-        f.write(get_random_secret_key())
+4. Generate secret key:
+    ```bash
+    python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())' > secretkey.txt
     ```
 5. Apply migrations:
     ```bash

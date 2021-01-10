@@ -308,3 +308,4 @@ $RECYCLE.BIN/
 # Project staff
 secretkey.txt
 sources/*
+!sources/.keep
