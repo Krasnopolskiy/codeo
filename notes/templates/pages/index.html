@@ -1,0 +1,37 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 p-0" style="">
+            <div id="editor" style="height: calc(100vh - 103px)"></div>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <span class="navbar-brand"></span>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <select class="form-select form-select-sm bg-dark text-white">
+                    {% for language in languages %}
+                    <option value="{{ language }}" {% if language == 'plain_text' %} selected="selected" {% endif %}>
+                        {{ language }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+{% load static %}
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.1/uuid.min.js"></script>
+<script src="https://pagecdn.io/lib/ace/1.4.12/ace.js"></script>
+<script src="{% static 'javascripts/main/api_tunnel.js' %}"></script>
+<script src="{% static 'javascripts/main/default.js' %}"></script>
+<script src="{% static 'javascripts/main/main.js' %}"></script>
+
+{% endblock %}

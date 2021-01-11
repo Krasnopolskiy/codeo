@@ -1,0 +1,13 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-4 mt-5 border border-secondary rounded shadow p-4">
+            <h2>Log in / <a href="{% url 'signup' %}">Sign up</a></h2>
+            {% crispy form form.helper %}
+        </div>
+    </div>
+</div>
+{% endblock %}
