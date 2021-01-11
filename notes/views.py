@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.urls import reverse
 from django.views import View
 
-from . import forms, models
+from . import forms, models, misc
 
 
 class LoginView(View):
@@ -55,10 +55,16 @@ class IndexView(View):
     context = {'pagename': 'index'}
 
     def get(self, request, name=''):
+        if 'uid' not in request.session.keys():
+            request.session['uid'] = None
         with open('notes/templates/ace_modes.txt', 'r') as f:
             languages = f.read().split('\n')
         self.context['languages'] = languages
         return render(request, 'pages/index.html', self.context)
 
     def post(self, request):
+        if 'uid' not in request.session.keys():
+            author = models.Author(uid=misc.generate_author_uid())
+            request.session['uid'] = author.uid
+            author.save()
         return JsonResponse({'user': repr(request.user.__dict__)})
