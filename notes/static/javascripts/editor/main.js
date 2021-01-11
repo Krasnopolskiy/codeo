@@ -2,18 +2,11 @@ const url = new URL(window.location.href)
 
 let note = {
     name: url.pathname.split('/')[1],
-    ismine: false,
-    read: false,
-    read_link: '',
-    edit: false,
-    edit_link: '',
     language: 'ace/mode/plain_text'
 }
 
-const api = new ApiTunnel(Cookies.get('csrftoken'), note.name, url.host)
+const websocket = new WebSocket(note.name, url.host)
 const editor = ace.edit('editor')
-
-let error = false
 
 editor.setOptions({
     showPrintMargin: false,
@@ -28,4 +21,12 @@ editor.session.setOptions({
     useWorker: false
 })
 
-$('#settings-btn').prop('disabled', true)
+$.ajaxSetup({
+    headers: { 'X-CSRFToken': $.cookie('csrftoken') }
+})
+
+$('#editor').click(() => {
+    $.post('/', (data) => {
+        console.log(data)
+    })
+})

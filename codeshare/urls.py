@@ -5,9 +5,6 @@ from django.contrib.auth import logout
 
 
 urlpatterns = [
-    path('user/home/', views.userPage, name='user page'),
-    path('user/logout/', views.logout_view, name='logout'),
-    path('user/admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('', include('notes.urls'))
 ]
