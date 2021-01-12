@@ -1,11 +1,5 @@
 const url = new URL(window.location.href)
 
-let note = {
-    name: url.pathname.split('/')[1],
-    language: 'ace/mode/plain_text'
-}
-
-const websocket = new WebSocket(note.name, url.host)
 const editor = ace.edit('editor')
 
 editor.setOptions({
@@ -27,10 +21,19 @@ $.ajaxSetup({
     }
 })
 
-$('#editor').click(() => {
-    $.post('/', {
-            language: $('#language-select')[0].value
-        }, (data) => {
-            console.log(data)
-        })
-})
+
+if (url.pathname === '/') {
+    $('#editor').click(() => $.post('/', {
+        language: $('#language-select')[0].value
+    }, (data) => {
+        location.href = data['access_link']
+    }))
+} else {
+    const ws = new WebSocket('ws://' + url.host + url.pathname)
+    ws.onmessage = (event) => {
+        console.log(event)
+    }
+    ws.onopen = () => {
+        ws.send('hello!')
+    }
+}

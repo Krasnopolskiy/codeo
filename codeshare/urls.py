@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 from django.urls import path
-from notes import views
+from notes import views, consumers
 
 
 urlpatterns = [
@@ -11,4 +11,8 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('', views.IndexView.as_view(), name='index'),
     path('<str:access_link>', views.IndexView.as_view(), name='index')
+]
+
+websocket_urlpatterns = [
+    path('<str:name>', consumers.NoteConsumer.as_asgi())
 ]

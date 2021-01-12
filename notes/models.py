@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from . import misc
+
 from string import ascii_letters, digits
 from random import choices
 
@@ -11,9 +13,7 @@ class Author(models.Model):
 
     def save(self):
         if not self.pk:
-            self.uid = ''.join(choices(ascii_letters + digits, k=16))
-            while Author.objects.filter(uid=self.uid).exists():
-                self.uid = ''.join(choices(ascii_letters + digits, k=16))
+            self.uid = misc.generate_unique_field(Author, 'uid', 16)
         super(Author, self).save()
 
     def __repr__(self):
@@ -33,12 +33,8 @@ class Note(models.Model):
 
     def save(self):
         if not self.pk:
-            self.read_link = ''.join(choices(ascii_letters + digits, k=4))
-            while Note.objects.filter(read_link=self.read_link).exists():
-                self.read_link = ''.join(choices(ascii_letters + digits, k=4))
-            self.edit_link = ''.join(choices(ascii_letters + digits, k=6))
-            while Note.objects.filter(edit_link=self.edit_link).exists():
-                self.edit_link = ''.join(choices(ascii_letters + digits, k=6))
+            self.read_link = misc.generate_unique_field(Note, 'read_link', 4)
+            self.edit_link = misc.generate_unique_field(Note, 'edit_link', 6)
             open(f'sources/{self.read_link}', 'a').close()
         super(Note, self).save()
 

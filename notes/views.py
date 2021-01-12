@@ -1,6 +1,6 @@
-from os import access
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.urls import reverse
@@ -12,6 +12,20 @@ from . import forms, models
 
 with open('notes/languages.json', 'r') as f:
     LANGUAGES = json.loads(f.read())
+
+
+def retrieve_note(access_link: str, request_uid: str) -> models.Note:
+    author = models.Author.objects.get(uid=request_uid)
+    if len(access_link) == 4:
+        query = Q(read_link=access_link) & (Q(read=True) | Q(author=author))
+    elif len(access_link) == 6:
+        query = Q(edit_link=access_link) & (Q(edit=True) | Q(author=author))
+    else:
+        return None
+    note = models.Note.objects.filter(query)
+    if note.exists():
+        return note[0]
+    return None
 
 
 class LoginView(View):
@@ -64,17 +78,8 @@ class IndexView(View):
         if 'uid' not in request.session.keys():
             request.session['uid'] = None
         self.context['languages'] = LANGUAGES
-        if access_link != '':
-            try:
-                note = models.Note.objects.get(read_link=access_link)
-                if not note.read and note.author.uid != request.session['uid']:
-                    return redirect(reverse('index'))
-                return JsonResponse({
-                    'language': note.language
-                })
-            except:
-                return redirect(reverse('index'))
         return render(request, 'pages/index.html', self.context)
+        
 
     def post(self, request):
         if 'author' not in request.session.keys():
