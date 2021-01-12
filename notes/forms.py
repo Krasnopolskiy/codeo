@@ -2,8 +2,8 @@ from django_registration.forms import RegistrationForm
 from django.urls import reverse
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Field, ButtonHolder, HTML, Div
-from crispy_forms.bootstrap import PrependedText
+from crispy_forms.layout import Layout, Submit, ButtonHolder, HTML, Div
+
 from . import models
 
 
@@ -67,6 +67,6 @@ class SignupForm(forms.Form, RegistrationForm):
             ),
             ButtonHolder(Submit('submit', 'Sign up'), css_class='mt-3')
         )
-    
+
     class Meta(RegistrationForm.Meta):
         model = models.User

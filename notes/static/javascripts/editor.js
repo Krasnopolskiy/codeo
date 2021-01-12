@@ -26,7 +26,7 @@ if (url.pathname === '/') {
     $('#editor').click(() => $.post('/', {
         language: $('#language-select')[0].value
     }, (data) => {
-        location.href = data['access_link']
+        location.href = data['edit_link']
     }))
 } else {
     const ws = new WebSocket('ws://' + url.host + url.pathname)
