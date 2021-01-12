@@ -8,7 +8,7 @@ from django.views import View
 
 import json
 
-from . import forms, models, misc
+from . import forms, models
 
 with open('notes/languages.json', 'r') as f:
     LANGUAGES = json.loads(f.read())
@@ -78,11 +78,11 @@ class IndexView(View):
 
     def post(self, request):
         if 'author' not in request.session.keys():
-            author = models.Author(uid=misc.generate_author_uid())
-            request.session['author'] = str(author)
+            author = models.Author()
             author.save()
+            request.session['author'] = author.uid
         author = models.Author.objects.get(uid=request.session['author'])
-        note = models.Note(author=author, read_link=misc.generate_read_link(), edit_link=misc.generate_edit_link())
+        note = models.Note(author=author)
         if request.POST['language'] is not None:
             note.language = ['plain_text', request.POST['language']][request.POST['language'] in LANGUAGES]
         note.save()
