@@ -21,9 +21,7 @@ REST_FRAMEWORK = {
 
 INSTALLED_APPS = [
     'notes.apps.NotesConfig',
-    'api',
     'crispy_forms',
-    'rest_framework',
     'channels',
     'django.contrib.admin',
     'django.contrib.auth',

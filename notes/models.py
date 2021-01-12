@@ -6,20 +6,23 @@ class Author(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     uid = models.CharField(max_length=16)
 
+    def __str__(self):
+        return self.uid
+
     def __repr__(self):
-        return f'<Author {self.uid}>'
+        return f'<Author: {self.uid}>'
 
 
 class Note(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     name = models.CharField(max_length=64, null=True)
-    language = models.CharField(max_length=20, default='')
+    language = models.CharField(max_length=20, default='plain_text')
 
     read = models.BooleanField(default=False)
     read_link = models.CharField(max_length=4)
 
     edit = models.BooleanField(default=False)
-    edit_link = models.CharField(max_length=6, blank=True)
+    edit_link = models.CharField(max_length=6)
 
     def __repr__(self):
-        return f'<Note {self.read_link}>'
+        return f'<Note: {self.read_link}>'

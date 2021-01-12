@@ -1,11 +1,17 @@
-from django.contrib.auth import login, authenticate, get_user_model
+from os import access
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.urls import reverse
 from django.views import View
 
+import json
+
 from . import forms, models, misc
+
+with open('notes/languages.json', 'r') as f:
+    LANGUAGES = json.loads(f.read())
 
 
 class LoginView(View):
@@ -54,17 +60,30 @@ class SignupView(View):
 class IndexView(View):
     context = {'pagename': 'index'}
 
-    def get(self, request, name=''):
+    def get(self, request, access_link=''):
         if 'uid' not in request.session.keys():
             request.session['uid'] = None
-        with open('notes/templates/ace_modes.txt', 'r') as f:
-            languages = f.read().split('\n')
-        self.context['languages'] = languages
+        self.context['languages'] = LANGUAGES
+        if access_link != '':
+            try:
+                note = models.Note.objects.get(read_link=access_link)
+                if not note.read and note.author.uid != request.session['uid']:
+                    return redirect(reverse('index'))
+                return JsonResponse({
+                    'language': note.language
+                })
+            except:
+                return redirect(reverse('index'))
         return render(request, 'pages/index.html', self.context)
 
     def post(self, request):
-        if 'uid' not in request.session.keys():
+        if 'author' not in request.session.keys():
             author = models.Author(uid=misc.generate_author_uid())
-            request.session['uid'] = author.uid
+            request.session['author'] = str(author)
             author.save()
-        return JsonResponse({'user': repr(request.user.__dict__)})
+        author = models.Author.objects.get(uid=request.session['author'])
+        note = models.Note(author=author, read_link=misc.generate_read_link(), edit_link=misc.generate_edit_link())
+        if request.POST['language'] is not None:
+            note.language = ['plain_text', request.POST['language']][request.POST['language'] in LANGUAGES]
+        note.save()
+        return JsonResponse({'access_link': note.edit_link})

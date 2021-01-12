@@ -6,7 +6,7 @@ from . import models
 
 def generate_author_uid():
     uid = ''.join(choices(ascii_letters + digits, k=16))
-    while models.Note.objects.filter(uid=uid).exists():
+    while models.Author.objects.filter(uid=uid).exists():
         uid = ''.join(choices(ascii_letters + digits, k=16))
     return uid
 

@@ -22,11 +22,15 @@ editor.session.setOptions({
 })
 
 $.ajaxSetup({
-    headers: { 'X-CSRFToken': $.cookie('csrftoken') }
+    headers: {
+        'X-CSRFToken': $.cookie('csrftoken')
+    }
 })
 
 $('#editor').click(() => {
-    $.post('/', (data) => {
-        console.log(data)
-    })
+    $.post('/', {
+            language: $('#language-select')[0].value
+        }, (data) => {
+            console.log(data)
+        })
 })
