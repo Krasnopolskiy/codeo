@@ -1,3 +1,5 @@
+import json
+from typing import Dict
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -42,6 +44,20 @@ class Note(models.Model):
     def set_source(self, source) -> None:
         with open(f'sources/{self.read_link}', 'w') as f:
             f.write(source)
+    
+    def serialize(self, request_uid: str) -> str:
+        context = {
+            'ismine': False,
+            'language': self.language,
+            'source': self.get_source(),
+        }
+        if self.author.uid == request_uid:
+            context['ismine'] = True
+            context['read'] = self.read
+            context['read_link'] = self.read_link
+            context['edit'] = self.edit
+            context['edit_link'] = self.edit_link
+        return json.dumps(context)
 
     def __repr__(self) -> str:
         return f'<Note: {self.read_link}>'

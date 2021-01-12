@@ -16,7 +16,7 @@
             <li class="nav-item">
                 <select class="form-select form-select-sm bg-dark text-white" id="language-select">
                     {% for language in languages %}
-                    <option value="{{ language }}" {% if language == 'plain_text' %} selected="selected" {% endif %}>
+                    <option value="{{ language }}">
                         {{ language }}
                     </option>
                     {% endfor %}

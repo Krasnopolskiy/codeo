@@ -60,8 +60,10 @@ class IndexView(View):
     context = {'pagename': 'index'}
 
     def get(self, request, access_link=''):
-        if 'uid' not in request.session.keys():
-            request.session['uid'] = None
+        if 'author' not in request.session.keys():
+            author = models.Author()
+            author.save()
+            request.session['author'] = author.uid
         self.context['languages'] = LANGUAGES
         return render(request, 'pages/index.html', self.context)
 
