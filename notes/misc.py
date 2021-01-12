@@ -1,13 +1,15 @@
-from django.db.models import Model, Q, query
+from django.db.models import Model
 
 from string import ascii_letters, digits
-from random import choices
+from secrets import choice
 
-from . import models
+
+def generate_random_string(size: int) -> str:
+    return ''.join(choice(ascii_letters + digits) for _ in range(size))
 
 
 def generate_unique_field(model: Model, field_name: str, field_size: int) -> str:
-    field = ''.join(choices(ascii_letters + digits, k=field_size))
+    field = generate_random_string(field_size)
     while model.objects.filter(**{field_name: field}).exists():
-        field = ''.join(choices(ascii_letters + digits, k=field_size))
+        field = generate_random_string(field_size)
     return field
