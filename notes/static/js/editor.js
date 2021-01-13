@@ -79,6 +79,11 @@ if (url.pathname === '/') {
         note.edit = event.target.checked
         ws.send(JSON.stringify(note))
     })
+    $('.fa-clipboard').click((event) => {
+        $(event.target).parent().children('input').select()
+        document.execCommand('copy')
+        window.getSelection().removeAllRanges()
+    })
 }
 
 update_editor = () => {
@@ -89,3 +94,8 @@ update_editor = () => {
     editor.focus()
     editor.session.setMode('ace/mode/' + note['language'])
 }
+
+let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+let popoverList = popoverTriggerList.map((popoverTriggerEl) => {
+    return new bootstrap.Popover(popoverTriggerEl)
+})
