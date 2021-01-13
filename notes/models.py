@@ -21,7 +21,7 @@ class Author(models.Model):
 
 class Note(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    name = models.CharField(max_length=64, null=True)
+    name = models.CharField(max_length=64, default='Untitled')
     language = models.CharField(max_length=20)
 
     read = models.BooleanField(default=False)

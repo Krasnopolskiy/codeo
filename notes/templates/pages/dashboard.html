@@ -3,9 +3,41 @@
 
 {% block content %}
 <div class="container-fluid">
-    <div class="row justify-content-center">
-        {% for note in notes %} <!-- TODO -->
-        <div class="col">{{ note.read_link }}</div>
+    <div class="row justify-content-center row-cols-md-4 gy-3 mt-2">
+        {% for note in notes %}
+        <div class="col">
+            <div class="card bg-dark text-white border shadow-sm p-2">
+                <div class="card-header border-light">
+                    {{ note.name }}
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled font-monospace">
+                        <li class="fs-6 mb-3">
+                            Language: <span class="badge bg-secondary">{{ note.language }}</span>
+                        </li>
+                        <li class="fs-6 mb-3">
+                            Read link: <span class="badge bg-secondary">{{ host }}{{ note.read_link }}</span>
+                        </li>
+                        <li class="fs-6 mb-3">
+                            Edit link: <span class="badge bg-secondary">{{ host }}{{ note.edit_link }}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-footer container">
+                    <div class="row gy-3">
+                        <div class="col">
+                            <a href="{% url 'index' access_link=note.edit_link %}" class="btn btn-primary">Edit</a>
+                        </div>
+                        <div class="col">
+                            <a href="{% url 'dashboard' %}" class="btn btn-success">Download</a>
+                        </div>
+                        <div class="col">
+                            <a href="{% url 'dashboard' %}" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         {% endfor %}
     </div>
 </div>

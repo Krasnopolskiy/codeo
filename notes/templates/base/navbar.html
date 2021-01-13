@@ -1,3 +1,11 @@
+{% url 'login' as login_url %}
+{% url 'signup' as signup_url %}
+{% url 'signout' as signout_url %}
+{% url 'index' as index_url %}
+{% url 'dashboard' as dashboard_url %}
+
+
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'index' %}">codeshare</a>
@@ -8,17 +16,20 @@
             <ul class="navbar-nav">
                 {% if not user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">Log in</a>
+                    <a class="nav-link {% if request.path == login_url %}active disabled{% endif %}" href="{% url 'login' %}">Log in</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'signup' %}">Sign up</a>
+                    <a class="nav-link {% if request.path == signup_url %}active disabled{% endif %}" href="{% url 'signup' %}">Sign up</a>
                 </li>
                 {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+                    <a class="nav-link {% if request.path == index_url %}active disabled{% endif %}" href="{% url 'index' %}">New note</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}">Log out</a>
+                    <a class="nav-link {% if request.path == dashboard_url %}active disabled{% endif %}" href="{% url 'dashboard' %}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == logout_url %}active disabled{% endif %}" href="{% url 'logout' %}">Log out</a>
                 </li>
                 {% endif %}
             </ul>
