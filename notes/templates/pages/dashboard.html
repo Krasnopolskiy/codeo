@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="container-fluid">
+<div class="container-fluid ps-4 pe-4">
     <div class="row justify-content-center row-cols-md-4 gy-3 mt-2">
         {% for note in notes %}
         <div class="col">
@@ -24,15 +24,15 @@
                     </ul>
                 </div>
                 <div class="card-footer container">
-                    <div class="row gy-3">
-                        <div class="col">
-                            <a href="{% url 'index' access_link=note.edit_link %}" class="btn btn-primary">Edit</a>
+                    <div class="row gy-3 gx-3">
+                        <div class="col d-grid gap-2">
+                            <a href="{% url 'index' access_link=note.edit_link %}" class="btn btn-sm btn-primary">Edit</a>
                         </div>
-                        <div class="col">
-                            <a href="{% url 'dashboard' %}" class="btn btn-success">Download</a>
+                        <div class="col d-grid gap-2">
+                            <a href="{% url 'dashboard' %}" class="btn btn-sm btn-success">Download</a>
                         </div>
-                        <div class="col">
-                            <a href="{% url 'dashboard' %}" class="btn btn-danger">Delete</a>
+                        <div class="col d-grid gap-2">
+                            <a href="{% url 'dashboard' %}" class="btn btn-sm btn-danger">Delete</a>
                         </div>
                     </div>
                 </div>
