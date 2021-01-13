@@ -1,5 +1,4 @@
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpRequest
@@ -25,6 +24,13 @@ class LoginView(View):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
+                author = models.Author.objects.filter(user=user)
+                if not author.exists():
+                    author = models.Author(user=user)
+                    author.save()
+                else:
+                    author = author[0]
+                request.session['author'] = author.uid
                 return redirect(reverse('index'))
         return render(request, 'pages/login.html', self.context)
 
@@ -45,8 +51,7 @@ class SignupView(View):
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
             if user is not None:
-                login(request, user)
-                return redirect(reverse('index'))
+                return redirect(reverse('login'))
         if not form.is_valid():
             self.context['form_errors'] = form.errors
         return render(request, 'pages/signup.html', self.context)
@@ -77,3 +82,13 @@ class IndexView(View):
             'read_link': note.read_link,
             'edit_link': note.edit_link
         })
+
+
+class DashboardView(View):
+    context = {'pagename': 'dashboard'}
+
+    def get(self, request: HttpRequest) -> HttpResponse:
+        author = models.Author.objects.get(user=request.user)
+        notes = models.Note.objects.filter(author=author)
+        self.context['notes'] = notes
+        return render(request, 'pages/dashboard.html', self.context)
