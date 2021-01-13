@@ -34,9 +34,9 @@ let ISMINE = false,
 
 
 if (url.pathname === '/') {
-    $('#language-select')[0].value = 'plain_text'
+    $('#language-select').val('plain_text')
     $('#editor').click(() => $.post('/', {
-        language: $('#language-select')[0].value
+        language: $('#language-select').val()
     }, (data) => {
         location.href = data['edit_link']
     }))
@@ -51,9 +51,12 @@ if (url.pathname === '/') {
         note['read'] = data['read']
         note['edit'] = data['edit']
         if (ISMINE) {
-            READ_LINK = data['read_link']
-            EDIT_LINK = data['edit_link']
+            READ_LINK = url.host + '/' + data['read_link']
+            $('#read-settings .input-group input').val(READ_LINK)
+            EDIT_LINK = url.host + '/' + data['edit_link']
+            $('#edit-settings .input-group input').val(EDIT_LINK)
         }
+        editor.setReadOnly(!ISMINE && !note['edit'] || url.pathname.length != 7)
         if (client !== data['client'])
             update_editor()
     }
@@ -64,15 +67,22 @@ if (url.pathname === '/') {
         })
     }
     $('#language-select').change(() => {
-        note['language'] = $('#language-select')[0].value
+        note['language'] = $('#language-select').val()
         editor.session.setMode('ace/mode/' + note['language'])
+        ws.send(JSON.stringify(note))
+    })
+    $('#read-settings .form-check input').click((event) => {
+        note.read = event.target.checked
+        ws.send(JSON.stringify(note))
+    })
+    $('#edit-settings .form-check input').click((event) => {
+        note.edit = event.target.checked
         ws.send(JSON.stringify(note))
     })
 }
 
 update_editor = () => {
-    $('#language-select')[0].value = note['language']
-    editor.setReadOnly(ISMINE && !note['edit'] || url.pathname.length != 7)
+    $('#language-select').val(note['language'])
     editor.setValue(note['source'])
     editor.clearSelection()
     editor.navigateFileEnd()
