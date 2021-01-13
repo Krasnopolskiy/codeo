@@ -11,7 +11,7 @@ class LoginForm(forms.Form):
     username = forms.CharField()
     password = forms.CharField()
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'POST'
@@ -38,7 +38,7 @@ class SignupForm(forms.Form, RegistrationForm):
     password1 = forms.CharField()
     password2 = forms.CharField()
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'POST'

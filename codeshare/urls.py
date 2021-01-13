@@ -14,5 +14,5 @@ urlpatterns = [
 ]
 
 websocket_urlpatterns = [
-    path('<str:name>', consumers.NoteConsumer.as_asgi())
+    path('<str:access_link>/<str:client>', consumers.NoteConsumer.as_asgi())
 ]

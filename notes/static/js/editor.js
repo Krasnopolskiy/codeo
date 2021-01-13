@@ -1,5 +1,6 @@
 const url = new URL(window.location.href)
 const editor = ace.edit('editor')
+const client = uuid.v4()
 
 editor.setOptions({
     showPrintMargin: false,
@@ -22,13 +23,15 @@ $.ajaxSetup({
 
 let note = {
     'language': 'plain_text',
-    'ismine': false,
     'read': false,
-    'read_link': undefined,
     'edit': false,
-    'edit_link': undefined,
     'source': ''
 }
+
+let ISMINE = false,
+    READ_LINK = undefined,
+    EDIT_LINK = undefined
+
 
 if (url.pathname === '/') {
     $('#language-select')[0].value = 'plain_text'
@@ -38,19 +41,21 @@ if (url.pathname === '/') {
         location.href = data['edit_link']
     }))
 } else {
-    let ws = new WebSocket('ws://' + url.host + url.pathname)
+    let ws = new WebSocket('ws://' + url.host + url.pathname + '/' + client)
     ws.onmessage = (event) => {
         data = JSON.parse(event['data'])
-        note['ismine'] = data['ismine']
+        console.log(data)
+        ISMINE = data['ismine']
         note['language'] = data['language']
         note['source'] = data['source']
-        if (note['ismine']) {
-            note['read'] = data['read']
-            note['read_link'] = data['read_link']
-            note['edit'] = data['edit']
-            note['edit_link'] = data['edit_link']
+        note['read'] = data['read']
+        note['edit'] = data['edit']
+        if (ISMINE) {
+            READ_LINK = data['read_link']
+            EDIT_LINK = data['edit_link']
         }
-        update_editor()
+        if (client !== data['client'])
+            update_editor()
     }
     ws.onopen = () => {
         $('#editor').keyup(() => {
@@ -58,11 +63,16 @@ if (url.pathname === '/') {
             ws.send(JSON.stringify(note))
         })
     }
+    $('#language-select').change(() => {
+        note['language'] = $('#language-select')[0].value
+        editor.session.setMode('ace/mode/' + note['language'])
+        ws.send(JSON.stringify(note))
+    })
 }
 
 update_editor = () => {
     $('#language-select')[0].value = note['language']
-    editor.setReadOnly(!note['ismine'])
+    editor.setReadOnly(ISMINE && !note['edit'] || url.pathname.length != 7)
     editor.setValue(note['source'])
     editor.clearSelection()
     editor.navigateFileEnd()

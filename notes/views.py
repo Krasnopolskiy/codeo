@@ -1,26 +1,22 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
+from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpRequest
 from django.urls import reverse
 from django.views import View
 
-import json
-
-from . import forms, models
-
-with open('languages.json', 'r') as f:
-    LANGUAGES = json.loads(f.read())
+from . import forms, models, misc
 
 
 class LoginView(View):
     context = {'pagename': 'login'}
 
-    def get(self, request):
+    def get(self, request: HttpRequest) -> HttpResponse:
         self.context['form'] = forms.LoginForm()
         return render(request, 'pages/login.html', self.context)
 
-    def post(self, request):
+    def post(self, request: HttpRequest) -> HttpResponse:
         form = forms.LoginForm(request.POST)
         self.context['form'] = form
         if form.is_valid():
@@ -36,11 +32,11 @@ class LoginView(View):
 class SignupView(View):
     context = {'pagename': 'signup'}
 
-    def get(self, request):
+    def get(self, request: HttpRequest) -> HttpResponse:
         self.context['form'] = forms.SignupForm()
         return render(request, 'pages/signup.html', self.context)
 
-    def post(self, request):
+    def post(self, request: HttpRequest) -> HttpResponse:
         form = forms.SignupForm(request.POST)
         self.context['form'] = form
         if form.is_valid():
@@ -59,15 +55,15 @@ class SignupView(View):
 class IndexView(View):
     context = {'pagename': 'index'}
 
-    def get(self, request, access_link=''):
+    def get(self, request: HttpRequest, access_link: str='') -> HttpResponse:
         if 'author' not in request.session.keys():
             author = models.Author()
             author.save()
             request.session['author'] = author.uid
-        self.context['languages'] = LANGUAGES
+        self.context['languages'] = misc.LANGUAGES
         return render(request, 'pages/index.html', self.context)
 
-    def post(self, request):
+    def post(self, request: HttpRequest) -> JsonResponse:
         if 'author' not in request.session.keys():
             author = models.Author()
             author.save()
@@ -75,7 +71,7 @@ class IndexView(View):
         author = models.Author.objects.get(uid=request.session['author'])
         note = models.Note(author=author)
         if request.POST['language'] is not None:
-            note.language = ['plain_text', request.POST['language']][request.POST['language'] in LANGUAGES]
+            note.language = ['plain_text', request.POST['language']][request.POST['language'] in misc.LANGUAGES]
         note.save()
         return JsonResponse({
             'read_link': note.read_link,

@@ -2,4 +2,4 @@ channels==3.0.1
 channels_redis==3.2.0
 Django==3.1.4
 django-crispy-forms==1.9.2
-djangorestframework==3.12.1
+django-registration==3.1.1

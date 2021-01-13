@@ -2,8 +2,13 @@ from django.db.models import Model, Q
 
 from string import ascii_letters, digits
 from secrets import choice
+import json
 
 from . import models
+
+
+with open('languages.json', 'r') as f:
+    LANGUAGES = json.loads(f.read())
 
 
 def generate_random_string(size: int) -> str:
@@ -29,3 +34,21 @@ def retrieve_note(access_link: str, request_uid: str) -> Model:
     if note.exists():
         return note[0]
     return None
+
+
+def update_note(access_link: str, request_uid: str, payload) -> Model:
+    if len(access_link) != 6:
+        return
+    note = retrieve_note(access_link, request_uid)
+    if note is None:
+        return None
+    allowed_fields = {'language'}
+    if request_uid == note.author.uid:
+        allowed_fields = allowed_fields.union({'read', 'edit', 'name'})
+    for field in set(payload.keys()) & allowed_fields:
+        setattr(note, field, payload[field])
+    note.language = ['plain_text', note.language][note.language in LANGUAGES]
+    if 'source' in payload.keys():
+        note.set_source(payload['source'])
+    note.save()
+    return note

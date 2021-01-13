@@ -41,23 +41,24 @@ class Note(models.Model):
         with open(f'sources/{self.read_link}', 'r') as f:
             return f.read()
 
-    def set_source(self, source) -> None:
+    def set_source(self, source: str) -> None:
         with open(f'sources/{self.read_link}', 'w') as f:
             f.write(source)
     
-    def serialize(self, request_uid: str) -> str:
+    def serialize(self, request_uid: str) -> dict:
         context = {
             'ismine': False,
+            'name': self.name,
             'language': self.language,
             'source': self.get_source(),
+            'read': self.read,
+            'edit': self.edit
         }
         if self.author.uid == request_uid:
             context['ismine'] = True
-            context['read'] = self.read
             context['read_link'] = self.read_link
-            context['edit'] = self.edit
             context['edit_link'] = self.edit_link
-        return json.dumps(context)
+        return context
 
     def __repr__(self) -> str:
         return f'<Note: {self.read_link}>'
