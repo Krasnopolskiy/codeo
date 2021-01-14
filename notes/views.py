@@ -89,3 +89,10 @@ class DashboardView(View):
         self.context['notes'] = notes
         self.context['host'] = request.build_absolute_uri().split('/')[2] + '/'
         return render(request, 'pages/dashboard.html', self.context)
+
+
+class DeleteNoteView(View):
+    def get(self, request: HttpRequest, access_link: str = '') -> HttpResponse:
+        note = misc.retrieve_note(access_link, request.session['author'])
+        note.delete() if note.author.uid == request.session['author'] else None
+        return redirect(reverse('dashboard'))

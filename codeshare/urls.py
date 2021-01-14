@@ -14,6 +14,7 @@ urlpatterns = [
     path('dashboard/', login_required(views.DashboardView.as_view()), name='dashboard'),
     path('', views.IndexView.as_view(), name='index'),
     path('<str:access_link>', views.IndexView.as_view(), name='index'),
+    path('delete/<str:access_link>/', views.DeleteNoteView.as_view(), name='delete_note'),
 ]
 
 websocket_urlpatterns = [

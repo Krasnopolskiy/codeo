@@ -32,7 +32,7 @@
                             <a href="{% url 'dashboard' %}" class="btn btn-sm btn-success">Download</a>
                         </div>
                         <div class="col d-grid gap-2">
-                            <a href="{% url 'dashboard' %}" class="btn btn-sm btn-danger">Delete</a>
+                            <a href="{% url 'delete_note' access_link=note.edit_link %}" class="btn btn-sm btn-danger">Delete</a>
                         </div>
                     </div>
                 </div>
