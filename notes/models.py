@@ -26,7 +26,7 @@ class Note(models.Model):
     name = models.CharField(max_length=64, default='Untitled')
     language = models.CharField(max_length=20)
 
-    read = models.BooleanField(default=False)
+    read = models.BooleanField(default=True)
     read_link = models.CharField(max_length=4, null=True)
 
     edit = models.BooleanField(default=False)

@@ -69,8 +69,8 @@ if (url.pathname === '/') {
 request_update = () => {
     note['language'] = $('#language-select').val()
     note['name'] = $('#name-settings .input-group input').val()
-    note['read'] = $('#read-settings .form-check input').is(':checked')
-    note['edit'] = $('#edit-settings .form-check input').is(':checked')
+    note['read'] = $('#read-settings .form-check input').prop('checked')
+    note['edit'] = $('#edit-settings .form-check input').prop('checked')
     note['source'] = btoa(editor.getValue())
     editor.session.setMode('ace/mode/' + note['language'])
     ws.send(JSON.stringify(note))
@@ -78,6 +78,8 @@ request_update = () => {
 
 update_editor = () => {
     $('#language-select').val(note['language'])
+    $('#read-settings .form-check input').prop('checked', note['read'])
+    $('#edit-settings .form-check input').prop('checked', note['edit'])
     editor.setValue(atob(note['source']))
     editor.clearSelection()
     editor.navigateFileEnd()
