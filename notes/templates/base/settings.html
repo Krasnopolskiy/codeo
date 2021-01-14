@@ -1,0 +1,50 @@
+<div class="modal fade" id="setting-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white">
+            <div class="modal-header border-dark">
+                <h5 class="modal-title">Settings</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-4 ps-4 pe-4">
+                    <label class="form-label">Note name</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Untitled">
+                        <button id="save-notename-btn" class="btn btn-secondary input-group-text" data-bs-container="body"
+                            data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Saved">Save</button>
+                    </div>
+                </div>
+                <div class="mb-4 ps-4 pe-4">
+                    <label class="form-label">Note password</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" placeholder="Password">
+                        <button id="save-password-btn" class="btn btn-secondary input-group-text" data-bs-container="body"
+                            data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Saved">Save</button>
+                    </div>
+                </div>
+                <div class="mb-4 ps-4 pe-4" id="read-settings">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input bg-secondary" type="checkbox">
+                        <label class="form-check-label">Allow reading</label>
+                    </div>
+                    <div class="input-group mt-3">
+                        <input type="text" class="form-control" readonly placeholder="Read link">
+                        <button class="btn btn-secondary input-group-text copy-btn" data-bs-container="body"
+                            data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Copied">Copy</button>
+                    </div>
+                </div>
+                <div class="mb-5 ps-4 pe-4" id="edit-settings">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input bg-secondary" type="checkbox">
+                        <label class="form-check-label">Allow editing</label>
+                    </div>
+                    <div class="input-group mt-3">
+                        <input type="text" class="form-control" readonly placeholder="Edit link">
+                        <button class="btn btn-secondary input-group-text copy-btn" data-bs-container="body"
+                            data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Copied">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

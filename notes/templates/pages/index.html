@@ -21,44 +21,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="setting-modal">
-    <div class="modal-dialog">
-        <div class="modal-content bg-dark text-white">
-            <div class="modal-header">
-                <h5 class="modal-title">Settings</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-5" id="read-settings">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input bg-secondary" type="checkbox">
-                        <label class="form-check-label">Allow reading</label>
-                    </div>
-                    <div class="input-group input-group-sm mt-3">
-                        <button class="btn btn-secondary input-group-text far fa-clipboard" data-bs-container="body"
-                            data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Copied"></button>
-                        <input type="text" class="form-control" readonly placeholder="Read link">
-                    </div>
-                </div>
-                <div class="mb-5" id="edit-settings">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input bg-secondary" type="checkbox">
-                        <label class="form-check-label">Allow editing</label>
-                    </div>
-                    <div class="input-group input-group-sm mt-3">
-                        <button class="btn btn-secondary input-group-text far fa-clipboard" data-bs-container="body"
-                            data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Copied"></button>
-                        <input type="text" class="form-control" readonly placeholder="Edit link">
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
+{% include 'base/settings.html' %}
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.1/uuid.min.js"></script>
@@ -68,7 +31,7 @@
     let init_data = {{note | safe}}
     let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
     let popoverList = popoverTriggerList.map((popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl))
-    $('.fa-clipboard').click((event) => {
+    $('.copy-btn').click((event) => {
         $(event.target).parent().children('input').select()
         document.execCommand('copy')
         window.getSelection().removeAllRanges()
