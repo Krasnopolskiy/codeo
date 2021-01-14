@@ -60,7 +60,7 @@ class SignupView(View):
 
 
 class IndexView(View):
-    context = {'pagename': 'editor'}
+    context = {'pagename': 'Untitled'}
 
     def get(self, request: HttpRequest, access_link: str = '') -> HttpResponse:
         if 'author' not in request.session.keys():
@@ -69,7 +69,9 @@ class IndexView(View):
             request.session['author'] = author.uid
         self.context['languages'] = misc.LANGUAGES
         note = misc.retrieve_note(access_link, request.session['author'])
-        self.context['note'] = json.dumps(note.serialize(request.session['author'])) if note is not None else 'undefined'
+        if note is not None:
+            self.context['note'] = json.dumps(note.serialize(request.session['author']))
+            self.context['pagename'] = note.name
         return render(request, 'pages/index.html', self.context)
 
     def post(self, request: HttpRequest) -> JsonResponse:

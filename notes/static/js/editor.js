@@ -11,6 +11,7 @@ if (!error)
     ismine = init_data['ismine']
     read_link = url.host + '/' + init_data['read_link']
     edit_link = url.host + '/' + init_data['edit_link']
+    $('#name-settings .input-group input').val(note['name'])
     $('#read-settings .input-group input').val(read_link)
     $('#edit-settings .input-group input').val(edit_link)
 }
@@ -60,22 +61,24 @@ if (url.pathname === '/') {
 
     $('#editor').keyup(() => request_update())
     $('#language-select').change(() => request_update())
+    $('#name-settings .input-group button').click(() => request_update())
     $('#read-settings .form-check input').click(() => request_update())
     $('#edit-settings .form-check input').click(() => request_update())
 }
 
 request_update = () => {
     note['language'] = $('#language-select').val()
+    note['name'] = $('#name-settings .input-group input').val()
     note['read'] = $('#read-settings .form-check input').is(':checked')
     note['edit'] = $('#edit-settings .form-check input').is(':checked')
-    note['source'] = editor.getValue()
+    note['source'] = btoa(editor.getValue())
     editor.session.setMode('ace/mode/' + note['language'])
     ws.send(JSON.stringify(note))
 }
 
 update_editor = () => {
     $('#language-select').val(note['language'])
-    editor.setValue(note['source'])
+    editor.setValue(atob(note['source']))
     editor.clearSelection()
     editor.navigateFileEnd()
     editor.focus()

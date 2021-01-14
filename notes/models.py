@@ -1,8 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from typing import Dict
 import os
+from base64 import b64decode
+from typing import Dict
 
 from . import misc
 
@@ -48,8 +49,12 @@ class Note(models.Model):
             return f.read()
 
     def set_source(self, source: str) -> None:
-        with open(f'sources/{self.read_link}', 'w') as f:
-            f.write(source)
+        try:
+            b64decode(source)
+            with open(f'sources/{self.read_link}', 'w') as f:
+                f.write(source)
+        except:
+            pass
 
     def serialize(self, request_uid: str) -> Dict:
         context = {
