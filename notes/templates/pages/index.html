@@ -64,6 +64,17 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.1/uuid.min.js"></script>
 <script src="https://pagecdn.io/lib/ace/1.4.12/ace.js"></script>
 
+<script>
+    let init_data = '{{note | safe}}'
+    let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    let popoverList = popoverTriggerList.map((popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl))
+    $('.fa-clipboard').click((event) => {
+        $(event.target).parent().children('input').select()
+        document.execCommand('copy')
+        window.getSelection().removeAllRanges()
+    })
+</script>
+
 {% load static %}
 <script src="{% static 'js/editor.js' %}"></script>
 

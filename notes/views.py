@@ -1,9 +1,11 @@
 from django.contrib.auth import login, authenticate
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
-from django.http import JsonResponse, HttpRequest
+from django.http import HttpRequest
 from django.urls import reverse
 from django.views import View
+
+import json
 
 from . import forms, models, misc
 
@@ -58,7 +60,7 @@ class SignupView(View):
 
 
 class IndexView(View):
-    context = {'pagename': 'index'}
+    context = {'pagename': 'editor'}
 
     def get(self, request: HttpRequest, access_link: str = '') -> HttpResponse:
         if 'author' not in request.session.keys():
@@ -66,22 +68,16 @@ class IndexView(View):
             author.save()
             request.session['author'] = author.uid
         self.context['languages'] = misc.LANGUAGES
+        note = misc.retrieve_note(access_link, request.session['author'])
+        self.context['note'] = json.dumps(note.serialize(request.session['author'])) if note is not None else 'undefined'
         return render(request, 'pages/index.html', self.context)
 
     def post(self, request: HttpRequest) -> JsonResponse:
-        if 'author' not in request.session.keys():
-            author = models.Author()
-            author.save()
-            request.session['author'] = author.uid
         author = models.Author.objects.get(uid=request.session['author'])
         note = models.Note(author=author)
-        if request.POST['language'] is not None:
-            note.language = ['plain_text', request.POST['language']][request.POST['language'] in misc.LANGUAGES]
+        note.language = ['plain_text', request.POST['language']][request.POST['language'] in misc.LANGUAGES]
         note.save()
-        return JsonResponse({
-            'read_link': note.read_link,
-            'edit_link': note.edit_link
-        })
+        return JsonResponse({'redirect': note.read_link})
 
 
 class DashboardView(View):

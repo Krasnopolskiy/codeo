@@ -53,12 +53,14 @@ class Note(models.Model):
 
     def serialize(self, request_uid: str) -> Dict:
         context = {
-            'ismine': False,
-            'name': self.name,
-            'language': self.language,
-            'source': self.get_source(),
-            'read': self.read,
-            'edit': self.edit
+            'editable': {
+                'name': self.name,
+                'language': self.language,
+                'read': self.read,
+                'edit': self.edit,
+                'source': self.get_source()
+            },
+            'ismine': False
         }
         if self.author.uid == request_uid:
             context['ismine'] = True

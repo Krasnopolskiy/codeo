@@ -2,9 +2,24 @@ const url = new URL(window.location.href)
 const editor = ace.edit('editor')
 const client = uuid.v4()
 
+
+let error = init_data === 'undefined'
+let note, ws, ismine, read_link, edit_link
+if (!error)
+{
+    init_data = JSON.parse(init_data)
+    note = init_data['editable']
+    ismine = init_data['ismine']
+    read_link = url.host + '/' + init_data['read_link']
+    edit_link = url.host + '/' + init_data['edit_link']
+    $('#read-settings .input-group input').val(read_link)
+    $('#edit-settings .input-group input').val(edit_link)
+}
+
+
 editor.setOptions({
     showPrintMargin: false,
-    readOnly: true,
+    readOnly: error || !ismine && (!note['edit'] || url.pathname.length != 7),
     fontSize: 18,
     theme: 'ace/theme/monokai'
 })
@@ -15,22 +30,12 @@ editor.session.setOptions({
     useWorker: false
 })
 
+
 $.ajaxSetup({
     headers: {
         'X-CSRFToken': $.cookie('csrftoken')
     }
 })
-
-let note = {
-    'language': 'plain_text',
-    'read': false,
-    'edit': false,
-    'source': ''
-}
-
-let ISMINE = false,
-    READ_LINK = undefined,
-    EDIT_LINK = undefined
 
 
 if (url.pathname === '/') {
@@ -38,52 +43,35 @@ if (url.pathname === '/') {
     $('#editor').click(() => $.post('/', {
         language: $('#language-select').val()
     }, (data) => {
-        location.href = data['edit_link']
+        document.location += data['redirect']
     }))
 } else {
-    let ws = new WebSocket('ws://' + url.host + url.pathname + '/' + client)
+    if (error)
+        document.location = '/'
+
+    ws = new WebSocket('ws://' + url.host + url.pathname + '/' + client)
+
     ws.onmessage = (event) => {
         data = JSON.parse(event['data'])
         console.log(data)
-        ISMINE = data['ismine']
-        note['language'] = data['language']
-        note['source'] = data['source']
-        note['read'] = data['read']
-        note['edit'] = data['edit']
-        if (ISMINE) {
-            READ_LINK = url.host + '/' + data['read_link']
-            $('#read-settings .input-group input').val(READ_LINK)
-            EDIT_LINK = url.host + '/' + data['edit_link']
-            $('#edit-settings .input-group input').val(EDIT_LINK)
-        }
-        editor.setReadOnly(!ISMINE && !note['edit'] || url.pathname.length != 7)
+        note = data['editable']
         if (client !== data['client'])
             update_editor()
     }
-    ws.onopen = () => {
-        $('#editor').keyup(() => {
-            note['source'] = editor.getValue()
-            ws.send(JSON.stringify(note))
-        })
-    }
-    $('#language-select').change(() => {
-        note['language'] = $('#language-select').val()
-        editor.session.setMode('ace/mode/' + note['language'])
-        ws.send(JSON.stringify(note))
-    })
-    $('#read-settings .form-check input').click((event) => {
-        note.read = event.target.checked
-        ws.send(JSON.stringify(note))
-    })
-    $('#edit-settings .form-check input').click((event) => {
-        note.edit = event.target.checked
-        ws.send(JSON.stringify(note))
-    })
-    $('.fa-clipboard').click((event) => {
-        $(event.target).parent().children('input').select()
-        document.execCommand('copy')
-        window.getSelection().removeAllRanges()
-    })
+
+    $('#editor').keyup(() => request_update())
+    $('#language-select').change(() => request_update())
+    $('#read-settings .form-check input').click(() => request_update())
+    $('#edit-settings .form-check input').click(() => request_update())
+}
+
+request_update = () => {
+    note['language'] = $('#language-select').val()
+    note['read'] = $('#read-settings .form-check input').is(':checked')
+    note['edit'] = $('#edit-settings .form-check input').is(':checked')
+    note['source'] = editor.getValue()
+    editor.session.setMode('ace/mode/' + note['language'])
+    ws.send(JSON.stringify(note))
 }
 
 update_editor = () => {
@@ -94,8 +82,3 @@ update_editor = () => {
     editor.focus()
     editor.session.setMode('ace/mode/' + note['language'])
 }
-
-let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-let popoverList = popoverTriggerList.map((popoverTriggerEl) => {
-    return new bootstrap.Popover(popoverTriggerEl)
-})
