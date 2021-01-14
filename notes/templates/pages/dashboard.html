@@ -3,6 +3,7 @@
 
 {% block content %}
 <div class="container-fluid ps-4 pe-4">
+    {% if notes %}
     <div class="row justify-content-center row-cols-md-4 gy-3 mt-2">
         {% for note in notes %}
         <div class="col">
@@ -26,13 +27,15 @@
                 <div class="card-footer container border-light">
                     <div class="row gy-3 gx-3 pt-2">
                         <div class="col d-grid gap-2">
-                            <a href="{% url 'index' access_link=note.edit_link %}" class="btn btn-sm btn-primary">Edit</a>
+                            <a href="{% url 'index' access_link=note.edit_link %}"
+                                class="btn btn-sm btn-primary">Edit</a>
                         </div>
                         <div class="col d-grid gap-2">
                             <a href="{% url 'dashboard' %}" class="btn btn-sm btn-success">Download</a>
                         </div>
                         <div class="col d-grid gap-2">
-                            <a href="{% url 'delete_note' access_link=note.edit_link %}" class="btn btn-sm btn-danger">Delete</a>
+                            <a href="{% url 'delete_note' access_link=note.edit_link %}"
+                                class="btn btn-sm btn-danger">Delete</a>
                         </div>
                     </div>
                 </div>
@@ -40,5 +43,15 @@
         </div>
         {% endfor %}
     </div>
+    {% else %}
+    <div class="row mt-5 justify-content-center">
+        <div class="col-4">
+            <div class="card bg-dark text-white border shadow-sm p-3 d-grid gap-2">
+                <h1 class="display-6 text-center">You have not created any note yet</h1>
+                <a class="btn btn-outline-primary fs-5" href="{% url 'index' %}">Create your first note</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
