@@ -11,14 +11,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny'
-    ]
-}
-
 INSTALLED_APPS = [
     'notes.apps.NotesConfig',
     'crispy_forms',
@@ -31,9 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
-
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -81,7 +71,6 @@ DATABASES = {
     }
 }
 
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -97,7 +86,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -109,8 +97,13 @@ USE_L10N = True
 USE_TZ = True
 
 PROJECT_DIR = path.dirname(path.abspath(__file__))
+
 STATIC_ROOT = path.join(PROJECT_DIR, 'static')
+
 STATIC_URL = '/static/'
+
 LOGIN_URL = '/login/'
+
 LOGIN_REDIRECT_URL = '/'
+
 LOGOUT_REDIRECT_URL = '/login/'
