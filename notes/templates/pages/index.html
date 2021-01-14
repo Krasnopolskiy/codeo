@@ -65,7 +65,7 @@
 <script src="https://pagecdn.io/lib/ace/1.4.12/ace.js"></script>
 
 <script>
-    let init_data = '{{note | safe}}'
+    let init_data = {{note | safe}}
     let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
     let popoverList = popoverTriggerList.map((popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl))
     $('.fa-clipboard').click((event) => {

@@ -3,11 +3,10 @@ const editor = ace.edit('editor')
 const client = uuid.v4()
 
 
-let error = init_data === 'undefined'
+let error = init_data === undefined
 let note, ws, ismine, read_link, edit_link
 if (!error)
 {
-    init_data = JSON.parse(init_data)
     note = init_data['editable']
     ismine = init_data['ismine']
     read_link = url.host + '/' + init_data['read_link']
