@@ -1,7 +1,8 @@
-import json
-from typing import Dict
 from django.db import models
 from django.contrib.auth.models import User
+
+from typing import Dict
+import os
 
 from . import misc
 
@@ -37,6 +38,11 @@ class Note(models.Model):
             open(f'sources/{self.read_link}', 'a').close()
         super(Note, self).save()
 
+    def delete(self) -> None:
+        if os.path.exists(f'sources/{self.read_link}'):
+            os.remove(f'sources/{self.read_link}')
+        super(Note, self).delete()
+
     def get_source(self) -> str:
         with open(f'sources/{self.read_link}', 'r') as f:
             return f.read()
@@ -44,8 +50,8 @@ class Note(models.Model):
     def set_source(self, source: str) -> None:
         with open(f'sources/{self.read_link}', 'w') as f:
             f.write(source)
-    
-    def serialize(self, request_uid: str) -> dict:
+
+    def serialize(self, request_uid: str) -> Dict:
         context = {
             'ismine': False,
             'name': self.name,

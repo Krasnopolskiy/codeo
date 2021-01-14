@@ -60,7 +60,7 @@ class SignupView(View):
 class IndexView(View):
     context = {'pagename': 'index'}
 
-    def get(self, request: HttpRequest, access_link: str='') -> HttpResponse:
+    def get(self, request: HttpRequest, access_link: str = '') -> HttpResponse:
         if 'author' not in request.session.keys():
             author = models.Author()
             author.save()

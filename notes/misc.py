@@ -37,9 +37,9 @@ def retrieve_note(access_link: str, request_uid: str) -> Model:
 
 
 def update_note(access_link: str, request_uid: str, payload) -> Model:
-    if len(access_link) != 6:
-        return
     note = retrieve_note(access_link, request_uid)
+    if len(access_link) != 6 and request_uid != note.author.uid:
+        return
     if note is None:
         return None
     allowed_fields = {'language'}
