@@ -1,4 +1,5 @@
 .navbar-dark,
-.card.bg-dark {
+.card.bg-dark,
+.card.bg-dark>div[class^="card-"] {
     background-color: #343a40 !important;
 }
