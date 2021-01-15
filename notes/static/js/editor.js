@@ -13,7 +13,6 @@ if (!error)
     edit_link = url.host + '/' + init_data['edit_link']
     $('#settings-btn').prop('disabled', !ismine)
     $('#delete-btn').attr('href', 'delete/' + init_data['edit_link'] + '/')
-    $('#name-settings .input-group input').val(note['name'])
     $('#read-settings .input-group input').val(read_link)
     $('#edit-settings .input-group input').val(edit_link)
 }
@@ -63,9 +62,12 @@ if (url.pathname === '/') {
 
     $('#editor').keyup(() => request_update())
     $('#language-select').change(() => request_update())
-    $('#name-settings .input-group button').click(() => request_update())
     $('#read-settings .form-check input').click(() => request_update())
     $('#edit-settings .form-check input').click(() => request_update())
+    $('#name-settings .input-group button').click(() => {
+        request_update()
+        document.title = note['name'] + ' - codeo'
+    })
 }
 
 request_update = () => {
@@ -79,6 +81,8 @@ request_update = () => {
 }
 
 update_editor = () => {
+    document.title = note['name'] + ' - codeo'
+    $('#name-settings .input-group input').val(note['name'])
     $('#language-select').val(note['language'])
     $('#read-settings .form-check input').prop('checked', note['read'])
     $('#edit-settings .form-check input').prop('checked', note['edit'])
