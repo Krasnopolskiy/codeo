@@ -7,7 +7,7 @@
             <div id="editor" style="height: calc(100vh - 56px)"></div>
         </div>
     </div>
-    <div class="position-absolute bottom-0 end-0 m-2">
+    <div class="position-absolute bottom-0 end-0 m-2 me-4">
         <select class="btn btn-outline-secondary btn-sm text-white" id="language-select">
             {% for language in languages %}
             <option value="{{ language }}">
@@ -28,7 +28,7 @@
 <script src="https://pagecdn.io/lib/ace/1.4.12/ace.js"></script>
 
 <script>
-    let init_data = {{note | safe}}
+    let init_data = {{init_data | safe}}
     let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
     let popoverList = popoverTriggerList.map((popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl))
     $('.copy-btn').click((event) => {

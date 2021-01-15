@@ -11,7 +11,7 @@ from . import forms, models, misc
 
 
 class LoginView(View):
-    context = {'pagename': 'login'}
+    context = {'pagename': 'Login'}
 
     def get(self, request: HttpRequest) -> HttpResponse:
         self.context['form'] = forms.LoginForm()
@@ -38,7 +38,7 @@ class LoginView(View):
 
 
 class SignupView(View):
-    context = {'pagename': 'signup'}
+    context = {'pagename': 'Signup'}
 
     def get(self, request: HttpRequest) -> HttpResponse:
         self.context['form'] = forms.SignupForm()
@@ -68,9 +68,10 @@ class IndexView(View):
             author.save()
             request.session['author'] = author.uid
         self.context['languages'] = misc.LANGUAGES
+        self.context['init_data'] = 'undefined'
         note = misc.retrieve_note(access_link, request.session['author'])
         if note is not None:
-            self.context['note'] = json.dumps(note.serialize(request.session['author']))
+            self.context['init_data'] = json.dumps(note.serialize(request.session['author']))
             self.context['pagename'] = note.name
         return render(request, 'pages/index.html', self.context)
 
@@ -83,7 +84,7 @@ class IndexView(View):
 
 
 class DashboardView(View):
-    context = {'pagename': 'dashboard'}
+    context = {'pagename': 'Dashboard'}
 
     def get(self, request: HttpRequest) -> HttpResponse:
         author = models.Author.objects.get(user=request.user)
