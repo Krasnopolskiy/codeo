@@ -97,5 +97,5 @@ class DashboardView(View):
 class DeleteNoteView(View):
     def get(self, request: HttpRequest, access_link: str = '') -> HttpResponse:
         note = misc.retrieve_note(access_link, request.session['author'])
-        note.delete() if note.author.uid == request.session['author'] else None
+        note.delete() if note is not None and note.author.uid == request.session['author'] else None
         return redirect(reverse('dashboard'))
