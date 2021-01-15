@@ -7,24 +7,24 @@
     <div class="row justify-content-center row-cols-md-4 gy-3 mt-2">
         {% for note in notes %}
         <div class="col">
-            <div class="card bg-dark text-white border shadow-sm p-2" style="min-width: 200px">
-                <div class="card-header border-light">
+            <div class="card bg-dark card-dark text-white border border-secondary shadow-sm p-2" style="min-width: 200px">
+                <div class="card-header border-secondary">
                     <p class="fs-3 mb-0">{{ note.name }}</p>
                 </div>
                 <div class="card-body">
                     <ul class="list-unstyled font-monospace">
                         <li class="fs-6 mb-3">
-                            Language: <span class="badge bg-secondary">{{ note.language }}</span>
+                            Language: <span class="badge border">{{ note.language }}</span>
                         </li>
                         <li class="fs-6 mb-3">
-                            Read link: <span class="badge bg-secondary">{{ host }}{{ note.read_link }}</span>
+                            Read link: <span class="badge border">{{ host }}{{ note.read_link }}</span>
                         </li>
                         <li class="fs-6 mb-3">
-                            Edit link: <span class="badge bg-secondary">{{ host }}{{ note.edit_link }}</span>
+                            Edit link: <span class="badge border">{{ host }}{{ note.edit_link }}</span>
                         </li>
                     </ul>
                 </div>
-                <div class="card-footer container border-light">
+                <div class="card-footer container border-secondary">
                     <div class="row gy-3 gx-3 pt-2">
                         <div class="col d-grid gap-2">
                             <a href="{% url 'index' access_link=note.read_link %}"
