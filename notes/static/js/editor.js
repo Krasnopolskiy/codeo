@@ -11,6 +11,7 @@ if (!error)
     ismine = init_data['ismine']
     read_link = url.host + '/' + init_data['read_link']
     edit_link = url.host + '/' + init_data['edit_link']
+    $('#delete-btn').attr('href', 'delete/' + init_data['edit_link'] + '/')
     $('#name-settings .input-group input').val(note['name'])
     $('#read-settings .input-group input').val(read_link)
     $('#edit-settings .input-group input').val(edit_link)
