@@ -1,9 +1,9 @@
-# codeshare
+# codeo
 ## Installation
 1. Clone repository:
     ```bash
-    git clone https://github.com/Krasnopolskiy/codeshare.git
-    cd codeshare
+    git clone https://github.com/Krasnopolskiy/codeo.git
+    cd codeo
     ```
 2. Create and activate virtual environment:
     ```bash

@@ -35,7 +35,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'codeshare.urls'
+ROOT_URLCONF = 'codeo.urls'
 
 TEMPLATES = [
     {
@@ -53,8 +53,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'codeshare.wsgi.application'
-ASGI_APPLICATION = 'codeshare.asgi.application'
+WSGI_APPLICATION = 'codeo.wsgi.application'
+ASGI_APPLICATION = 'codeo.asgi.application'
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',

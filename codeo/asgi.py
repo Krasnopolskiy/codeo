@@ -6,7 +6,7 @@ import os
 
 from . import urls
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'codeshare.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'codeo.settings')
 
 application = ProtocolTypeRouter({
     'http': get_asgi_application(),
