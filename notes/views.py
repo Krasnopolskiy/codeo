@@ -33,7 +33,7 @@ class LoginView(View):
                 else:
                     author = author[0]
                 request.session['author'] = author.uid
-                return redirect(reverse('index'))
+                return redirect(reverse('dashboard'))
         return render(request, 'pages/login.html', self.context)
 
 
@@ -80,7 +80,7 @@ class IndexView(View):
         note = models.Note(author=author)
         note.language = ['plain_text', request.POST['language']][request.POST['language'] in misc.LANGUAGES]
         note.save()
-        return JsonResponse({'redirect': note.read_link})
+        return JsonResponse({'init_data': note.serialize(request.session['author'])})
 
 
 class DashboardView(View):
@@ -98,4 +98,4 @@ class DeleteNoteView(View):
     def get(self, request: HttpRequest, access_link: str = '') -> HttpResponse:
         note = misc.retrieve_note(access_link, request.session['author'])
         note.delete() if note is not None and note.author.uid == request.session['author'] else None
-        return redirect(reverse('dashboard'))
+        return redirect(reverse('index'))

@@ -8,14 +8,14 @@
         </div>
     </div>
     <div class="position-absolute bottom-0 end-0 m-2 me-4">
-        <select class="btn btn-outline-secondary btn-sm text-white" id="language-select">
+        <select class="btn btn-secondary btn-sm text-white" id="language-select">
             {% for language in languages %}
             <option value="{{ language }}">
                 {{ language }}
             </option>
             {% endfor %}
         </select>
-        <button id="settings-btn" type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#setting-modal">
+        <button id="settings-btn" type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#setting-modal">
             Settings
         </button>
     </div>

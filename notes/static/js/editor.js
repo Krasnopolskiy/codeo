@@ -1,12 +1,14 @@
-const url = new URL(window.location.href)
 const editor = ace.edit('editor')
 const client = uuid.v4()
 
 
+let url = new URL(window.location.href)
 let error = init_data === undefined
 let note, ws, ismine, read_link, edit_link
-if (!error)
-{
+
+
+init_note = (init_data) => {
+    error = false
     note = init_data['editable']
     ismine = init_data['ismine']
     read_link = url.host + '/' + init_data['read_link']
@@ -17,39 +19,7 @@ if (!error)
     $('#edit-settings .input-group input').val(edit_link)
 }
 
-
-editor.setOptions({
-    showPrintMargin: false,
-    readOnly: error || !ismine && (!note['edit'] || url.pathname.length != 7),
-    fontSize: 18,
-    theme: 'ace/theme/monokai'
-})
-editor.session.setOptions({
-    tabSize: 4,
-    useSoftTabs: true,
-    mode: 'ace/mode/plain_text',
-    useWorker: false
-})
-
-
-$.ajaxSetup({
-    headers: {
-        'X-CSRFToken': $.cookie('csrftoken')
-    }
-})
-
-
-if (url.pathname === '/') {
-    $('#language-select').val('plain_text')
-    $('#editor').click(() => $.post('/', {
-        language: $('#language-select').val()
-    }, (data) => {
-        document.location += data['redirect']
-    }))
-} else {
-    if (error)
-        document.location = '/'
-
+init_websocket = () => {
     ws = new WebSocket('ws://' + url.host + url.pathname + '/' + client)
 
     ws.onmessage = (event) => {
@@ -71,11 +41,11 @@ if (url.pathname === '/') {
 }
 
 request_update = () => {
-    note['language'] = $('#language-select').val()
     note['name'] = $('#name-settings .input-group input').val()
     note['read'] = $('#read-settings .form-check input').prop('checked')
     note['edit'] = $('#edit-settings .form-check input').prop('checked')
     note['source'] = btoa(editor.getValue())
+    note['language'] = $('#language-select').val()
     editor.session.setMode('ace/mode/' + note['language'])
     ws.send(JSON.stringify(note))
 }
@@ -87,8 +57,48 @@ update_editor = () => {
     $('#read-settings .form-check input').prop('checked', note['read'])
     $('#edit-settings .form-check input').prop('checked', note['edit'])
     editor.setValue(atob(note['source']))
+    editor.setReadOnly(error || !ismine && (!note['edit'] || url.pathname.length != 7))
     editor.clearSelection()
     editor.navigateFileEnd()
     editor.focus()
     editor.session.setMode('ace/mode/' + note['language'])
+}
+
+
+editor.setOptions({
+    showPrintMargin: false,
+    readOnly: false,
+    fontSize: 18,
+    theme: 'ace/theme/monokai'
+})
+editor.session.setOptions({
+    tabSize: 4,
+    useSoftTabs: true,
+    mode: 'ace/mode/plain_text',
+    useWorker: false
+})
+
+$.ajaxSetup({
+    headers: {
+        'X-CSRFToken': $.cookie('csrftoken')
+    }
+})
+
+if (url.pathname === '/') {
+    $('#language-select').val('plain_text')
+    $('#editor').click(() => $.post('/', {
+        language: $('#language-select').val()
+    }, (data) => {
+        console.log(data)
+        init_data = data['init_data']
+        window.history.pushState({}, '', init_data['read_link'])
+        url = new URL(window.location.href)
+        init_note(init_data)
+        init_websocket()
+        update_editor()
+    }))
+} else {
+    init_note(init_data)
+    init_websocket()
+    update_editor()
 }
