@@ -78,7 +78,7 @@ class IndexView(View):
     def post(self, request: HttpRequest) -> JsonResponse:
         author = models.Author.objects.get(uid=request.session['author'])
         note = models.Note(author=author)
-        note.language = ['plain_text', request.POST['language']][request.POST['language'] in misc.LANGUAGES]
+        note.language = ['plain_text', request.POST.get('language')][request.POST['language'] in misc.LANGUAGES]
         note.save()
         return JsonResponse({'init_data': note.serialize(request.session['author'])})
 
@@ -98,4 +98,4 @@ class DeleteNoteView(View):
     def get(self, request: HttpRequest, access_link: str = '') -> HttpResponse:
         note = misc.retrieve_note(access_link, request.session['author'])
         note.delete() if note is not None and note.author.uid == request.session['author'] else None
-        return redirect(reverse('index'))
+        return redirect(request.GET.get('next', 'index'))
