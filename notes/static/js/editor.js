@@ -13,6 +13,7 @@ init_note = (init_data) => {
     ismine = init_data['ismine']
     read_link = url.host + '/' + init_data['read_link']
     edit_link = url.host + '/' + init_data['edit_link']
+    $('#editor').off('click')
     $('#settings-btn').prop('disabled', !ismine)
     $('#delete-btn').attr('href', 'delete/' + init_data['edit_link'] + '/')
     $('#read-settings .input-group input').val(read_link)
@@ -84,9 +85,11 @@ $.ajaxSetup({
     }
 })
 
-if (url.pathname === '/') {
-    $('#language-select').val('plain_text')
-    $('#editor').click(() => $.post('/', {
+$('#language-select').val('plain_text')
+
+
+$('#editor').click(() => {
+    $.post('/', {
         language: $('#language-select').val()
     }, (data) => {
         console.log(data)
@@ -96,8 +99,10 @@ if (url.pathname === '/') {
         init_note(init_data)
         init_websocket()
         update_editor()
-    }))
-} else {
+    })
+})
+
+if (url.pathname !== '/') {
     init_note(init_data)
     init_websocket()
     update_editor()
