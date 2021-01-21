@@ -17,7 +17,7 @@ class Author(models.Model):
             self.uid = misc.generate_unique_field(Author, 'uid', 16)
         super(Author, self).save()
 
-    def __repr__(self) -> str:
+    def __str__(self) -> str:
         return f'<Author: {self.uid}>'
 
 
@@ -39,6 +39,19 @@ class Note(models.Model):
             open(f'sources/{self.read_link}', 'a').close()
         super(Note, self).save()
 
+    def update(self, access_link: str, request_uid: str, payload: dict) -> None:
+        allowed_fields = {'language'}
+        if access_link != self.edit_link:
+            if request_uid != self.author.uid:
+                return
+            allowed_fields = allowed_fields.union({'read', 'edit', 'name'})
+        for field in set(payload.keys()) & allowed_fields:
+            setattr(self, field, payload[field])
+        self.language = ['plain_text', self.language][self.language in misc.LANGUAGES]
+        if 'source' in payload.keys():
+            self.set_source(payload['source'])
+        self.save()
+
     def delete(self) -> None:
         if os.path.exists(f'sources/{self.read_link}'):
             os.remove(f'sources/{self.read_link}')
@@ -49,12 +62,9 @@ class Note(models.Model):
             return f.read()
 
     def set_source(self, source: str) -> None:
-        try:
-            b64decode(source)
+        if misc.validate_base64(source):
             with open(f'sources/{self.read_link}', 'w') as f:
                 f.write(source)
-        except:
-            pass
 
     def serialize(self, request_uid: str) -> Dict:
         context = {
@@ -68,10 +78,11 @@ class Note(models.Model):
             'ismine': False
         }
         if self.author.uid == request_uid:
+            context['id'] = self.id
             context['ismine'] = True
             context['read_link'] = self.read_link
             context['edit_link'] = self.edit_link
         return context
 
-    def __repr__(self) -> str:
+    def __str__(self) -> str:
         return f'<Note: {self.read_link}>'

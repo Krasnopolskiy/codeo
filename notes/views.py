@@ -26,12 +26,10 @@ class LoginView(View):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                author = models.Author.objects.filter(user=user)
-                if not author.exists():
+                author = models.Author.objects.filter(user=user).first()
+                if author is None:
                     author = models.Author(user=user)
                     author.save()
-                else:
-                    author = author[0]
                 request.session['author'] = author.uid
                 return redirect(reverse('dashboard'))
         return render(request, 'pages/login.html', self.context)
@@ -76,7 +74,7 @@ class IndexView(View):
         return render(request, 'pages/index.html', self.context)
 
     def post(self, request: HttpRequest) -> JsonResponse:
-        author = models.Author.objects.get(uid=request.session['author'])
+        author = models.Author.objects.filter(uid=request.session['author']).first()
         note = models.Note(author=author)
         note.language = ['plain_text', request.POST.get('language')][request.POST['language'] in misc.LANGUAGES]
         note.save()
@@ -87,7 +85,7 @@ class DashboardView(View):
     context = {'pagename': 'Dashboard'}
 
     def get(self, request: HttpRequest) -> HttpResponse:
-        author = models.Author.objects.get(user=request.user)
+        author = models.Author.objects.filter(user=request.user).first()
         notes = models.Note.objects.filter(author=author)
         self.context['notes'] = notes
         self.context['host'] = request.build_absolute_uri().split('/')[2] + '/'
@@ -95,7 +93,8 @@ class DashboardView(View):
 
 
 class DeleteNoteView(View):
-    def get(self, request: HttpRequest, access_link: str = '') -> HttpResponse:
-        note = misc.retrieve_note(access_link, request.session['author'])
-        note.delete() if note is not None and note.author.uid == request.session['author'] else None
+    def get(self, request: HttpRequest, id: int = 0) -> HttpResponse:
+        note = models.Note.objects.filter(id=id).first()
+        if note is not None and request.session['author'] == note.author.uid:
+            note.delete()
         return redirect(request.GET.get('next', 'index'))

@@ -15,7 +15,7 @@ init_note = (init_data) => {
     edit_link = url.host + '/' + init_data['edit_link']
     $('#editor').off('click')
     $('#settings-btn').prop('disabled', !ismine)
-    $('#delete-btn').attr('href', 'delete/' + init_data['edit_link'] + '/')
+    $('#delete-btn').attr('href', 'delete/' + init_data['id'] + '?next=/')
     $('#read-settings .input-group input').val(read_link)
     $('#edit-settings .input-group input').val(edit_link)
 }
@@ -25,7 +25,6 @@ init_websocket = () => {
 
     ws.onmessage = (event) => {
         data = JSON.parse(event['data'])
-        console.log(data)
         note = data['editable']
         if (client !== data['client'])
             update_editor()
@@ -92,7 +91,6 @@ $('#editor').click(() => {
     $.post('/', {
         language: $('#language-select').val()
     }, (data) => {
-        console.log(data)
         init_data = data['init_data']
         window.history.pushState({}, '', init_data['read_link'])
         url = new URL(window.location.href)

@@ -1,8 +1,9 @@
 from django.db.models import Model, Q
 
-from string import ascii_letters, digits
-from secrets import choice
 import json
+from secrets import choice
+from base64 import b64decode
+from string import ascii_letters, digits
 
 from . import models
 
@@ -22,33 +23,18 @@ def generate_unique_field(model: Model, field_name: str, field_size: int) -> str
     return field
 
 
+def validate_base64(payload: str) -> bool:
+    try:
+        b64decode(payload)
+        return True
+    except:
+        return False
+
+
 def retrieve_note(access_link: str, request_uid: str) -> Model:
-    author = models.Author.objects.get(uid=request_uid)
-    if len(access_link) == 4:
-        query = Q(read_link=access_link) & (Q(read=True) | Q(author=author))
-    elif len(access_link) == 6:
-        query = Q(edit_link=access_link) & (Q(edit=True) | Q(author=author))
-    else:
-        return None
-    note = models.Note.objects.filter(query)
-    if note.exists():
-        return note[0]
-    return None
-
-
-def update_note(access_link: str, request_uid: str, payload) -> Model:
-    note = retrieve_note(access_link, request_uid)
-    if len(access_link) != 6 and request_uid != note.author.uid:
+    author = models.Author.objects.filter(uid=request_uid).first()
+    if author is None or len(access_link) not in [4, 6]:
         return
-    if note is None:
-        return None
-    allowed_fields = {'language'}
-    if request_uid == note.author.uid:
-        allowed_fields = allowed_fields.union({'read', 'edit', 'name'})
-    for field in set(payload.keys()) & allowed_fields:
-        setattr(note, field, payload[field])
-    note.language = ['plain_text', note.language][note.language in LANGUAGES]
-    if 'source' in payload.keys():
-        note.set_source(payload['source'])
-    note.save()
-    return note
+    query = [Q(read_link=access_link), Q(edit_link=access_link)][len(access_link) == 6]
+    query = query & (Q(read=True) | Q(author=author))
+    return models.Note.objects.filter(query).first()

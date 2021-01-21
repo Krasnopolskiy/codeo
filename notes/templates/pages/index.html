@@ -4,6 +4,7 @@
 <div class="container-fluid position-relative">
     <div class="row">
         <div class="col-12 p-0">
+            {% csrf_token %}
             <div id="editor" style="height: calc(100vh - 56px)"></div>
         </div>
     </div>
@@ -15,20 +16,23 @@
             </option>
             {% endfor %}
         </select>
-        <button id="settings-btn" type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#setting-modal">
+        <button id="settings-btn" type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
+            data-bs-target="#setting-modal">
             Settings
         </button>
     </div>
 </div>
+{% include 'misc/settings.html' with note=init_data %}
+{% endblock %}
 
-{% include 'base/settings.html' %}
 
+{% block extra_js %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.1/uuid.min.js"></script>
 <script src="https://pagecdn.io/lib/ace/1.4.12/ace.js"></script>
 
 <script>
-    let init_data = {{init_data | safe}}
+    let init_data = {{ init_data | safe }}
     let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
     let popoverList = popoverTriggerList.map((popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl))
     $('.copy-btn').click((event) => {
@@ -38,7 +42,5 @@
     })
 </script>
 
-{% load static %}
 <script src="{% static 'js/editor.js' %}"></script>
-
-{% endblock %}
+{% endblock extra_js %}
