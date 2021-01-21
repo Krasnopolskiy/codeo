@@ -47,7 +47,7 @@ class Note(models.Model):
             allowed_fields = allowed_fields.union({'read', 'edit', 'name'})
         for field in set(payload.keys()) & allowed_fields:
             setattr(self, field, payload[field])
-        self.language = ['plain_text', self.language][self.language in misc.LANGUAGES]
+        self.language = ['plain_text', self.language][self.language in [language['ace'] for language in misc.LANGUAGES]]
         if 'source' in payload.keys():
             self.set_source(payload['source'])
         self.save()

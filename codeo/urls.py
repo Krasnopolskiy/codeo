@@ -14,6 +14,7 @@ urlpatterns = [
     path('dashboard/', login_required(views.DashboardView.as_view()), name='dashboard'),
     path('', views.IndexView.as_view(), name='index'),
     path('<str:access_link>', views.IndexView.as_view(), name='index'),
+    path('note/<str:access_link>', views.RetrieveView.as_view(), name='retrieve_note'),
     path('delete/<int:id>/', views.DeleteNoteView.as_view(), name='delete_note'),
 ]
 

@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.views import View
 
 import json
+from base64 import b64decode
 
 from . import forms, models, misc
 
@@ -57,6 +58,16 @@ class SignupView(View):
         return render(request, 'pages/signup.html', self.context)
 
 
+class RetrieveView(View):
+    context = {'pagename': 'Untitled'}
+
+    def get(self, request: HttpRequest, access_link: str) -> HttpResponse:
+        if 'author' not in request.session.keys():
+            return redirect(reverse('index'))
+        note = misc.retrieve_note(access_link, request.session['author'])
+        source = b64decode(note.get_source().encode()).decode()
+        return HttpResponse(source, content_type="text/plain")
+
 class IndexView(View):
     context = {'pagename': 'Untitled'}
 
@@ -89,11 +100,14 @@ class DashboardView(View):
         notes = models.Note.objects.filter(author=author)
         self.context['notes'] = notes
         self.context['host'] = request.build_absolute_uri().split('/')[2] + '/'
+        self.context['extensions'] = {language['ace']: language['extension'] for language in misc.LANGUAGES}
         return render(request, 'pages/dashboard.html', self.context)
 
 
 class DeleteNoteView(View):
-    def get(self, request: HttpRequest, id: int = 0) -> HttpResponse:
+    context = {'pagename': 'Delete note'}
+
+    def get(self, request: HttpRequest, id: int) -> HttpResponse:
         note = models.Note.objects.filter(id=id).first()
         if note is not None and request.session['author'] == note.author.uid:
             note.delete()

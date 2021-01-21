@@ -8,7 +8,7 @@
         <div class="col">
             <div class="card h-100 bg-dark card-dark text-white border border-secondary shadow-sm p-2">
                 <div class="card-header border-secondary">
-                    <p class="fs-3 mb-0">{{ note.name }}</p>
+                    <p class="fs-3 mb-0">{{ note.name }}.{{ extensions|get_item:note.language }}</p>
                 </div>
                 <div class="card-body">
                     <ul class="list-unstyled font-monospace">
@@ -30,7 +30,9 @@
                                 class="btn btn-sm btn-primary">Edit</a>
                         </div>
                         <div class="col d-grid gap-2">
-                            <a href="{% url 'dashboard' %}" class="btn btn-sm btn-success">Download</a>
+                            <a href="{% url 'retrieve_note' access_link=note.read_link %}"
+                                class="btn btn-sm btn-success"
+                                download="{{ note.name }}.{{ extensions|get_item:note.language }}">Download</a>
                         </div>
                         <div class="col d-grid gap-2">
                             <a href="{% url 'delete_note' id=note.id %}?next={{ request.path }}"

@@ -1,1 +1,607 @@
-["abap", "abc", "actionscript", "ada", "apache_conf", "asciidoc", "assembly_x86", "autohotkey", "batchfile", "c9search", "c_cpp", "cirru", "clojure", "cobol", "coffee", "coldfusion", "csharp", "css", "curly", "d", "dart", "diff", "dockerfile", "dot", "dummy", "dummysyntax", "eiffel", "ejs", "elixir", "elm", "erlang", "forth", "ftl", "gcode", "gherkin", "gitignore", "glsl", "golang", "groovy", "haml", "handlebars", "haskell", "haxe", "html", "html_ruby", "ini", "io", "jack", "jade", "java", "javascript", "json", "jsoniq", "jsp", "jsx", "julia", "latex", "less", "liquid", "lisp", "livescript", "logiql", "lsl", "lua", "luapage", "lucene", "makefile", "markdown", "mask", "matlab", "mel", "mushcode", "mysql", "nix", "objectivec", "ocaml", "pascal", "perl", "pgsql", "php", "plain_text", "powershell", "praat", "prolog", "properties", "protobuf", "python", "r", "rdoc", "rhtml", "ruby", "rust", "sass", "scad", "scala", "scheme", "scss", "sh", "sjs", "smarty", "snippets", "soy_template", "space", "sql", "stylus", "svg", "tcl", "tex", "text", "textile", "toml", "twig", "typescript", "vala", "vbscript", "velocity", "verilog", "vhdl", "xml", "xquery", "yaml"]
+[
+    {
+        "ace": "abap",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "abc",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "actionscript",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "ada",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "apache_conf",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "asciidoc",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "assembly_x86",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "autohotkey",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "batchfile",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "c9search",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "c_cpp",
+        "name": "C/C++",
+        "extension": "cpp"
+    },
+    {
+        "ace": "cirru",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "clojure",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "cobol",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "coffee",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "coldfusion",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "csharp",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "css",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "curly",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "d",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "dart",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "diff",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "dockerfile",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "dot",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "dummy",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "dummysyntax",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "eiffel",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "ejs",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "elixir",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "elm",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "erlang",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "forth",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "ftl",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "gcode",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "gherkin",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "gitignore",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "glsl",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "golang",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "groovy",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "haml",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "handlebars",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "haskell",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "haxe",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "html",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "html_ruby",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "ini",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "io",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "jack",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "jade",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "java",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "javascript",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "json",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "jsoniq",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "jsp",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "jsx",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "julia",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "latex",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "less",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "liquid",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "lisp",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "livescript",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "logiql",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "lsl",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "lua",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "luapage",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "lucene",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "makefile",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "markdown",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "mask",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "matlab",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "mel",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "mushcode",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "mysql",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "nix",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "objectivec",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "ocaml",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "pascal",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "perl",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "pgsql",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "php",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "plain_text",
+        "name": "Plain text",
+        "extension": "txt"
+    },
+    {
+        "ace": "powershell",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "praat",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "prolog",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "properties",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "protobuf",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "python",
+        "name": "Python",
+        "extension": "py"
+    },
+    {
+        "ace": "r",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "rdoc",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "rhtml",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "ruby",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "rust",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "sass",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "scad",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "scala",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "scheme",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "scss",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "sh",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "sjs",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "smarty",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "snippets",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "soy_template",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "space",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "sql",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "stylus",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "svg",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "tcl",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "tex",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "text",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "textile",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "toml",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "twig",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "typescript",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "vala",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "vbscript",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "velocity",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "verilog",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "vhdl",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "xml",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "xquery",
+        "name": "",
+        "extension": ""
+    },
+    {
+        "ace": "yaml",
+        "name": "",
+        "extension": ""
+    }
+]

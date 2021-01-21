@@ -11,8 +11,12 @@
     <div class="position-absolute bottom-0 end-0 m-2 me-4">
         <select class="btn btn-secondary btn-sm text-white" id="language-select">
             {% for language in languages %}
-            <option value="{{ language }}">
-                {{ language }}
+            <option value="{{ language.ace }}">
+                {% if language.name != '' %}
+                {{ language.name }}
+                {% else %}
+                {{ language.ace }}
+                {% endif %}
             </option>
             {% endfor %}
         </select>

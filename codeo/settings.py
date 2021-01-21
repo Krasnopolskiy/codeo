@@ -12,7 +12,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
-    'notes.apps.NotesConfig',
+    'notes',
     'crispy_forms',
     'channels',
     'django.contrib.admin',
