@@ -91,4 +91,4 @@ class Note(models.Model):
         return context
 
     def __str__(self) -> str:
-        return f'<Note: {self.read_link}>'
+        return f'<Note: {self.read_link} | {self.name}>'
