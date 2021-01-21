@@ -1,39 +1,39 @@
 {
     "abap": {
-        "name": "",
-        "extension": ""
+        "name": "ABAP",
+        "extension": ".abap"
     },
     "abc": {
-        "name": "",
-        "extension": ""
+        "name": "ABC",
+        "extension": ".abc"
     },
     "actionscript": {
-        "name": "",
-        "extension": ""
+        "name": "ActionScript",
+        "extension": ".as"
     },
     "ada": {
-        "name": "",
-        "extension": ""
+        "name": "Ada",
+        "extension": ".adb"
     },
     "apache_conf": {
-        "name": "",
-        "extension": ""
+        "name": "ApacheConf",
+        "extension": ".apacheconf"
     },
     "asciidoc": {
-        "name": "",
-        "extension": ""
+        "name": "AsciiDoc",
+        "extension": ".asciidoc"
     },
     "assembly_x86": {
-        "name": "",
-        "extension": ""
+        "name": "x86 assembly",
+        "extension": ".s"
     },
     "autohotkey": {
-        "name": "",
-        "extension": ""
+        "name": "AutoHotkey",
+        "extension": ".ahk"
     },
     "batchfile": {
-        "name": "",
-        "extension": ""
+        "name": "Batchfile",
+        "extension": ".bat"
     },
     "c9search": {
         "name": "",
@@ -44,56 +44,56 @@
         "extension": ".cpp"
     },
     "cirru": {
-        "name": "",
-        "extension": ""
+        "name": "Cirru",
+        "extension": ".cirru"
     },
     "clojure": {
-        "name": "",
-        "extension": ""
+        "name": "Clojure",
+        "extension": ".clj"
     },
     "cobol": {
-        "name": "",
-        "extension": ""
+        "name": "COBOL",
+        "extension": ".cob"
     },
     "coffee": {
-        "name": "",
-        "extension": ""
+        "name": "coffee",
+        "extension": ".coffee"
     },
     "coldfusion": {
-        "name": "",
-        "extension": ""
+        "name": "ColdFusion",
+        "extension": ".cfc"
     },
     "csharp": {
-        "name": "",
-        "extension": ""
+        "name": "C#",
+        "extension": ".cs"
     },
     "css": {
-        "name": "",
-        "extension": ""
+        "name": "CSS",
+        "extension": ".css"
     },
     "curly": {
         "name": "",
         "extension": ""
     },
     "d": {
-        "name": "",
-        "extension": ""
+        "name": "D",
+        "extension": ".d"
     },
     "dart": {
-        "name": "",
-        "extension": ""
+        "name": "Dart",
+        "extension": ".dart"
     },
     "diff": {
-        "name": "",
-        "extension": ""
+        "name": "Diff",
+        "extension": ".diff"
     },
     "dockerfile": {
-        "name": "",
-        "extension": ""
+        "name": "Dockerfile",
+        "extension": ".dockerfile"
     },
     "dot": {
-        "name": "",
-        "extension": ""
+        "name": "Graphviz (DOT)",
+        "extension": ".dot"
     },
     "dummy": {
         "name": "",
@@ -104,304 +104,304 @@
         "extension": ""
     },
     "eiffel": {
-        "name": "",
-        "extension": ""
+        "name": "Eiffel",
+        "extension": ".e"
     },
     "ejs": {
-        "name": "",
-        "extension": ""
+        "name": "Embedded JavaScript",
+        "extension": ".ejs"
     },
     "elixir": {
-        "name": "",
-        "extension": ""
+        "name": "Elixir",
+        "extension": ".ex"
     },
     "elm": {
-        "name": "",
-        "extension": ""
+        "name": "Elm",
+        "extension": ".elm"
     },
     "erlang": {
-        "name": "",
-        "extension": ""
+        "name": "Erlang",
+        "extension": ".erl"
     },
     "forth": {
-        "name": "",
-        "extension": ""
+        "name": "Forth",
+        "extension": ".fth"
     },
     "ftl": {
-        "name": "",
-        "extension": ""
+        "name": "FreeMarker",
+        "extension": ".ftl"
     },
     "gcode": {
-        "name": "",
-        "extension": ""
+        "name": "G-code",
+        "extension": ".g"
     },
     "gherkin": {
-        "name": "",
-        "extension": ""
+        "name": "Gherkin",
+        "extension": ".feature"
     },
     "gitignore": {
-        "name": "",
-        "extension": ""
+        "name": "gitignore",
+        "extension": ".gitignore"
     },
     "glsl": {
-        "name": "",
-        "extension": ""
+        "name": "GLSL",
+        "extension": ".glsl"
     },
     "golang": {
-        "name": "",
-        "extension": ""
+        "name": "Go",
+        "extension": ".go"
     },
     "groovy": {
-        "name": "",
-        "extension": ""
+        "name": "Groovy",
+        "extension": ".groovy"
     },
     "haml": {
-        "name": "",
-        "extension": ""
+        "name": "Haml",
+        "extension": ".haml"
     },
     "handlebars": {
-        "name": "",
-        "extension": ""
+        "name": "Handlebars",
+        "extension": ".handlebars"
     },
     "haskell": {
-        "name": "",
-        "extension": ""
+        "name": "Haskell",
+        "extension": ".hs"
     },
     "haxe": {
-        "name": "",
-        "extension": ""
+        "name": "Haxe",
+        "extension": ".hx"
     },
     "html": {
-        "name": "",
-        "extension": ""
+        "name": "HTML",
+        "extension": ".html"
     },
     "html_ruby": {
-        "name": "",
-        "extension": ""
+        "name": "html_ruby",
+        "extension": ".rhtml"
     },
     "ini": {
-        "name": "",
-        "extension": ""
+        "name": "INI",
+        "extension": ".ini"
     },
     "io": {
-        "name": "",
-        "extension": ""
+        "name": "Io",
+        "extension": ".io"
     },
     "jack": {
-        "name": "",
-        "extension": ""
+        "name": "Jack",
+        "extension": ".jack"
     },
     "jade": {
-        "name": "",
-        "extension": ""
+        "name": "Jade",
+        "extension": ".jade"
     },
     "java": {
-        "name": "",
-        "extension": ""
+        "name": "Java",
+        "extension": ".java"
     },
     "javascript": {
-        "name": "",
-        "extension": ""
+        "name": "JavaScript",
+        "extension": ".js"
     },
     "json": {
-        "name": "",
-        "extension": ""
+        "name": "JSON",
+        "extension": ".json"
     },
     "jsoniq": {
-        "name": "",
-        "extension": ""
+        "name": "JSONiq",
+        "extension": ".jq"
     },
     "jsp": {
-        "name": "",
-        "extension": ""
+        "name": "Java Server Pages",
+        "extension": ".jsp"
     },
     "jsx": {
-        "name": "",
-        "extension": ""
+        "name": "JSX",
+        "extension": ".jsx"
     },
     "julia": {
-        "name": "",
-        "extension": ""
+        "name": "Julia",
+        "extension": ".jl"
     },
     "latex": {
-        "name": "",
-        "extension": ""
+        "name": "LaTeX",
+        "extension": ".tex"
     },
     "less": {
-        "name": "",
-        "extension": ""
+        "name": "Less",
+        "extension": ".less"
     },
     "liquid": {
-        "name": "",
-        "extension": ""
+        "name": "Liquid",
+        "extension": ".liquid"
     },
     "lisp": {
-        "name": "",
-        "extension": ""
+        "name": "Common Lisp",
+        "extension": ".lisp"
     },
     "livescript": {
-        "name": "",
-        "extension": ""
+        "name": "LiveScript",
+        "extension": ".ls"
     },
     "logiql": {
-        "name": "",
-        "extension": ""
+        "name": "LogiQL ",
+        "extension": ".logic"
     },
     "lsl": {
-        "name": "",
-        "extension": ""
+        "name": "LSL",
+        "extension": ".lsl"
     },
     "lua": {
-        "name": "",
-        "extension": ""
+        "name": "Lua",
+        "extension": ".lua"
     },
     "luapage": {
-        "name": "",
-        "extension": ""
+        "name": "CGILua",
+        "extension": ".lua"
     },
     "lucene": {
         "name": "",
         "extension": ""
     },
     "makefile": {
-        "name": "",
-        "extension": ""
+        "name": "Makefile",
+        "extension": ".mak"
     },
     "markdown": {
-        "name": "",
-        "extension": ""
+        "name": "Markdown",
+        "extension": ".md"
     },
     "mask": {
-        "name": "",
-        "extension": ""
+        "name": "Mask",
+        "extension": ".mask"
     },
     "matlab": {
-        "name": "",
-        "extension": ""
+        "name": "Matlab",
+        "extension": ".matlab"
     },
     "mel": {
-        "name": "",
-        "extension": ""
+        "name": "Maya Embedded Language",
+        "extension": ".mel"
     },
     "mushcode": {
-        "name": "",
-        "extension": ""
+        "name": "MUSH Formatter",
+        "extension": ".mush"
     },
     "mysql": {
-        "name": "",
-        "extension": ""
+        "name": "mysql",
+        "extension": ".frm"
     },
     "nix": {
-        "name": "",
-        "extension": ""
+        "name": "Nix",
+        "extension": ".nix"
     },
     "objectivec": {
-        "name": "",
-        "extension": ""
+        "name": "Objective-C",
+        "extension": ".h"
     },
     "ocaml": {
-        "name": "",
-        "extension": ""
+        "name": "OCaml",
+        "extension": ".ml"
     },
     "pascal": {
-        "name": "",
-        "extension": ""
+        "name": "Pascal",
+        "extension": ".pas"
     },
     "perl": {
-        "name": "",
-        "extension": ""
+        "name": "Perl",
+        "extension": ".pl"
     },
     "pgsql": {
-        "name": "",
-        "extension": ""
+        "name": "PLpgSQL",
+        "extension": ".sql"
     },
     "php": {
-        "name": "",
-        "extension": ""
+        "name": "PHP",
+        "extension": ".php"
     },
     "plain_text": {
         "name": "Plain text",
         "extension": ".txt"
     },
     "powershell": {
-        "name": "",
-        "extension": ""
+        "name": "PowerShell",
+        "extension": ".ps1"
     },
     "praat": {
         "name": "",
         "extension": ""
     },
     "prolog": {
-        "name": "",
-        "extension": ""
+        "name": "Prolog",
+        "extension": ".pl"
     },
     "properties": {
-        "name": "",
-        "extension": ""
+        "name": "Properties",
+        "extension": ".properties"
     },
     "protobuf": {
-        "name": "",
-        "extension": ""
+        "name": "Protobuf",
+        "extension": ".proto"
     },
     "python": {
         "name": "Python",
         "extension": ".py"
     },
     "r": {
-        "name": "",
-        "extension": ""
+        "name": "R",
+        "extension": ".r"
     },
     "rdoc": {
-        "name": "",
-        "extension": ""
+        "name": "RDoc",
+        "extension": ".rdoc"
     },
     "rhtml": {
-        "name": "",
-        "extension": ""
+        "name": "RHTML",
+        "extension": ".rhtml"
     },
     "ruby": {
-        "name": "",
-        "extension": ""
+        "name": "Ruby",
+        "extension": ".rb"
     },
     "rust": {
-        "name": "",
-        "extension": ""
+        "name": "Rust",
+        "extension": ".rs"
     },
     "sass": {
-        "name": "",
-        "extension": ""
+        "name": "Sass",
+        "extension": ".sass"
     },
     "scad": {
-        "name": "",
-        "extension": ""
+        "name": "OpenSCAD",
+        "extension": ".scad"
     },
     "scala": {
-        "name": "",
-        "extension": ""
+        "name": "Scala",
+        "extension": ".scala"
     },
     "scheme": {
-        "name": "",
-        "extension": ""
+        "name": "Scheme",
+        "extension": ".scm"
     },
     "scss": {
-        "name": "",
-        "extension": ""
+        "name": "SCSS",
+        "extension": ".scss"
     },
     "sh": {
-        "name": "",
-        "extension": ""
+        "name": "Shell",
+        "extension": ".sh"
     },
     "sjs": {
-        "name": "",
-        "extension": ""
+        "name": "Simcity 3000 buildings",
+        "extension": ".sjs"
     },
     "smarty": {
-        "name": "",
-        "extension": ""
+        "name": "Smarty",
+        "extension": ".tpl"
     },
     "snippets": {
-        "name": "",
-        "extension": ""
+        "name": "snippets",
+        "extension": ".snippet"
     },
     "soy_template": {
         "name": "",
@@ -412,75 +412,75 @@
         "extension": ""
     },
     "sql": {
-        "name": "",
-        "extension": ""
+        "name": "SQL",
+        "extension": ".sql"
     },
     "stylus": {
-        "name": "",
-        "extension": ""
+        "name": "Stylus",
+        "extension": ".styl"
     },
     "svg": {
-        "name": "",
-        "extension": ""
+        "name": "SVG",
+        "extension": ".svg"
     },
     "tcl": {
-        "name": "",
-        "extension": ""
+        "name": "Tcl",
+        "extension": ".tcl"
     },
     "tex": {
-        "name": "",
-        "extension": ""
+        "name": "TeX",
+        "extension": ".tex"
     },
     "text": {
-        "name": "",
-        "extension": ""
+        "name": "Text",
+        "extension": ".txt"
     },
     "textile": {
-        "name": "",
-        "extension": ""
+        "name": "Textile",
+        "extension": ".textile"
     },
     "toml": {
-        "name": "",
-        "extension": ""
+        "name": "TOML",
+        "extension": ".toml"
     },
     "twig": {
-        "name": "",
-        "extension": ""
+        "name": "Twig",
+        "extension": ".twig"
     },
     "typescript": {
-        "name": "",
-        "extension": ""
+        "name": "TypeScript",
+        "extension": ".ts"
     },
     "vala": {
-        "name": "",
-        "extension": ""
+        "name": "Vala",
+        "extension": ".vala"
     },
     "vbscript": {
-        "name": "",
-        "extension": ""
+        "name": "VBScript",
+        "extension": ".vbs"
     },
     "velocity": {
-        "name": "",
-        "extension": ""
+        "name": "Velocity",
+        "extension": ".vm"
     },
     "verilog": {
-        "name": "",
-        "extension": ""
+        "name": "Verilog",
+        "extension": ".v"
     },
     "vhdl": {
-        "name": "",
-        "extension": ""
+        "name": "VHDL",
+        "extension": ".vhdl"
     },
     "xml": {
-        "name": "",
-        "extension": ""
+        "name": "XML",
+        "extension": ".xml"
     },
     "xquery": {
-        "name": "",
-        "extension": ""
+        "name": "XQuery",
+        "extension": ".xquery"
     },
     "yaml": {
-        "name": "",
-        "extension": ""
+        "name": "YAML",
+        "extension": ".yml"
     }
 }
