@@ -14,13 +14,13 @@
                     <ul class="list-unstyled font-monospace">
                         <li class="fs-6 mb-3">
                             Language: <span class="badge border border-secondary">
-                            {% with name=languages|get_item:note.language|get_item:'name' %}
-                            {% if name %}
-                            {{ name }}
-                            {% else %}
-                            {{ note.language }}
-                            {% endif %}
-                            {% endwith %}
+                                {% with name=languages|get_item:note.language|get_item:'name' %}
+                                {% if name %}
+                                {{ name }}
+                                {% else %}
+                                {{ note.language }}
+                                {% endif %}
+                                {% endwith %}
                             </span>
                         </li>
                         <li class="fs-6 mb-3">
@@ -39,8 +39,7 @@
                         </div>
                         <div class="col d-grid gap-2">
                             <a href="{% url 'retrieve_note' access_link=note.read_link %}"
-                                class="btn btn-sm btn-success"
-                                download="{{ note.name }}">Download</a>
+                                class="btn btn-sm btn-success" download="{{ note.name }}">Download</a>
                         </div>
                         <div class="col d-grid gap-2">
                             <a href="{% url 'delete_note' id=note.id %}?next={{ request.path }}"

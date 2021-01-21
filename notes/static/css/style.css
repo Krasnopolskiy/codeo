@@ -3,3 +3,9 @@
 .card.bg-dark>div[class^="card-"] {
     background-color: #343a40 !important;
 }
+
+.bi {
+    font-size: 1.5rem;
+    padding: .4rem .6rem;
+    width: 45px;
+}
