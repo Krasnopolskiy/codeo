@@ -99,6 +99,7 @@ class DashboardView(View):
         notes = models.Note.objects.filter(author=author)
         self.context['notes'] = notes
         self.context['host'] = request.build_absolute_uri().split('/')[2] + '/'
+        self.context['languages'] = misc.LANGUAGES
         return render(request, 'pages/dashboard.html', self.context)
 
 

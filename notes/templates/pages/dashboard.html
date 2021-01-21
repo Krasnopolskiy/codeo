@@ -13,7 +13,15 @@
                 <div class="card-body">
                     <ul class="list-unstyled font-monospace">
                         <li class="fs-6 mb-3">
-                            Language: <span class="badge border border-secondary">{{ note.language }}</span>
+                            Language: <span class="badge border border-secondary">
+                            {% with name=languages|get_item:note.language|get_item:'name' %}
+                            {% if name %}
+                            {{ name }}
+                            {% else %}
+                            {{ note.language }}
+                            {% endif %}
+                            {% endwith %}
+                            </span>
                         </li>
                         <li class="fs-6 mb-3">
                             Read link: <span class="badge border border-secondary">{{ host }}{{ note.read_link }}</span>
