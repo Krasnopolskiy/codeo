@@ -1,607 +1,486 @@
-[
-    {
-        "ace": "abap",
+{
+    "abap": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "abc",
+    "abc": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "actionscript",
+    "actionscript": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "ada",
+    "ada": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "apache_conf",
+    "apache_conf": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "asciidoc",
+    "asciidoc": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "assembly_x86",
+    "assembly_x86": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "autohotkey",
+    "autohotkey": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "batchfile",
+    "batchfile": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "c9search",
+    "c9search": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "c_cpp",
+    "c_cpp": {
         "name": "C/C++",
-        "extension": "cpp"
+        "extension": ".cpp"
     },
-    {
-        "ace": "cirru",
+    "cirru": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "clojure",
+    "clojure": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "cobol",
+    "cobol": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "coffee",
+    "coffee": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "coldfusion",
+    "coldfusion": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "csharp",
+    "csharp": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "css",
+    "css": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "curly",
+    "curly": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "d",
+    "d": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "dart",
+    "dart": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "diff",
+    "diff": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "dockerfile",
+    "dockerfile": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "dot",
+    "dot": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "dummy",
+    "dummy": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "dummysyntax",
+    "dummysyntax": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "eiffel",
+    "eiffel": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "ejs",
+    "ejs": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "elixir",
+    "elixir": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "elm",
+    "elm": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "erlang",
+    "erlang": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "forth",
+    "forth": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "ftl",
+    "ftl": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "gcode",
+    "gcode": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "gherkin",
+    "gherkin": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "gitignore",
+    "gitignore": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "glsl",
+    "glsl": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "golang",
+    "golang": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "groovy",
+    "groovy": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "haml",
+    "haml": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "handlebars",
+    "handlebars": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "haskell",
+    "haskell": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "haxe",
+    "haxe": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "html",
+    "html": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "html_ruby",
+    "html_ruby": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "ini",
+    "ini": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "io",
+    "io": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "jack",
+    "jack": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "jade",
+    "jade": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "java",
+    "java": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "javascript",
+    "javascript": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "json",
+    "json": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "jsoniq",
+    "jsoniq": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "jsp",
+    "jsp": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "jsx",
+    "jsx": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "julia",
+    "julia": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "latex",
+    "latex": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "less",
+    "less": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "liquid",
+    "liquid": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "lisp",
+    "lisp": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "livescript",
+    "livescript": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "logiql",
+    "logiql": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "lsl",
+    "lsl": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "lua",
+    "lua": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "luapage",
+    "luapage": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "lucene",
+    "lucene": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "makefile",
+    "makefile": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "markdown",
+    "markdown": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "mask",
+    "mask": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "matlab",
+    "matlab": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "mel",
+    "mel": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "mushcode",
+    "mushcode": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "mysql",
+    "mysql": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "nix",
+    "nix": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "objectivec",
+    "objectivec": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "ocaml",
+    "ocaml": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "pascal",
+    "pascal": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "perl",
+    "perl": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "pgsql",
+    "pgsql": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "php",
+    "php": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "plain_text",
+    "plain_text": {
         "name": "Plain text",
-        "extension": "txt"
+        "extension": ".txt"
     },
-    {
-        "ace": "powershell",
+    "powershell": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "praat",
+    "praat": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "prolog",
+    "prolog": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "properties",
+    "properties": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "protobuf",
+    "protobuf": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "python",
+    "python": {
         "name": "Python",
-        "extension": "py"
+        "extension": ".py"
     },
-    {
-        "ace": "r",
+    "r": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "rdoc",
+    "rdoc": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "rhtml",
+    "rhtml": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "ruby",
+    "ruby": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "rust",
+    "rust": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "sass",
+    "sass": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "scad",
+    "scad": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "scala",
+    "scala": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "scheme",
+    "scheme": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "scss",
+    "scss": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "sh",
+    "sh": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "sjs",
+    "sjs": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "smarty",
+    "smarty": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "snippets",
+    "snippets": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "soy_template",
+    "soy_template": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "space",
+    "space": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "sql",
+    "sql": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "stylus",
+    "stylus": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "svg",
+    "svg": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "tcl",
+    "tcl": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "tex",
+    "tex": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "text",
+    "text": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "textile",
+    "textile": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "toml",
+    "toml": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "twig",
+    "twig": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "typescript",
+    "typescript": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "vala",
+    "vala": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "vbscript",
+    "vbscript": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "velocity",
+    "velocity": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "verilog",
+    "verilog": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "vhdl",
+    "vhdl": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "xml",
+    "xml": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "xquery",
+    "xquery": {
         "name": "",
         "extension": ""
     },
-    {
-        "ace": "yaml",
+    "yaml": {
         "name": "",
         "extension": ""
     }
-]
+}

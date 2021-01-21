@@ -87,7 +87,6 @@ class IndexView(View):
     def post(self, request: HttpRequest) -> JsonResponse:
         author = models.Author.objects.filter(uid=request.session['author']).first()
         note = models.Note(author=author)
-        note.language = ['plain_text', request.POST.get('language')][request.POST['language'] in misc.LANGUAGES]
         note.save()
         return JsonResponse({'init_data': note.serialize(request.session['author'])})
 
@@ -100,7 +99,6 @@ class DashboardView(View):
         notes = models.Note.objects.filter(author=author)
         self.context['notes'] = notes
         self.context['host'] = request.build_absolute_uri().split('/')[2] + '/'
-        self.context['extensions'] = {language['ace']: language['extension'] for language in misc.LANGUAGES}
         return render(request, 'pages/dashboard.html', self.context)
 
 

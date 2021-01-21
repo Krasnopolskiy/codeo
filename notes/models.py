@@ -32,11 +32,27 @@ class Note(models.Model):
     edit = models.BooleanField(default=False)
     edit_link = models.CharField(max_length=6, null=True)
 
+    def get_source(self) -> str:
+        with open(f'sources/{self.read_link}', 'r') as f:
+            return f.read()
+
+    def set_source(self, source: str) -> None:
+        if misc.validate_base64(source):
+            with open(f'sources/{self.read_link}', 'w') as f:
+                f.write(source)
+
+    def set_name(self) -> None:
+        self.name = self.name.strip().split('.')[0]
+        extension = misc.LANGUAGES[self.language]['extension']
+        self.name += extension if extension != '' else ''
+
     def save(self) -> None:
         if not self.pk:
             self.read_link = misc.generate_unique_field(Note, 'read_link', 4)
             self.edit_link = misc.generate_unique_field(Note, 'edit_link', 6)
             open(f'sources/{self.read_link}', 'a').close()
+        self.language = ['plain_text', self.language][self.language in misc.LANGUAGES]
+        self.set_name()
         super(Note, self).save()
 
     def update(self, access_link: str, request_uid: str, payload: dict) -> None:
@@ -47,7 +63,6 @@ class Note(models.Model):
             allowed_fields = allowed_fields.union({'read', 'edit', 'name'})
         for field in set(payload.keys()) & allowed_fields:
             setattr(self, field, payload[field])
-        self.language = ['plain_text', self.language][self.language in [language['ace'] for language in misc.LANGUAGES]]
         if 'source' in payload.keys():
             self.set_source(payload['source'])
         self.save()
@@ -56,15 +71,6 @@ class Note(models.Model):
         if os.path.exists(f'sources/{self.read_link}'):
             os.remove(f'sources/{self.read_link}')
         super(Note, self).delete()
-
-    def get_source(self) -> str:
-        with open(f'sources/{self.read_link}', 'r') as f:
-            return f.read()
-
-    def set_source(self, source: str) -> None:
-        if misc.validate_base64(source):
-            with open(f'sources/{self.read_link}', 'w') as f:
-                f.write(source)
 
     def serialize(self, request_uid: str) -> Dict:
         context = {
