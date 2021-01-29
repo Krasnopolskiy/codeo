@@ -1,11 +1,23 @@
 {% extends 'base/base.html' %}
+{% csrf_token %}
+
+{% block extra_css %}
+<style>
+    #editor {
+        height: calc(100vh - 56px)
+    }
+
+    #settings-btn,  #language-select {
+        height: 32px
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 <div class="container-fluid position-relative">
     <div class="row">
         <div class="col-12 p-0">
-            {% csrf_token %}
-            <div id="editor" style="height: calc(100vh - 56px)"></div>
+            <div id="editor"></div>
         </div>
     </div>
     <div class="position-absolute bottom-0 end-0 m-2 me-4">
@@ -22,8 +34,8 @@
             </option>
             {% endfor %}
         </select>
-        <button id="settings-btn" type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
-            data-bs-target="#setting-modal">
+        <button id="settings-btn" type="button" class="btn btn-secondary text-white btn-sm"
+            data-bs-toggle="modal" data-bs-target="#setting-modal">
             Settings
         </button>
     </div>

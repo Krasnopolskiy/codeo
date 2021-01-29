@@ -58,7 +58,7 @@ class SignupView(View):
         return render(request, 'pages/signup.html', self.context)
 
 
-class RetrieveView(View):
+class RetrieveNoteView(View):
     context = {'pagename': 'Untitled'}
 
     def get(self, request: HttpRequest, access_link: str) -> HttpResponse:
@@ -69,7 +69,7 @@ class RetrieveView(View):
         return HttpResponse(source, content_type="text/plain")
 
 class IndexView(View):
-    context = {'pagename': 'Untitled'}
+    context = {'pagename': 'Editor'}
 
     def get(self, request: HttpRequest, access_link: str = '') -> HttpResponse:
         if 'author' not in request.session.keys():
@@ -86,7 +86,7 @@ class IndexView(View):
 
     def post(self, request: HttpRequest) -> JsonResponse:
         author = models.Author.objects.filter(uid=request.session['author']).first()
-        note = models.Note(author=author)
+        note = models.Note(author=author, language=request.POST.get('language'))
         note.save()
         return JsonResponse({'init_data': note.serialize(request.session['author'])})
 

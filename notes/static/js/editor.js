@@ -68,7 +68,7 @@ update_editor = () => {
 editor.setOptions({
     showPrintMargin: false,
     readOnly: false,
-    fontSize: 18,
+    fontSize: 16,
     theme: 'ace/theme/monokai'
 })
 editor.session.setOptions({
@@ -77,13 +77,11 @@ editor.session.setOptions({
     mode: 'ace/mode/plain_text',
     useWorker: false
 })
-
 $.ajaxSetup({
     headers: {
         'X-CSRFToken': $.cookie('csrftoken')
     }
 })
-
 $('#language-select').val('plain_text')
 
 
