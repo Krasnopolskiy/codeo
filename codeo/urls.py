@@ -1,4 +1,3 @@
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LogoutView
 from django.contrib import admin
 from django.urls import path
@@ -11,7 +10,7 @@ urlpatterns = [
     path('login/', views.LoginView.as_view(), name='login'),
     path('signup/', views.SignupView.as_view(), name='signup'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('dashboard/', login_required(views.DashboardView.as_view()), name='dashboard'),
+    path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
     path('', views.IndexView.as_view(), name='index'),
     path('<str:access_link>', views.IndexView.as_view(), name='index'),
     path('note/<str:access_link>', views.RetrieveNoteView.as_view(), name='retrieve_note'),

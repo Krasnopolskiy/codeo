@@ -1,4 +1,5 @@
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.http import HttpRequest
@@ -59,7 +60,7 @@ class SignupView(View):
 
 
 class RetrieveNoteView(View):
-    context = {'pagename': 'Untitled'}
+    context = {'pagename': 'Retreive note'}
 
     def get(self, request: HttpRequest, access_link: str) -> HttpResponse:
         if 'author' not in request.session.keys():
@@ -91,7 +92,7 @@ class IndexView(View):
         return JsonResponse({'init_data': note.serialize(request.session['author'])})
 
 
-class DashboardView(View):
+class DashboardView(LoginRequiredMixin, View):
     context = {'pagename': 'Dashboard'}
 
     def get(self, request: HttpRequest) -> HttpResponse:
