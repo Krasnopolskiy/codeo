@@ -14,7 +14,7 @@ urlpatterns = [
     path('source/<str:access_link>/', views.DownloadView.as_view(), name='download'),
     path('delete/<int:id>/', views.DeleteView.as_view(), name='delete'),
     path('', views.EditorView.as_view(), name='editor'),
-    path('<str:access_link>/', views.EditorView.as_view(), name='editor'),
+    path('<str:access_link>', views.EditorView.as_view(), name='editor'),
 ]
 
 websocket_urlpatterns = [
