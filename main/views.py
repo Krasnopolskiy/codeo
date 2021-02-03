@@ -89,7 +89,9 @@ class EditorView(View):
     def post(self, request: HttpRequest) -> JsonResponse:
         author = models.Author.objects.filter(uid=request.session['author']).first()
         note = models.Note(author=author, language=request.POST.get('language'))
+        note.name = request.POST.get('name', 'Untitled')
         note.save()
+        note.set_source(request.POST.get('source'))
         return JsonResponse({'init_data': note.serialize(request.session['author'])})
 
 

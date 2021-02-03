@@ -7,7 +7,7 @@ let error = init_data === undefined
 let note, ws, ismine, read_link, edit_link
 
 
-init_note = (init_data) => {
+let init_note = (init_data) => {
     error = false
     note = init_data['editable']
     ismine = init_data['ismine']
@@ -20,7 +20,7 @@ init_note = (init_data) => {
     $('#edit-settings .input-group input').val(edit_link)
 }
 
-init_websocket = () => {
+let init_websocket = () => {
     ws = new WebSocket('ws://' + url.host + url.pathname + '/' + client)
 
     ws.onmessage = (event) => {
@@ -40,7 +40,24 @@ init_websocket = () => {
     })
 }
 
-request_update = () => {
+let create_note = () => {
+    payload = {
+        'language': $('#language-select').val(),
+        'source': btoa(editor.getValue())
+    }
+    if (note !== undefined)
+        payload['name'] = note['name']
+    $.post('/', payload, (data) => {
+        init_data = data['init_data']
+        window.history.pushState({}, '', init_data['read_link'])
+        url = new URL(window.location.href)
+        init_note(init_data)
+        init_websocket()
+        update_editor()
+    })
+}
+
+let request_update = () => {
     note['name'] = $('#name-settings .input-group input').val()
     note['read'] = $('#read-settings .form-check input').prop('checked')
     note['edit'] = $('#edit-settings .form-check input').prop('checked')
@@ -50,7 +67,7 @@ request_update = () => {
     ws.send(JSON.stringify(note))
 }
 
-update_editor = () => {
+let update_editor = () => {
     document.title = note['name'] + ' - codeo'
     $('#name-settings .input-group input').val(note['name'])
     $('#language-select').val(note['language'])
@@ -62,6 +79,8 @@ update_editor = () => {
     editor.navigateFileEnd()
     editor.focus()
     editor.session.setMode('ace/mode/' + note['language'])
+    if (editor.getReadOnly())
+        $('#editor').click(() => create_note())
 }
 
 
@@ -89,23 +108,15 @@ $.ajaxSetup({
         'X-CSRFToken': $.cookie('csrftoken')
     }
 })
+
+
 $('#language-select').val('plain_text')
+$('#editor').click(() => create_note())
 
-
-$('#editor').click(() => {
-    $.post('/', {
-        language: $('#language-select').val()
-    }, (data) => {
-        init_data = data['init_data']
-        window.history.pushState({}, '', init_data['read_link'])
-        url = new URL(window.location.href)
-        init_note(init_data)
-        init_websocket()
-        update_editor()
-    })
-})
 
 if (url.pathname !== '/') {
+    if (init_data === undefined)
+        window.location.replace('/')
     init_note(init_data)
     init_websocket()
     update_editor()
