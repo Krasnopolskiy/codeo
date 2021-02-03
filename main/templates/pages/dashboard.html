@@ -34,15 +34,15 @@
                 <div class="card-footer container border-secondary">
                     <div class="row gy-3 gx-3 pt-2">
                         <div class="col d-grid gap-2">
-                            <a href="{% url 'index' access_link=note.read_link %}"
+                            <a href="{% url 'editor' access_link=note.read_link %}"
                                 class="btn btn-sm btn-primary">Edit</a>
                         </div>
                         <div class="col d-grid gap-2">
-                            <a href="{% url 'retrieve_note' access_link=note.read_link %}"
+                            <a href="{% url 'download' access_link=note.read_link %}"
                                 class="btn btn-sm btn-success" download="{{ note.name }}">Download</a>
                         </div>
                         <div class="col d-grid gap-2">
-                            <a href="{% url 'delete_note' id=note.id %}?next={{ request.path }}"
+                            <a href="{% url 'delete' id=note.id %}?next={{ request.path }}"
                                 class="btn btn-sm btn-danger">Delete</a>
                         </div>
                     </div>
@@ -56,7 +56,7 @@
         <div class="col-4">
             <div class="card bg-dark text-white border border-secondary shadow-sm p-3 d-grid gap-2">
                 <h1 class="display-6 text-center">You have not created any note yet</h1>
-                <a class="btn btn-outline-primary fs-5" href="{% url 'index' %}">Create your first note</a>
+                <a class="btn btn-outline-primary fs-5" href="{% url 'editor' %}">Create your first note</a>
             </div>
         </div>
     </div>

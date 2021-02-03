@@ -11,10 +11,10 @@ urlpatterns = [
     path('signup/', views.SignupView.as_view(), name='signup'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
-    path('', views.IndexView.as_view(), name='index'),
-    path('<str:access_link>', views.IndexView.as_view(), name='index'),
-    path('note/<str:access_link>', views.RetrieveNoteView.as_view(), name='retrieve_note'),
-    path('delete/<int:id>/', views.DeleteNoteView.as_view(), name='delete_note'),
+    path('source/<str:access_link>/', views.DownloadView.as_view(), name='download'),
+    path('delete/<int:id>/', views.DeleteView.as_view(), name='delete'),
+    path('', views.EditorView.as_view(), name='editor'),
+    path('<str:access_link>/', views.EditorView.as_view(), name='editor'),
 ]
 
 websocket_urlpatterns = [

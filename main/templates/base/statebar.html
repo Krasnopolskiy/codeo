@@ -1,0 +1,26 @@
+<nav class="statebar bg-dark">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <button id="settings-btn" class="btn text-white" data-bs-toggle="modal" data-bs-target="#setting-modal">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
+            </div>
+            <div class="col d-flex flex-row-reverse">
+                <select class="btn bg-transparent border-0 text-white" id="language-select">
+                    {% for ace_name in languages %}
+                    <option value="{{ ace_name }}">
+                        {% with name=languages|get_item:ace_name|get_item:'name' %}
+                        {% if name != '' %}
+                        {{ name }}
+                        {% else %}
+                        {{ ace_name }}
+                        {% endif %}
+                        {% endwith %}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+</nav>

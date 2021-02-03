@@ -72,6 +72,7 @@ editor.setOptions({
     fontSize: 16,
     fontFamily: 'MesloLGS',
     theme: 'ace/theme/monokai',
+    wrap: true,
     enableBasicAutocompletion: true,
     fixedWidthGutter: true,
     enableLiveAutocompletion: true,

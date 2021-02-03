@@ -1,0 +1,37 @@
+::-webkit-scrollbar-track {
+    background: #272822;
+}
+
+#editor {
+    height: calc(100vh - (56px + 30px))
+}
+
+#settings-btn,
+#language-select {
+    height: 30px;
+    font-size: 12px;
+}
+
+#settings-btn:focus,
+#language-select:focus {
+    box-shadow: none !important;
+}
+
+.ace_tooltip {
+    background-color: #25282c;
+    background-color: #272822;
+    padding: .7rem;
+    color: #c1c1c1;
+    font-family: 'MesloLGS';
+}
+
+.statebar {
+    height: 30px;
+}
+
+.statebar,
+.ace-monokai,
+.ace_gutter-layer,
+option {
+    background-color: #272822 !important;
+}

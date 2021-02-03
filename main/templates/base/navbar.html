@@ -1,14 +1,14 @@
 {% url 'login' as login_url %}
 {% url 'signup' as signup_url %}
 {% url 'signout' as signout_url %}
-{% url 'index' as index_url %}
+{% url 'editor' as editor_url %}
 {% url 'dashboard' as dashboard_url %}
 {% url 'admin' as admin_url %}
 
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'index' %}">codeo</a>
+        <a class="navbar-brand" href="{% url 'editor' %}">codeo</a>
         <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -25,8 +25,8 @@
                 </li>
                 {% else %}
                 <li class="nav-item">
-                    <a class="nav-link {% if request.path == index_url %}active disabled{% endif %}"
-                        href="{% url 'index' %}">New note</a>
+                    <a class="nav-link {% if request.path == editor_url %}active disabled{% endif %}"
+                        href="{% url 'editor' %}">New note</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {% if request.path == dashboard_url %}active disabled{% endif %}"

@@ -1,22 +1,7 @@
 {% extends 'base/base.html' %}
 
 {% block extra_css %}
-<style>
-    #editor {
-        height: calc(100vh - 56px)
-    }
-
-    #settings-btn,  #language-select {
-        height: 32px
-    }
-
-    .ace_tooltip {
-        background-color: #25282c;
-        padding: .7rem;
-        color: #c1c1c1;
-        font-family: 'MesloLGS';
-    }
-</style>
+<link href="{% static 'css/editor.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -27,27 +12,9 @@
             <div id="editor"></div>
         </div>
     </div>
-    <div class="position-absolute bottom-0 end-0 m-2 me-4">
-        <select class="btn btn-secondary btn-sm text-white" id="language-select">
-            {% for ace_name in languages %}
-            <option value="{{ ace_name }}">
-                {% with name=languages|get_item:ace_name|get_item:'name' %}
-                {% if name != '' %}
-                {{ name }}
-                {% else %}
-                {{ ace_name }}
-                {% endif %}
-                {% endwith %}
-            </option>
-            {% endfor %}
-        </select>
-        <button id="settings-btn" type="button" class="btn btn-secondary text-white btn-sm"
-            data-bs-toggle="modal" data-bs-target="#setting-modal">
-            Settings
-        </button>
-    </div>
 </div>
-{% include 'misc/settings.html' with note=init_data %}
+{% include 'base/statebar.html' with languages=languages%}
+{% include 'base/settings.html' with note=init_data %}
 {% endblock %}
 
 

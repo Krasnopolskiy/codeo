@@ -59,7 +59,7 @@ class SignupView(View):
         return render(request, 'pages/signup.html', self.context)
 
 
-class RetrieveNoteView(View):
+class DownloadView(View):
     context = {'pagename': 'Retreive note'}
 
     def get(self, request: HttpRequest, access_link: str) -> HttpResponse:
@@ -69,10 +69,11 @@ class RetrieveNoteView(View):
         source = b64decode(note.get_source().encode()).decode()
         return HttpResponse(source, content_type="text/plain")
 
-class IndexView(View):
+class EditorView(View):
     context = {'pagename': 'Editor'}
 
     def get(self, request: HttpRequest, access_link: str = '') -> HttpResponse:
+        self.context['pagename'] = 'Editor'
         if 'author' not in request.session.keys():
             author = models.Author()
             author.save()
@@ -83,7 +84,7 @@ class IndexView(View):
         if note is not None:
             self.context['init_data'] = json.dumps(note.serialize(request.session['author']))
             self.context['pagename'] = note.name
-        return render(request, 'pages/index.html', self.context)
+        return render(request, 'pages/editor.html', self.context)
 
     def post(self, request: HttpRequest) -> JsonResponse:
         author = models.Author.objects.filter(uid=request.session['author']).first()
@@ -104,7 +105,7 @@ class DashboardView(LoginRequiredMixin, View):
         return render(request, 'pages/dashboard.html', self.context)
 
 
-class DeleteNoteView(View):
+class DeleteView(View):
     context = {'pagename': 'Delete note'}
 
     def get(self, request: HttpRequest, id: int) -> HttpResponse:
