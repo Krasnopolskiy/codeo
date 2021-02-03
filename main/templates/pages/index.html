@@ -9,6 +9,13 @@
     #settings-btn,  #language-select {
         height: 32px
     }
+
+    .ace_tooltip {
+        background-color: #25282c;
+        padding: .7rem;
+        color: #c1c1c1;
+        font-family: 'MesloLGS';
+    }
 </style>
 {% endblock %}
 
@@ -47,7 +54,9 @@
 {% block extra_js %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.1/uuid.min.js"></script>
-<script src="https://pagecdn.io/lib/ace/1.4.12/ace.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-emmet.min.js"></script>
 
 <script>
     let init_data = {{ init_data|safe }}

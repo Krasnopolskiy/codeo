@@ -68,8 +68,14 @@ update_editor = () => {
 editor.setOptions({
     showPrintMargin: false,
     readOnly: false,
+    scrollPastEnd: 1,
     fontSize: 16,
-    theme: 'ace/theme/monokai'
+    fontFamily: 'MesloLGS',
+    theme: 'ace/theme/monokai',
+    enableBasicAutocompletion: true,
+    fixedWidthGutter: true,
+    enableLiveAutocompletion: true,
+    enableSnippets: true
 })
 editor.session.setOptions({
     tabSize: 4,
