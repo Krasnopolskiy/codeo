@@ -3,7 +3,7 @@
 }
 
 #editor {
-    height: calc(100vh - (56px + 30px))
+    height: calc(100vh - (56px))
 }
 
 #settings-btn,
@@ -18,18 +18,22 @@
 }
 
 .ace_tooltip {
-    background-color: #25282c;
-    background-color: #272822;
     padding: .7rem;
     color: #c1c1c1;
     font-family: 'MesloLGS';
 }
 
 .statebar {
+    bottom: 0;
+    left: 0;
+    z-index: 5;
+    width: 100%;
     height: 30px;
+    background-color: transparent !important;
+    backdrop-filter: blur(10px);
 }
 
-.statebar,
+.ace_tooltip,
 .ace-monokai,
 .ace_gutter-layer,
 option {

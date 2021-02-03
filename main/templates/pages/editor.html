@@ -12,8 +12,8 @@
             <div id="editor"></div>
         </div>
     </div>
+    {% include 'base/statebar.html' with languages=languages%}
 </div>
-{% include 'base/statebar.html' with languages=languages%}
 {% include 'base/settings.html' with note=init_data %}
 {% endblock %}
 
