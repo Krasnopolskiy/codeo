@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 import os
-from base64 import b64decode
 from typing import Dict
 
 from . import misc
@@ -91,4 +90,4 @@ class Note(models.Model):
         return context
 
     def __str__(self) -> str:
-        return f'<Note: {self.read_link} | {self.name}>'
+        return f'<Note: {self.read_link}>'

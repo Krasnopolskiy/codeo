@@ -2,7 +2,7 @@ from django.contrib.auth.views import LogoutView
 from django.contrib import admin
 from django.urls import path
 
-from notes import views, consumers
+from main import views, consumers
 
 
 urlpatterns = [
