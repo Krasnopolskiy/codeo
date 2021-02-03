@@ -72,6 +72,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'codeo',
         'USER': 'postgres',
+        # FIXME make password secure
         'PASSWORD': '123456',
         'HOST': 'localhost',
         'PORT': 5432,
