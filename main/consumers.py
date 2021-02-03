@@ -42,6 +42,10 @@ class NoteConsumer(AsyncWebsocketConsumer):
         if close_code == 1006:
             return
 
+        source = await sync_to_async(self.note.get_source)()
+        if len(source) == 0:
+            await sync_to_async(self.note.delete)()
+
         await self.channel_layer.group_discard(
             self.room_note,
             self.channel_name
