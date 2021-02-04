@@ -7,7 +7,8 @@
 }
 
 #settings-btn,
-#language-select {
+#language-select,
+#caret-position {
     height: 30px;
     font-size: 12px;
 }
@@ -29,8 +30,7 @@
     z-index: 5;
     width: 100%;
     height: 30px;
-    background-color: transparent !important;
-    backdrop-filter: blur(10px);
+    background-color: #272822 !important;
 }
 
 .ace_tooltip,

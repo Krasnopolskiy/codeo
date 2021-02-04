@@ -1,10 +1,13 @@
-<nav class="statebar bg-dark position-absolute shadow">
+<nav class="statebar bg-dark position-absolute">
     <div class="container-fluid">
         <div class="row">
             <div class="col">
                 <button id="settings-btn" class="btn text-white" data-bs-toggle="modal" data-bs-target="#setting-modal">
                     <i class="fas fa-ellipsis-v"></i>
                 </button>
+                <p class="font-monospace pt-2 d-inline" id="caret-position">
+                    Row <span id="caret-row">0</span>, Col <span id="caret-col">0</span><span id="caret-selection"></span>
+                </p>
             </div>
             <div class="col d-flex flex-row-reverse">
                 <select class="btn bg-transparent border-0 text-white" id="language-select">
@@ -19,7 +22,7 @@
                         {% endwith %}
                     </option>
                     {% endfor %}
-                </select>
+                </select> 
             </div>
         </div>
     </div>

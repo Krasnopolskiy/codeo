@@ -11,32 +11,33 @@ let init_note = (init_data) => {
     error = false
     note = init_data['editable']
     ismine = init_data['ismine']
-    read_link = url.host + '/' + init_data['read_link']
-    edit_link = url.host + '/' + init_data['edit_link']
+    read_link = `${url.host}/${init_data['read_link']}`
+    edit_link = `${url.host}/${init_data['edit_link']}`
     $('#editor').off('click')
     $('#settings-btn').prop('disabled', !ismine)
-    $('#delete-btn').attr('href', 'delete/' + init_data['id'] + '?next=/')
+    $('#delete-btn').attr('href', `delete/${init_data['id']}?next=/`)
     $('#read-settings .input-group input').val(read_link)
     $('#edit-settings .input-group input').val(edit_link)
 }
 
 let init_websocket = () => {
-    ws = new WebSocket('ws://' + url.host + url.pathname + '/' + client)
-
+    ws = new WebSocket(`ws://${url.host}${url.pathname}/${client}`)
     ws.onmessage = (event) => {
         data = JSON.parse(event['data'])
         note = data['editable']
         if (client !== data['client'])
             update_editor()
     }
-
-    $('#editor').keyup(() => request_update())
+    $('#editor').keyup(() => {
+        update_caret_state()
+        request_update()
+    })
     $('#language-select').change(() => request_update())
     $('#read-settings .form-check input').click(() => request_update())
     $('#edit-settings .form-check input').click(() => request_update())
     $('#name-settings .input-group button').click(() => {
         request_update()
-        document.title = note['name'] + ' - codeo'
+        document.title = `${note['name']} - codeo`
     })
 }
 
@@ -57,18 +58,27 @@ let create_note = () => {
     })
 }
 
+let update_caret_state = () => {
+    $('#caret-row').text(editor.getCursorPosition()['row'])
+    $('#caret-col').text(editor.getCursorPosition()['column'])
+    let selected = editor.getSelectedText()
+    $('#caret-selection').text('')
+    if (selected !== '')
+        $('#caret-selection').text(` (Selected ${selected.length})`)
+}
+
 let request_update = () => {
     note['name'] = $('#name-settings .input-group input').val()
     note['read'] = $('#read-settings .form-check input').prop('checked')
     note['edit'] = $('#edit-settings .form-check input').prop('checked')
     note['source'] = btoa(editor.getValue())
     note['language'] = $('#language-select').val()
-    editor.session.setMode('ace/mode/' + note['language'])
+    editor.session.setMode(`ace/mode/${note['language']}`)
     ws.send(JSON.stringify(note))
 }
 
 let update_editor = () => {
-    document.title = note['name'] + ' - codeo'
+    document.title = `${note['name']} - codeo`
     $('#name-settings .input-group input').val(note['name'])
     $('#language-select').val(note['language'])
     $('#read-settings .form-check input').prop('checked', note['read'])
@@ -78,7 +88,8 @@ let update_editor = () => {
     editor.clearSelection()
     editor.navigateFileEnd()
     editor.focus()
-    editor.session.setMode('ace/mode/' + note['language'])
+    editor.session.setMode(`ace/mode/${note['language']}`)
+    $('#editor').click(() => update_caret_state())
     if (editor.getReadOnly())
         $('#editor').click(() => create_note())
 }
