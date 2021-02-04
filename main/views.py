@@ -69,6 +69,7 @@ class DownloadView(View):
         source = b64decode(note.get_source().encode()).decode()
         return HttpResponse(source, content_type="text/plain")
 
+
 class EditorView(View):
     context = {'pagename': 'Editor'}
 
