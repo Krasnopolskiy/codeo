@@ -59,8 +59,8 @@ let create_note = () => {
 }
 
 let update_caret_state = () => {
-    $('#caret-row').text(editor.getCursorPosition()['row'])
-    $('#caret-col').text(editor.getCursorPosition()['column'])
+    $('#caret-row').text(editor.getCursorPosition()['row'] + 1)
+    $('#caret-col').text(editor.getCursorPosition()['column'] + 1)
     let selected = editor.getSelectedText()
     $('#caret-selection').text('')
     if (selected !== '')
