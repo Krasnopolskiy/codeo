@@ -10,6 +10,8 @@ from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeEr
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.sites.shortcuts import get_current_site
 from .utils import account_activation_token
+from django.contrib.auth.models import User
+
 
 import json
 from base64 import b64decode
@@ -60,6 +62,7 @@ class SignupView(View):
             user = authenticate(username=username, password=password)
             if user is not None:
                 user.is_active = False
+                user.save()
                 uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
 
                 domain = get_current_site(request).domain
@@ -68,8 +71,7 @@ class SignupView(View):
 
                 activate_url = 'http://' + domain + link
 
-                email_body = 'Hi ' +  username +'\n'+ 'Please the link below to activate your account\n ' +activate_url
-
+                email_body = 'Hi ' +  username +'\n'+ 'Please the link below to activate your account\n ' +activate_url + ''
                 email_subject = 'Activate your account'
 
                 email = EmailMessage(
@@ -89,7 +91,7 @@ class SignupView(View):
         return render(request, 'pages/signup.html', self.context)
 
 class VerificationView(View):
-    def get(self, request: HttpRequest, uidb64, token) -> HttpResponse:
+    def get(self, request, uidb64, token):
         try:
             id = force_text(urlsafe_base64_decode(uidb64))
             user = User.objects.get(pk=id)
