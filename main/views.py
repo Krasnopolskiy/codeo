@@ -59,15 +59,16 @@ class SignupView(View):
         return render(request, 'pages/signup.html', self.context)
 
 
-class DownloadView(View):
-    context = {'pagename': 'Retreive note'}
+class DashboardView(LoginRequiredMixin, View):
+    context = {'pagename': 'Dashboard'}
 
-    def get(self, request: HttpRequest, access_link: str) -> HttpResponse:
-        if 'author' not in request.session.keys():
-            return redirect(reverse('index'))
-        note = misc.retrieve_note(access_link, request.session['author'])
-        source = b64decode(note.get_source().encode()).decode()
-        return HttpResponse(source, content_type="text/plain")
+    def get(self, request: HttpRequest) -> HttpResponse:
+        author = models.Author.objects.filter(user=request.user).first()
+        notes = models.Note.objects.filter(author=author)
+        self.context['notes'] = notes
+        self.context['host'] = request.build_absolute_uri().split('/')[2] + '/'
+        self.context['languages'] = misc.LANGUAGES
+        return render(request, 'pages/dashboard.html', self.context)
 
 
 class EditorView(View):
@@ -96,23 +97,22 @@ class EditorView(View):
         return JsonResponse({'init_data': note.serialize(request.session['author'])})
 
 
-class DashboardView(LoginRequiredMixin, View):
-    context = {'pagename': 'Dashboard'}
+class RawView(View):
+    context = {'pagename': 'Raw'}
 
-    def get(self, request: HttpRequest) -> HttpResponse:
-        author = models.Author.objects.filter(user=request.user).first()
-        notes = models.Note.objects.filter(author=author)
-        self.context['notes'] = notes
-        self.context['host'] = request.build_absolute_uri().split('/')[2] + '/'
-        self.context['languages'] = misc.LANGUAGES
-        return render(request, 'pages/dashboard.html', self.context)
+    def get(self, request: HttpRequest, access_link: str) -> HttpResponse:
+        if 'author' not in request.session.keys():
+            return redirect(reverse('index'))
+        note = misc.retrieve_note(access_link, request.session['author'])
+        source = b64decode(note.get_source().encode()).decode()
+        return HttpResponse(source, content_type="text/plain")
 
 
 class DeleteView(View):
-    context = {'pagename': 'Delete note'}
+    context = {'pagename': 'Delete'}
 
-    def get(self, request: HttpRequest, id: int) -> HttpResponse:
-        note = models.Note.objects.filter(id=id).first()
+    def get(self, request: HttpRequest, access_link: str) -> HttpResponse:
+        note = misc.retrieve_note(access_link, request.session['author'])
         if note is not None and request.session['author'] == note.author.uid:
             note.delete()
         return redirect(request.GET.get('next', 'index'))

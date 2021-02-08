@@ -38,11 +38,11 @@
                                 class="btn btn-sm btn-primary">Edit</a>
                         </div>
                         <div class="col d-grid gap-2">
-                            <a href="{% url 'download' access_link=note.read_link %}" class="btn btn-sm btn-success"
+                            <a href="{% url 'raw' access_link=note.read_link %}" class="btn btn-sm btn-success"
                                 download="{{ note.name }}">Download</a>
                         </div>
                         <div class="col d-grid gap-2">
-                            <a href="{% url 'delete' id=note.id %}?next={{ request.path }}"
+                            <a href="{% url 'delete' access_link=note.read_link %}?next={{ request.path }}"
                                 class="btn btn-sm btn-danger">Delete</a>
                         </div>
                     </div>
