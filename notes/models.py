@@ -9,7 +9,7 @@ from . import misc
 
 
 class Author(models.Model):
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(User(is_active=False), null=True, on_delete=models.CASCADE)
     uid = models.CharField(max_length=16, null=True)
 
     def save(self) -> None:

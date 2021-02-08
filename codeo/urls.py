@@ -12,6 +12,7 @@ urlpatterns = [
     path('signup/', views.SignupView.as_view(), name='signup'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('dashboard/', login_required(views.DashboardView.as_view()), name='dashboard'),
+    path('activate/<uidb64>/<token>', views.VerificationView.as_view(), name = 'activate'),
     path('', views.IndexView.as_view(), name='index'),
     path('<str:access_link>', views.IndexView.as_view(), name='index'),
     path('note/<str:access_link>', views.RetrieveView.as_view(), name='retrieve_note'),

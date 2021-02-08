@@ -5,6 +5,12 @@ from django.http import HttpRequest
 from django.urls import reverse
 from django.views import View
 
+from django.core.mail import EmailMessage
+from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.contrib.sites.shortcuts import get_current_site
+from .utils import account_activation_token
+
 import json
 from base64 import b64decode
 
@@ -50,12 +56,59 @@ class SignupView(View):
             form.save()
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
+            email = form.cleaned_data.get('email')
             user = authenticate(username=username, password=password)
             if user is not None:
+                user.is_active = False
+                uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+
+                domain = get_current_site(request).domain
+
+                link = reverse('activate', kwargs={'uidb64':uidb64, 'token': account_activation_token.make_token(user)})
+
+                activate_url = 'http://' + domain + link
+
+                email_body = 'Hi ' +  username +'\n'+ 'Please the link below to activate your account\n ' +activate_url
+
+                email_subject = 'Activate your account'
+
+                email = EmailMessage(
+                    email_subject,email_body,'noreply@semycolon.com',
+                    [email]
+                )
+                email.send(fail_silently=False)
+                email1_body = 'Работает, чмо?'
+                email1 = EmailMessage(
+                    email1_body, 'noreply@semycolon.com',
+                    [email]
+                )
+                email1.send(fail_silently=False)
                 return redirect(reverse('login'))
         if not form.is_valid():
             self.context['form_errors'] = form.errors
         return render(request, 'pages/signup.html', self.context)
+
+class VerificationView(View):
+    def get(self, request: HttpRequest, uidb64, token) -> HttpResponse:
+        try:
+            id = force_text(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=id)
+
+            if not account_activation_token.check_token(user, token):
+                return redirect('login'+'?message='+'User already activated')
+
+            if user.is_active:
+                return redirect('login')
+            user.is_active = True
+            user.save()
+
+            messages.success(request, 'Account activated successfully')
+            return redirect('login')
+
+        except Exception as ex:
+            pass
+
+        return redirect('login')        
 
 
 class RetrieveView(View):
