@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 import os
 from typing import Dict
+from datetime import timedelta
 
 from . import misc
 
@@ -17,11 +18,14 @@ class Author(models.Model):
         super(Author, self).save()
 
     def __str__(self) -> str:
-        return f'<Author: {self.uid}>'
+        return f'<Author {self.uid}>'
 
 
 class Note(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    created = models.DateField(auto_now_add=True)
+    expires = models.DateField(null=True)
+
     name = models.CharField(max_length=64, default='Untitled')
     language = models.CharField(max_length=20)
 
@@ -46,13 +50,15 @@ class Note(models.Model):
         self.name += extension if extension != '' else ''
 
     def save(self) -> None:
-        if not self.pk:
+        if self.pk is None:
             self.read_link = misc.generate_unique_field(Note, 'read_link', 4)
             self.edit_link = misc.generate_unique_field(Note, 'edit_link', 6)
             open(f'sources/{self.read_link}', 'a').close()
         self.language = ['plain_text', self.language][self.language in misc.LANGUAGES]
         self.set_name()
         super(Note, self).save()
+        if self.expires is None:
+            self.expires = self.created + timedelta(days=3)
 
     def update(self, access_link: str, request_uid: str, payload: dict) -> None:
         allowed_fields = {'language'}
@@ -90,4 +96,4 @@ class Note(models.Model):
         return context
 
     def __str__(self) -> str:
-        return f'<Note: {self.read_link}>'
+        return f'<Note {self.read_link}>'
