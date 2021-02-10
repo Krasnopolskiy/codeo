@@ -39,6 +39,7 @@ class Note(models.Model):
         if os.path.exists(f'sources/{self.read_link}'):
             with open(f'sources/{self.read_link}', 'r') as f:
                 return f.read()
+        return ''
 
     def set_source(self, source: str) -> None:
         if misc.validate_base64(source):
