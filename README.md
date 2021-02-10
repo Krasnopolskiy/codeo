@@ -18,11 +18,15 @@
     ```bash
     python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())' > secretkey.txt
     ```
-5. Apply migrations:
+5. Create postgresql database:
     ```bash
-    python manage.py migrate
+    psql -U postgres -p 5432 -h localhost
+    createdb codeo
     ```
-
+6. Apply migrations:
+    ```bash
+    python manage.py migrate --run-syncdb
+    ```
 ## Run service
 1. Run redis server:
     ```bash
