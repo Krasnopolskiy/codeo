@@ -63,7 +63,7 @@ class SignupView(View):
             if user is not None:
                 user.is_active = False
                 user.save()
-                uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+                uidb64 = urlsafe_base64_encode(force_bytes(user.id))
 
                 domain = get_current_site(request).domain
 
@@ -79,12 +79,6 @@ class SignupView(View):
                     [email]
                 )
                 email.send(fail_silently=False)
-                email1_body = 'Работает, чмо?'
-                email1 = EmailMessage(
-                    email1_body, 'noreply@semycolon.com',
-                    [email]
-                )
-                email1.send(fail_silently=False)
                 return redirect(reverse('login'))
         if not form.is_valid():
             self.context['form_errors'] = form.errors
@@ -94,7 +88,7 @@ class VerificationView(View):
     def get(self, request, uidb64, token):
         try:
             id = force_text(urlsafe_base64_decode(uidb64))
-            user = User.objects.get(pk=id)
+            user = User.objects.get(id=id)
 
             if not account_activation_token.check_token(user, token):
                 return redirect('login'+'?message='+'User already activated')
