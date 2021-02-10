@@ -11,6 +11,8 @@ from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.sites.shortcuts import get_current_site
 from .utils import account_activation_token
 from django.contrib.auth.models import User
+from django.template.loader import render_to_string, get_template
+
 
 
 import json
@@ -73,12 +75,17 @@ class SignupView(View):
 
                 email_body = 'Hi ' +  username +'\n'+ 'Please the link below to activate your account\n ' +activate_url + ''
                 email_subject = 'Activate your account'
-
+                ctx = {
+                    'user': username,
+                    'url':activate_url
+                }
+                message = get_template('mail.html').render(ctx)
                 email = EmailMessage(
-                    email_subject,email_body,'noreply@semycolon.com',
+                    email_subject,message,'noreply@semycolon.com',
                     [email]
                 )
-                email.send(fail_silently=False)
+                email.content_subtype = "html"
+                email.send(fail_silently=False )
                 return redirect(reverse('login'))
         if not form.is_valid():
             self.context['form_errors'] = form.errors
