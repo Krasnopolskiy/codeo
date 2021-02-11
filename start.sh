@@ -1,10 +1,12 @@
 #!/bin/bash
 
-SECRET_KEY=$(python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())")
-DB_PASSWORD=$(python -c "from django.utils.crypto import get_random_string; print(get_random_string(16))")
-
 INFO='\033[1;32m'
 ENDINFO='\033[0m'
+
+echo -e "${INFO}Updating pip and installing django${ENDINFO}"
+python -m pip install --upgrade pip && python -m pip install django
+SECRET_KEY=$(python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())")
+DB_PASSWORD=$(python -c "from django.utils.crypto import get_random_string; print(get_random_string(16))")
 
 if [ $1 == 'production' ]; then
     echo -e "${INFO}Starting production server${ENDINFO}"
@@ -34,7 +36,8 @@ elif [ $1 == 'debug' ]; then
     export REDIS_HOST=localhost
 
     echo -e "${INFO}Installing python requirements${ENDINFO}"
-    pip install --upgrade pip && pip install -r requirements.txt
+    python -m pip install --upgrade pip \
+        && python -m pip install -r requirements.txt
 
     echo -e "${INFO}Starting postgresql server${ENDINFO}"
     systemctl start postgresql.service

@@ -10,5 +10,5 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         authors = models.Author.objects.annotate(notes_count=Count('note'))
         authors = authors.filter(Q(notes_count=0) & Q(user=None))
-        self.stdout.write(f'Deleted {len(authors)} authors')
+        self.stdout.write(self.style.SUCCESS(f'Deleted {len(authors)} authors'))
         [author.delete() for author in authors]

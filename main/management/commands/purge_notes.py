@@ -9,5 +9,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         notes = models.Note.objects.filter(expires__lt=datetime.now())
-        self.stdout.write(f'Deleted {len(notes)} notes')
+        self.stdout.write(self.style.SUCCESS(f'Deleted {len(notes)} notes'))
         [note.delete() for note in notes]
