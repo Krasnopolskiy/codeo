@@ -21,7 +21,7 @@ if [ $1 == 'production' ]; then
     REDIS_HOST=redis" > docker/.env
 
     echo -e "${INFO}Building docker container${ENDINFO}"
-    docker-compose up --remove-orphans --build -d
+    docker-compose up --remove-orphans --build
 
 elif [ $1 == 'debug' ]; then
     echo -e "${INFO}Starting debug server${ENDINFO}"
