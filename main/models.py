@@ -36,13 +36,16 @@ class Note(models.Model):
     edit_link = models.CharField(max_length=6, null=True)
 
     def get_source(self) -> str:
-        with open(f'sources/{self.read_link}', 'r') as f:
-            return f.read()
+        if os.path.exists(f'sources/{self.read_link}'):
+            with open(f'sources/{self.read_link}', 'r') as f:
+                return f.read()
+        return ''
 
     def set_source(self, source: str) -> None:
         if misc.validate_base64(source):
-            with open(f'sources/{self.read_link}', 'w') as f:
-                f.write(source)
+            if os.path.exists(f'sources/{self.read_link}'):
+                with open(f'sources/{self.read_link}', 'w') as f:
+                    f.write(source)
 
     def set_name(self) -> None:
         self.name = self.name.strip().split('.')[0]

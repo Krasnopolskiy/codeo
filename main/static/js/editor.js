@@ -15,13 +15,17 @@ let init_note = (init_data) => {
     edit_link = `${url.host}/${init_data['edit_link']}`
     $('#editor').off('click')
     $('#settings-btn').prop('disabled', !ismine)
-    $('#delete-btn').attr('href', `delete/${init_data['id']}?next=/`)
+    $('#delete-btn').attr('href', `${init_data['read_link']}/delete?next=/`)
     $('#read-settings .input-group input').val(read_link)
     $('#edit-settings .input-group input').val(edit_link)
 }
 
 let init_websocket = () => {
     ws = new WebSocket(`ws://${url.host}${url.pathname}/${client}`)
+    ws.onerror = (event) => {
+        console.log(event)
+        window.location.replace('/')
+    }
     ws.onmessage = (event) => {
         data = JSON.parse(event['data'])
         note = data['editable']
@@ -44,7 +48,7 @@ let init_websocket = () => {
 let create_note = () => {
     payload = {
         'language': $('#language-select').val(),
-        'source': btoa(editor.getValue())
+        'source': btoa(encodeURIComponent(editor.getValue()))
     }
     if (note !== undefined)
         payload['name'] = note['name']
@@ -71,7 +75,7 @@ let request_update = () => {
     note['name'] = $('#name-settings .input-group input').val()
     note['read'] = $('#read-settings .form-check input').prop('checked')
     note['edit'] = $('#edit-settings .form-check input').prop('checked')
-    note['source'] = btoa(editor.getValue())
+    note['source'] = btoa(encodeURIComponent(editor.getValue()))
     note['language'] = $('#language-select').val()
     editor.session.setMode(`ace/mode/${note['language']}`)
     ws.send(JSON.stringify(note))
@@ -83,7 +87,7 @@ let update_editor = () => {
     $('#language-select').val(note['language'])
     $('#read-settings .form-check input').prop('checked', note['read'])
     $('#edit-settings .form-check input').prop('checked', note['edit'])
-    editor.setValue(atob(note['source']))
+    editor.setValue(decodeURIComponent(atob(note['source'])))
     editor.setReadOnly(error || !ismine && (!note['edit'] || url.pathname.length != 7))
     editor.clearSelection()
     editor.navigateFileEnd()
