@@ -1,13 +1,11 @@
 from pathlib import Path
-from os import path
+from os import path, environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-with open('secretkey.txt') as f:
-    SECRET_KEY = f.read().strip()
+SECRET_KEY = environ.get('DJANGO_SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(environ.get('DJANGO_DEBUG'))
 
 ALLOWED_HOSTS = ['*']
 
@@ -62,7 +60,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [('127.0.0.1', 6379)],
+            'hosts': [(environ.get('REDIS_HOST'), 6379)],
         },
     },
 }
@@ -70,12 +68,11 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'codeo',
-        'USER': 'postgres',
-        # FIXME make password secure
-        'PASSWORD': '123456',
-        'HOST': 'localhost',
-        'PORT': 5432,
+        'NAME': environ.get('POSTGRES_DB'),
+        'USER': environ.get('POSTGRES_USER'),
+        'PASSWORD': environ.get('POSTGRES_PASSWORD'),
+        'HOST': environ.get('POSTGRES_HOST'),
+        'PORT': '5432',
     }
 }
 

@@ -5,34 +5,19 @@
     git clone https://github.com/Krasnopolskiy/codeo.git
     cd codeo
     ```
-2. Create and activate virtual environment:
+## Run debug server
+1. Create and activate virtual environment:
     ```bash
     python -m venv venv
     source venv/bin/activate
     ```
-3. Install requirements:
+2. Run script for auto start:
     ```bash
-    pip install -r requirements.txt
+    ./start.sh debug
     ```
-4. Generate secret key:
+
+## Run production server
+1. Run script for auto start:
     ```bash
-    python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())' > secretkey.txt
-    ```
-5. Create postgresql database:
-    ```bash
-    psql -U postgres -p 5432 -h localhost
-    createdb codeo
-    ```
-6. Apply migrations:
-    ```bash
-    python manage.py migrate --run-syncdb
-    ```
-## Run service
-1. Run redis server:
-    ```bash
-    docker run -p 6379:6379 -d redis:5
-    ```
-2. Run django server:
-    ```bash
-    python manage.py runserver 0.0.0.0:8000
+    ./start.sh production
     ```
