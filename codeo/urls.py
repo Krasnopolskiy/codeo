@@ -11,6 +11,7 @@ urlpatterns = [
     path('signup/', views.SignupView.as_view(), name='signup'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
+    path('activate/<uidb64>/<token>/', views.VerificationView.as_view(), name = 'activate'),
     path('', views.EditorView.as_view(), name='editor'),
     path('<str:access_link>', views.EditorView.as_view(), name='editor'),
     path('<str:access_link>/raw/', views.RawView.as_view(), name='raw'),
