@@ -22,6 +22,7 @@ if [ $1 == 'production' ]; then
 
     echo -e "${INFO}Building docker container${ENDINFO}"
     docker-compose up --remove-orphans --build
+    docker-compose down -v --remove-orphans
 
 elif [ $1 == 'development' ]; then
     echo -e "${INFO}Starting development server${ENDINFO}"
