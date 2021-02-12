@@ -12,13 +12,13 @@ if [ $1 == 'production' ]; then
     echo -e "${INFO}Starting production server${ENDINFO}"
 
     echo -e "${INFO}Generating docker/.env file${ENDINFO}"
-    echo "DJANGO_DEBUG=0
-    DJANGO_SECRET_KEY=${SECRET_KEY}
-    POSTGRES_DB=codeo
-    POSTGRES_USER=codeo_app
-    POSTGRES_PASSWORD=${DB_PASSWORD}
-    POSTGRES_HOST=postgres
-    REDIS_HOST=redis" > docker/.env
+    echo "DJANGO_DEBUG=0" > docker/.env
+    echo "DJANGO_SECRET_KEY=${SECRET_KEY}" >> docker/.env
+    echo "POSTGRES_DB=codeo" >> docker/.env
+    echo "POSTGRES_USER=codeo_app" >> docker/.env
+    echo "POSTGRES_PASSWORD=${DB_PASSWORD}" >> docker/.env
+    echo "POSTGRES_HOST=postgres" >> docker/.env
+    echo "REDIS_HOST=redis" >> docker/.env
 
     echo -e "${INFO}Building docker container${ENDINFO}"
     docker-compose up --remove-orphans --build
