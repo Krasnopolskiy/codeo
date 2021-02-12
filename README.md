@@ -10,9 +10,9 @@
     python -m venv venv
     source venv/bin/activate
     ```
-## Run debug server
+## Run development server
 ```bash
-./start.sh debug
+./start.sh development
 ```
 
 ## Run production server

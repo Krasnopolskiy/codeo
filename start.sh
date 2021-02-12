@@ -23,15 +23,15 @@ if [ $1 == 'production' ]; then
     echo -e "${INFO}Building docker container${ENDINFO}"
     docker-compose up --remove-orphans --build
 
-elif [ $1 == 'debug' ]; then
-    echo -e "${INFO}Starting debug server${ENDINFO}"
+elif [ $1 == 'development' ]; then
+    echo -e "${INFO}Starting development server${ENDINFO}"
 
     echo -e "${INFO}Exporting env variables${ENDINFO}"
     export DJANGO_DEBUG=1
-    export DJANGO_SECRET_KEY=${SECRET_KEY}
+    export DJANGO_SECRET_KEY=secret
     export POSTGRES_DB=codeo
     export POSTGRES_USER=codeo_app
-    export POSTGRES_PASSWORD=${DB_PASSWORD}
+    export POSTGRES_PASSWORD=password
     export POSTGRES_HOST=localhost
     export REDIS_HOST=localhost
 
@@ -41,7 +41,7 @@ elif [ $1 == 'debug' ]; then
 
     echo -e "${INFO}Starting postgresql server${ENDINFO}"
     systemctl start postgresql.service
-    sudo -u postgres createuser codeo_app
+    sudo -u postgres createuser $POSTGRES_USER
     sudo -u postgres createdb codeo
 
     echo -e "${INFO}Starting redis server${ENDINFO}"
