@@ -4,9 +4,9 @@ INFO='\033[1;32m'
 ENDINFO='\033[0m'
 
 echo -e "${INFO}Updating pip and installing django${ENDINFO}"
-python -m pip install --upgrade pip && python -m pip install django
-SECRET_KEY=$(python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())")
-DB_PASSWORD=$(python -c "from django.utils.crypto import get_random_string; print(get_random_string(16))")
+python3 -m pip install --upgrade pip && python3 -m pip install django
+SECRET_KEY=$(python3 -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())")
+DB_PASSWORD=$(python3 -c "from django.utils.crypto import get_random_string; print(get_random_string(16))")
 
 if [ $1 == 'production' ]; then
     echo -e "${INFO}Starting production server${ENDINFO}"
@@ -37,8 +37,8 @@ elif [ $1 == 'development' ]; then
     export REDIS_HOST=localhost
 
     echo -e "${INFO}Installing python requirements${ENDINFO}"
-    python -m pip install --upgrade pip \
-        && python -m pip install -r requirements.txt
+    python3 -m pip install --upgrade pip \
+        && python3 -m pip install -r requirements.txt
 
     echo -e "${INFO}Starting postgresql server${ENDINFO}"
     systemctl start postgresql.service
@@ -49,8 +49,8 @@ elif [ $1 == 'development' ]; then
     docker run -p 6379:6379 -d redis:latest
 
     echo -e "${INFO}Apply migrations${ENDINFO}"
-    python manage.py migrate
+    python3 manage.py migrate
 
     echo -e "${INFO}Starting django server${ENDINFO}"
-    python manage.py runserver 0.0.0.0:8000
+    python3 manage.py runserver 0.0.0.0:8000
 fi
