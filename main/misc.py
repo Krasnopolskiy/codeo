@@ -8,7 +8,7 @@ from string import ascii_letters, digits
 from . import models
 
 
-with open('static/languages.json', 'r') as f:
+with open('main/static/languages.json', 'r') as f:
     LANGUAGES = json.loads(f.read())
 
 
