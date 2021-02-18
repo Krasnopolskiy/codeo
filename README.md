@@ -92,11 +92,11 @@
     ```
 5. Collect static files:
     ```bash
-    python3 manage.py collectstatic --no-input
+    python3 manage.py collectstatic --noinput
     ```
 6. Create superuser:
     ```bash
-    python3 manage.py createsuperuser --no-input
+    python3 manage.py createsuperuser --noinput
     ```
 7. Run django server:
     ```bash
