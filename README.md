@@ -26,7 +26,7 @@
     ```bash
     python3 -c "from django.utils.crypto import get_random_string; print(get_random_string(16))"
     ```
-7. Create ./config/.env file:
+7. Create `./config/.env`:
     ```
     DJANGO_DEBUG=
     DJANGO_SECRET_KEY="<generated secret>"
