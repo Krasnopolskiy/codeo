@@ -1,11 +1,14 @@
 from pathlib import Path
 from os import path, environ
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(path.join(BASE_DIR, './config/.env'))
+
 SECRET_KEY = environ.get('DJANGO_SECRET_KEY')
 
-DEBUG = int(environ.get('DJANGO_DEBUG'))
+DEBUG = environ.get('DJANGO_DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
@@ -103,11 +106,7 @@ USE_TZ = True
 
 PROJECT_DIR = path.dirname(path.abspath(__file__))
 
-# STATIC_ROOT = path.join(PROJECT_DIR, 'static')
-
-STATICFILES_DIRS = (
-    path.join(BASE_DIR, 'static'),
-)
+STATIC_ROOT = path.join(BASE_DIR, 'static/')
 
 STATIC_URL = '/static/'
 
@@ -117,9 +116,12 @@ LOGIN_REDIRECT_URL = '/'
 
 LOGOUT_REDIRECT_URL = '/login/'
 
-#email veerification stuff
 EMAIL_USE_TLS = True
+
 EMAIL_HOST = 'smtp.gmail.com'
+
 EMAIL_HOST_USER = 'codeomain@gmail.com'
+
 EMAIL_HOST_PASSWORD = 'pdOe-R2oIIu1'
+
 EMAIL_PORT = 587
