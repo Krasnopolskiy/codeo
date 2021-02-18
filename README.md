@@ -7,7 +7,7 @@
     ```
 2. Create virtual environment:
     ```bash
-    python -m venv venv
+    python3 -m venv venv
     ```
 3. Activate virual environment:
    - Linux:
