@@ -29,10 +29,10 @@
 7. Create ./config/.env file:
     ```
     DJANGO_DEBUG=
-    DJANGO_SECRET_KEY="<generated secret_key>"
+    DJANGO_SECRET_KEY="<generated secret>"
     POSTGRES_DB=codeo
     POSTGRES_USER=codeo_app
-    POSTGRES_PASSWORD=<generated password>
+    POSTGRES_PASSWORD="<generated password>"
     POSTGRES_HOST=
     REDIS_HOST=
     ```
