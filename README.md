@@ -22,7 +22,7 @@
     ```bash
     python3 -m pip install --upgrade pip
     ```
-4. Install django:
+5. Install django:
     ```bash
     python3 -m pip install django
     ```
@@ -60,14 +60,24 @@
     REDIS_HOST=redis
     ```
 9.  Export environment variables:
-    ```bash
-    source ./config/.env
-    ```
+    - Linux:
+        ```bash
+        source ./config/.env
+        ```
+    - Windows:
+        ```powershell
+        .\config\Source.ps1
+        ```
 ## Run development server
 1. Run postgres server:
-    ```bash
-    docker run -e POSTGRES_USER=$POSTGRES_USER -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD -e POSTGRES_DB=$POSTGRES_DB -p 5432:5432 -d postgres
-    ```
+   - Linux:
+        ```bash
+        docker run -e POSTGRES_USER=$POSTGRES_USER -e POSTGRES_PASSWORD=$POSTGRES_PASSWORD -e POSTGRES_DB=$POSTGRES_DB -p 5432:5432 -d postgres
+        ```
+   - Windows:
+        ```powershell
+        docker run -e POSTGRES_USER=$env:POSTGRES_USER -e POSTGRES_PASSWORD=$env:POSTGRES_PASSWORD -e POSTGRES_DB=$env:POSTGRES_DB -p 5432:5432 -d postgres
+        ```
 2. Run redis server:
     ```bash
     docker run -p 6379:6379 -d redis
@@ -80,7 +90,15 @@
     ```bash
     python3 manage.py migrate
     ```
-5. Run django server:
+5. Collect static files:
+    ```bash
+    python3 manage.py collectstatic --no-input
+    ```
+6. Create superuser:
+    ```bash
+    python3 manage.py createsuperuser --no-input
+    ```
+7. Run django server:
     ```bash
     python3 manage.py runserver 0.0.0.0:8000
     ```
