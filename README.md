@@ -22,9 +22,9 @@
     ```bash
     python3 -m pip install --upgrade pip
     ```
-5. Install requirements:
+4. Install django:
     ```bash
-    python3 -m pip install -r requirements.txt
+    python3 -m pip install django
     ```
 6. Generate app secret key:
     ```bash
@@ -72,11 +72,15 @@
     ```bash
     docker run -p 6379:6379 -d redis
     ```
-3. Apply migrations:
+3. Install requirements:
+    ```bash
+    python3 -m pip install -r requirements.txt
+    ```
+4. Apply migrations:
     ```bash
     python3 manage.py migrate
     ```
-4. Run django server:
+5. Run django server:
     ```bash
     python3 manage.py runserver 0.0.0.0:8000
     ```
