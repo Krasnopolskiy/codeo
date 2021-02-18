@@ -5,28 +5,36 @@
     git clone https://github.com/Krasnopolskiy/codeo.git
     cd codeo
     ```
-2. Create and activate virtual environment:
+2. Create virtual environment:
     ```bash
     python -m venv venv
-    source venv/bin/activate
     ```
-3. Upgrade pip to the latest version:
+3. Activate virual environment:
+   - Linux:
+        ```bash
+        source venv/bin/activate
+        ```
+   - Windows:
+        ```powershell
+        .\venv\Scripts\Activate.ps1
+        ```
+4. Upgrade pip to the latest version:
     ```bash
     python3 -m pip install --upgrade pip
     ```
-4. Install requirements:
+5. Install requirements:
     ```bash
     python3 -m pip install -r requirements.txt
     ```
-5. Generate app secret key:
+6. Generate app secret key:
     ```bash
     python3 -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
     ```
-6. Generate postgres and superuser password:
+7. Generate postgres and superuser password:
     ```bash
     python3 -c "from django.utils.crypto import get_random_string; print(get_random_string(16))"
     ```
-7. Create `./config/.env`:
+8. Create `./config/.env`:
     ```
     DJANGO_DEBUG=
     DJANGO_SECRET_KEY="<secret_key>"
@@ -51,7 +59,7 @@
     POSTGRES_HOST=postgres
     REDIS_HOST=redis
     ```
-8. Export environment variables:
+9.  Export environment variables:
     ```bash
     source ./config/.env
     ```
