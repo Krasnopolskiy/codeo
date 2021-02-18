@@ -14,4 +14,4 @@ COPY requirements.txt /app/
 RUN pip install --upgrade pip \
     && pip install -r requirements.txt
 
-COPY codeo main sources static manage.py /app/
+COPY codeo main sources manage.py config/initdb.sh /app/

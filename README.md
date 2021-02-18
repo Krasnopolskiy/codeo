@@ -22,17 +22,20 @@
     ```bash
     python3 -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
     ```
-6. Generate postgres password:
+6. Generate postgres and superuser password:
     ```bash
     python3 -c "from django.utils.crypto import get_random_string; print(get_random_string(16))"
     ```
 7. Create `./config/.env`:
     ```
     DJANGO_DEBUG=
-    DJANGO_SECRET_KEY="<generated secret>"
+    DJANGO_SECRET_KEY="<secret_key>"
+    DJANGO_SUPERUSER_USERNAME=admin
+    DJANGO_SUPERUSER_EMAIL=codeomain@gmail.com
+    DJANGO_SUPERUSER_PASSWORD=<password>
     POSTGRES_DB=codeo
     POSTGRES_USER=codeo_app
-    POSTGRES_PASSWORD="<generated password>"
+    POSTGRES_PASSWORD=<password>
     POSTGRES_HOST=
     REDIS_HOST=
     ```
