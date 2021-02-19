@@ -8,7 +8,7 @@ load_dotenv(path.join(BASE_DIR, './config/.env'))
 
 SECRET_KEY = environ.get('DJANGO_SECRET_KEY')
 
-DEBUG = environ.get('DJANGO_DEBUG')
+DEBUG = int(environ.get('DJANGO_DEBUG'))
 
 ALLOWED_HOSTS = ['*']
 
@@ -28,6 +28,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -106,7 +107,9 @@ USE_TZ = True
 
 PROJECT_DIR = path.dirname(path.abspath(__file__))
 
-STATIC_ROOT = path.join(BASE_DIR, 'staticfiles/')
+STATIC_ROOT = path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATIC_URL = '/static/'
 

@@ -1,0 +1,1 @@
+web: gunicorn codeo.wsgi --log-file -

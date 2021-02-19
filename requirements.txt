@@ -6,3 +6,4 @@ django-crispy-forms==1.9.2
 django-registration==3.1.1
 psycopg2==2.8.6
 python-dotenv==0.15.0
+whitenoise==5.2.0
