@@ -8,9 +8,42 @@ load_dotenv(path.join(BASE_DIR, './config/.env'))
 
 SECRET_KEY = environ.get('DJANGO_SECRET_KEY')
 
-DEBUG = int(environ.get('DJANGO_DEBUG'))
+DEBUG = environ.get('DJANGO_DEBUG', 'FALSE') == 'TRUE'
 
 ALLOWED_HOSTS = ['*']
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'codeo.log',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers':['file'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+        'MYAPP': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
+    }
+}
 
 INSTALLED_APPS = [
     'main',
@@ -28,7 +61,6 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -108,8 +140,6 @@ USE_TZ = True
 PROJECT_DIR = path.dirname(path.abspath(__file__))
 
 STATIC_ROOT = path.join(BASE_DIR, 'staticfiles')
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATIC_URL = '/static/'
 

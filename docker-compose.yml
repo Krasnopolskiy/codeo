@@ -19,7 +19,7 @@ services:
             context: .
             dockerfile: config/Dockerfile
         command: sh -c "./config/initdb.sh &&
-                        python3 manage.py runserver 0.0.0.0:8000"
+                        gunicorn --bind 0.0.0.0:8000 codeo.wsgi"
         volumes:
             - .:/app/
         ports:
