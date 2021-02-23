@@ -8,9 +8,11 @@
 
 #settings-btn,
 #language-select,
-#caret-position {
+#caret-position,
+#raw-link {
     height: 30px;
     font-size: 12px;
+    color: #fff;
 }
 
 #settings-btn:focus,

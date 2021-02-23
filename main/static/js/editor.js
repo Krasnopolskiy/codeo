@@ -16,6 +16,7 @@ let init_note = (init_data) => {
     $('#editor').off('click')
     $('#settings-btn').prop('disabled', !ismine)
     $('#delete-btn').attr('href', `${init_data['read_link']}/delete?next=/`)
+    $('#raw-link').attr('href', `${init_data['read_link']}/raw`)
     $('#read-settings .input-group input').val(read_link)
     $('#edit-settings .input-group input').val(edit_link)
 }

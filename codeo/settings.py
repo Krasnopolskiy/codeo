@@ -4,11 +4,11 @@ from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv(path.join(BASE_DIR, './config/.env'))
+load_dotenv(BASE_DIR / 'config/.env')
 
 SECRET_KEY = environ.get('DJANGO_SECRET_KEY')
 
-DEBUG = environ.get('DJANGO_DEBUG', 'FALSE') == 'TRUE'
+DEBUG = environ.get('DJANGO_DEBUG', 'FALSE').upper() == 'TRUE'
 
 ALLOWED_HOSTS = ['*']
 
@@ -28,7 +28,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'codeo.log',
+            'filename': 'debug.log',
             'formatter': 'verbose'
         },
     },
@@ -139,7 +139,7 @@ USE_TZ = True
 
 PROJECT_DIR = path.dirname(path.abspath(__file__))
 
-STATIC_ROOT = path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATIC_URL = '/static/'
 

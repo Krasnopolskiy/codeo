@@ -16,6 +16,7 @@ from django.contrib.auth.models import User
 
 import json
 from base64 import b64decode
+from urllib.parse import unquote
 
 from . import forms, models, misc
 
@@ -153,8 +154,8 @@ class RawView(View):
         if 'author' not in request.session.keys():
             return redirect(reverse('index'))
         note = misc.retrieve_note(access_link, request.session['author'])
-        source = b64decode(note.get_source().encode()).decode()
-        return HttpResponse(source, content_type="text/plain")
+        source = unquote(b64decode(note.get_source().encode()))
+        return HttpResponse(source, content_type='text/plain')
 
 
 class DeleteView(View):

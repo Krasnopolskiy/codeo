@@ -49,13 +49,13 @@
     ```
     For development:
     ```
-    DJANGO_DEBUG=1
+    DJANGO_DEBUG=TRUE
     POSTGRES_HOST=localhost
     REDIS_HOST=localhost
     ```
     For production:
     ```
-    DJANGO_DEBUG=0
+    DJANGO_DEBUG=FALSE
     POSTGRES_HOST=postgres
     REDIS_HOST=redis
     ```

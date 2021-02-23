@@ -2,6 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col">
+                <a id="raw-link" class="pt-2 text-decoration-none me-3" href="#">Raw view</a>
                 <p class="font-monospace pt-2 d-inline" id="caret-position">
                     Row <span id="caret-row">0</span>, Col <span id="caret-col">0</span><span
                         id="caret-selection"></span>
@@ -21,7 +22,8 @@
                     </option>
                     {% endfor %}
                 </select>
-                <button id="settings-btn" class="btn text-white ms-3" data-bs-toggle="modal" data-bs-target="#setting-modal">
+                <button id="settings-btn" class="btn text-white ms-3" data-bs-toggle="modal"
+                    data-bs-target="#setting-modal">
                     <i class="fas fa-cog"></i>
                 </button>
             </div>
