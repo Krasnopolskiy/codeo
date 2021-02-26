@@ -12,10 +12,10 @@
             <div id="editor"></div>
         </div>
     </div>
-    {% include 'base/statebar.html' with languages=languages note=init_data %}
+    {% include 'components/statebar.html' with languages=languages note=init_data %}
 </div>
 {% if init_data != 'undefined' %}
-{% include 'base/settings.html' with note=init_data %}
+{% include 'components/settings.html' with note=init_data %}
 {% endif %}
 {% endblock %}
 
