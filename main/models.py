@@ -9,7 +9,11 @@ from . import misc
 
 
 class Author(models.Model):
-    user = models.OneToOneField(User(is_active=False), null=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User(is_active=False),
+        null=True,
+        on_delete=models.CASCADE
+    )
     uid = models.CharField(max_length=16, null=True)
 
     def save(self) -> None:
@@ -25,13 +29,10 @@ class Note(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     created = models.DateField(auto_now_add=True)
     expires = models.DateField(null=True)
-
     name = models.CharField(max_length=64, default='Untitled')
     language = models.CharField(max_length=20)
-
     read = models.BooleanField(default=True)
     read_link = models.CharField(max_length=4, null=True)
-
     edit = models.BooleanField(default=False)
     edit_link = models.CharField(max_length=6, null=True)
 
@@ -61,14 +62,14 @@ class Note(models.Model):
         self.set_name()
         super(Note, self).save()
         if self.expires is None:
-            self.expires = self.created + timedelta(days=3)
+            self.expires = self.created + timedelta(days=1)
 
     def update(self, access_link: str, request_uid: str, payload: dict) -> None:
-        allowed_fields = {'language'}
-        if access_link != self.edit_link:
-            if request_uid != self.author.uid:
-                return
-            allowed_fields = allowed_fields.union({'read', 'edit', 'name'})
+        allowed_fields = {'language', 'name'}
+        if request_uid == self.author.uid:
+            allowed_fields = allowed_fields.union({'read', 'edit'})
+        elif access_link != self.edit_link:
+            return
         for field in set(payload.keys()) & allowed_fields:
             setattr(self, field, payload[field])
         if 'source' in payload.keys():

@@ -21,10 +21,11 @@
     background-color: #343a40 !important;
 }
 
-.bi {
+.input-group-text {
     font-size: 1.5rem;
-    padding: .4rem .6rem;
     width: 45px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
 .col-4 {

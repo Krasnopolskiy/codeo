@@ -69,15 +69,15 @@ class SignupView(View):
 
                 domain = get_current_site(request).domain
 
-                link = reverse('activate', kwargs={'uidb64':uidb64, 'token': account_activation_token.make_token(user)})
+                link = reverse('activate', kwargs={'uidb64': uidb64, 'token': account_activation_token.make_token(user)})
 
                 activate_url = 'http://' + domain + link
 
-                email_body = 'Hi ' +  username +'\n'+ 'Please the link below to activate your account\n ' +activate_url + ''
+                email_body = 'Hi ' + username + '\n' + 'Please the link below to activate your account\n ' + activate_url + ''
                 email_subject = 'Activate your account'
 
                 email = EmailMessage(
-                    email_subject,email_body,'noreply@semycolon.com',
+                    email_subject, email_body, 'noreply@semycolon.com',
                     [email]
                 )
                 email.send(fail_silently=False)
@@ -85,6 +85,7 @@ class SignupView(View):
         if not form.is_valid():
             self.context['form_errors'] = form.errors
         return render(request, 'pages/signup.html', self.context)
+
 
 class VerificationView(View):
     def get(self, request, uidb64, token):
@@ -106,7 +107,7 @@ class VerificationView(View):
         except Exception as ex:
             pass
 
-        return redirect('login')        
+        return redirect('login')
 
 
 class DashboardView(LoginRequiredMixin, View):

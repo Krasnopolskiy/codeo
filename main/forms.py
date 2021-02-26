@@ -1,72 +1,44 @@
+from typing import Any
 from django_registration.forms import RegistrationForm
-from django.urls import reverse
-from django import forms
+from django.contrib.auth.forms import AuthenticationForm
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, ButtonHolder, HTML, Div
-
-from . import models
+from crispy_forms.layout import Div, HTML, Layout, ButtonHolder, Submit
 
 
-class LoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField()
+class InputBuilder:
+    def __init__(self, name, type, placeholder):
+        self.placeholder = placeholder
+        self.name = name
+        self.type = type
 
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_method = 'POST'
-        self.helper.form_action = reverse('login')
-        self.helper.form_show_labels = False
-        self.helper.layout = Layout(
-            Div(
-                HTML('<span class="input-group-text bi fas fa-user"></span>'),
-                HTML('<input class="form-control" name="username" placeholder="Username">'),
-                css_class='input-group mt-4'
-            ),
-            Div(
-                HTML('<span class="input-group-text bi fas fa-lock"></span>'),
-                HTML('<input class="form-control" type="password" name="password" placeholder="Password">'),
-                css_class='input-group mt-3'
-            ),
-            ButtonHolder(Submit('submit', 'Log in'), css_class='mt-3')
+    def build(self):
+        return Div(
+            HTML(f'<input class="form-control" type="{self.type}" name="{self.name}"\
+                    id="{self.name}-input" placeholder="{self.placeholder}">'),
+            HTML(f'<label for="{self.name}-input">{self.placeholder}</label>'),
+            css_class='form-floating text-dark my-4'
         )
 
 
-class SignupForm(forms.Form, RegistrationForm):
-    username = forms.CharField()
-    email = forms.CharField()
-    password1 = forms.CharField()
-    password2 = forms.CharField()
-
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
+class LoginForm(AuthenticationForm):
+    def __init__(self, request: Any, *args: Any, **kwargs: Any) -> None:
+        super().__init__(request=request, *args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_method = 'POST'
-        self.helper.form_action = reverse('signup')
-        self.helper.form_show_labels = False
         self.helper.layout = Layout(
-            Div(
-                HTML('<span class="input-group-text bi fas fa-user"></span>'),
-                HTML('<input class="form-control" name="username" placeholder="Username">'),
-                css_class='input-group mt-4'
-            ),
-            Div(
-                HTML('<span class="input-group-text bi fas fa-envelope"></span>'),
-                HTML('<input class="form-control" type="email" name="email" placeholder="Email">'),
-                css_class='input-group mt-3'
-            ),
-            Div(
-                HTML('<span class="input-group-text bi fas fa-lock"></span>'),
-                HTML('<input class="form-control" type="password" name="password1" placeholder="Password">'),
-                css_class='input-group mt-3'
-            ),
-            Div(
-                HTML('<span class="input-group-text bi fas fa-lock"></span>'),
-                HTML('<input class="form-control" type="password" name="password2" placeholder="Repeat password">'),
-                css_class='input-group mt-3'
-            ),
-            ButtonHolder(Submit('submit', 'Sign up'), css_class='mt-3')
+            InputBuilder('username', 'username', 'Username').build(),
+            InputBuilder('password', 'password', 'Password').build(),
+            ButtonHolder(Submit('submit', 'Log in'), css_class='mt-3'),
         )
 
-    class Meta(RegistrationForm.Meta):
-        model = models.User
+
+class SignupForm(RegistrationForm):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            InputBuilder('username', 'username', 'Username').build(),
+            InputBuilder('email', 'email', 'Email address').build(),
+            InputBuilder('password1', 'password', 'Password').build(),
+            InputBuilder('password2', 'password', 'Password confirmation').build(),
+            ButtonHolder(Submit('submit', 'Sign up'), css_class='mt-3'),
+        )
