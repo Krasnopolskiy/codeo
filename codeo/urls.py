@@ -9,14 +9,15 @@ from main import views, consumers, forms
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('login/', LoginView.as_view(
-        template_name='pages/login.html',
+        template_name='registration/login.html',
         authentication_form=forms.LoginForm,
+        extra_context={'pagename': 'Login'},
     ), name='login'),
     path('signup/', RegistrationView.as_view(
-        template_name='pages/signup.html',
+        template_name='registration/signup.html',
         form_class=forms.SignupForm,
         success_url='/',
-        extra_context={'pagename': 'Sign up'},
+        extra_context={'pagename': 'Signup'},
     ), name='signup'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
