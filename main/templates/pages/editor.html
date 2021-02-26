@@ -14,7 +14,9 @@
     </div>
     {% include 'base/statebar.html' with languages=languages note=init_data %}
 </div>
+{% if init_data != 'undefined' %}
 {% include 'base/settings.html' with note=init_data %}
+{% endif %}
 {% endblock %}
 
 
@@ -26,14 +28,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-emmet.min.js"></script>
 
 <script>
-    let init_data = {{init_data|safe}}
-    let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-    let popoverList = popoverTriggerList.map((popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl))
-    $('.copy-btn').click((event) => {
-        $(event.target).parent().children('input').select()
-        document.execCommand('copy')
-        window.getSelection().removeAllRanges()
-    })
+    let init_data = JSON.parse('{{init_data|safe}}')
 </script>
 
 <script src="{% static 'js/editor.js' %}"></script>

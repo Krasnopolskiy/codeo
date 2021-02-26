@@ -21,7 +21,7 @@
     background-color: #343a40 !important;
 }
 
-.input-group-text {
+.form-floating>.input-group-text {
     font-size: 1.5rem;
     width: 45px;
     border-top-right-radius: 0;

@@ -3,7 +3,7 @@ const client = uuid.v4()
 
 
 let url = new URL(window.location.href)
-let error = init_data === undefined
+let error = init_data === null
 let note, ws, ismine, read_link, edit_link
 
 
@@ -131,7 +131,7 @@ $('#editor').click(() => create_note())
 
 
 if (url.pathname !== '/') {
-    if (init_data === undefined)
+    if (init_data === null)
         window.location.replace('/')
     init_note(init_data)
     init_websocket()

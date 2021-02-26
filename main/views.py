@@ -12,11 +12,6 @@ from urllib.parse import unquote
 from . import models, misc
 
 
-class VerificationView(View):
-    def get(self, request, uidb64, token):
-        raise NotImplementedError
-
-
 class DashboardView(LoginRequiredMixin, View):
     context = {'pagename': 'Dashboard'}
 
@@ -32,7 +27,7 @@ class DashboardView(LoginRequiredMixin, View):
 class EditorView(View):
     context = {
         'pagename': 'Editor',
-        'init_data': 'undefined',
+        'init_data': 'null',
         'languages': misc.LANGUAGES
     }
 
