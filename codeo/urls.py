@@ -1,10 +1,8 @@
-from django.contrib.auth.views import LogoutView, LoginView
-from django_registration.backends.one_step.views import RegistrationView
 from django.contrib import admin
+from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
-
-from main import views, consumers, forms
-
+from django_registration.backends.one_step.views import RegistrationView
+from main import consumers, forms, views
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),

@@ -1,13 +1,11 @@
-from django.db.models import Model, Q
-
 import json
-from secrets import choice
 from base64 import b64decode
+from secrets import choice
 from string import ascii_letters, digits
 
+from django.db.models import Model, Q
 
 from . import models
-
 
 with open('main/static/languages.json', 'r') as f:
     LANGUAGES = json.loads(f.read())

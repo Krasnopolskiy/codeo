@@ -1,9 +1,9 @@
-from django.db import models
-from django.contrib.auth.models import AbstractUser
-
 import os
-from typing import Dict
 from datetime import timedelta
+from typing import Dict
+
+from django.contrib.auth.models import AbstractUser
+from django.db import models
 
 from . import misc
 

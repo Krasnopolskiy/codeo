@@ -1,16 +1,16 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
-from django.http.response import HttpResponse, JsonResponse
-from django.shortcuts import render, redirect
-from django.http import HttpRequest
-from django.urls import reverse
-from django.views import View
-
 import json
 from base64 import b64decode
 from urllib.parse import unquote
 
-from . import models, misc
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
+from django.http import HttpRequest
+from django.http.response import HttpResponse, JsonResponse
+from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.views import View
+
+from . import misc, models
 
 
 class ExtendedLoginView(LoginView):

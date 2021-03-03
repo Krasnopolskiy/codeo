@@ -1,9 +1,9 @@
-from django_registration.forms import RegistrationForm
-from django.contrib.auth.forms import AuthenticationForm
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Div, HTML, Layout, ButtonHolder, Submit
-
 from typing import Any
+
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import HTML, ButtonHolder, Div, Layout, Submit
+from django.contrib.auth.forms import AuthenticationForm
+from django_registration.forms import RegistrationForm
 
 from . import models
 
