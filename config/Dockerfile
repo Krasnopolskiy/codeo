@@ -48,6 +48,9 @@ RUN pip install --no-cache /wheels/*
 # copy project
 COPY . $APP_HOME
 
+# collect static files
+RUN python manage.py collectstatic --noinput
+
 # chown all the files to the app user
 RUN chown -R app:app $APP_HOME
 
