@@ -38,6 +38,7 @@
     ```
     DJANGO_DEBUG=
     DJANGO_SECRET_KEY="<secret_key>"
+    DJANGO_SETTINGS_MODULE=codeo.settings
     DJANGO_SUPERUSER_USERNAME=admin
     DJANGO_SUPERUSER_EMAIL=codeomain@gmail.com
     DJANGO_SUPERUSER_PASSWORD=<password>
