@@ -1,8 +1,11 @@
-from typing import Any
 from django_registration.forms import RegistrationForm
 from django.contrib.auth.forms import AuthenticationForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Div, HTML, Layout, ButtonHolder, Submit
+
+from typing import Any
+
+from . import models
 
 
 class InputBuilder:
@@ -45,3 +48,6 @@ class SignupForm(RegistrationForm):
             InputBuilder('password2', 'password', 'Password confirmation', 'fa-lock').build(),
             ButtonHolder(Submit('submit', 'Sign up'), css_class='mt-3'),
         )
+
+    class Meta(RegistrationForm.Meta):
+        model = models.User

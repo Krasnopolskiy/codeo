@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.http import HttpRequest
@@ -10,6 +11,13 @@ from base64 import b64decode
 from urllib.parse import unquote
 
 from . import models, misc
+
+
+class ExtendedLoginView(LoginView):
+    def post(self, request: HttpRequest, *args, **kwargs):
+        response = super(LoginView, self).post(request, *args, **kwargs)
+        request.session['author'] = request.user.author.uid
+        return response
 
 
 class DashboardView(LoginRequiredMixin, View):
@@ -26,14 +34,16 @@ class DashboardView(LoginRequiredMixin, View):
 
 class EditorView(View):
     context = {
-        'pagename': 'Editor',
         'init_data': 'null',
         'languages': misc.LANGUAGES
     }
 
     def get(self, request: HttpRequest, access_link: str = '') -> HttpResponse:
         self.context['pagename'] = 'Editor'
-        request = misc.set_author(request)
+        if 'author' not in request.session:
+            author = models.Author()
+            author.save()
+            request.session['author'] = author.uid
         note = misc.retrieve_note(access_link, request.session['author'])
         if note is not None:
             self.context['init_data'] = json.dumps(note.serialize(request.session['author']))

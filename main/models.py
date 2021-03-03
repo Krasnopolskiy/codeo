@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
 import os
 from typing import Dict
@@ -9,11 +9,6 @@ from . import misc
 
 
 class Author(models.Model):
-    user = models.OneToOneField(
-        User(is_active=False),
-        null=True,
-        on_delete=models.CASCADE
-    )
     uid = models.CharField(max_length=16, null=True)
 
     def save(self) -> None:
@@ -23,6 +18,16 @@ class Author(models.Model):
 
     def __str__(self) -> str:
         return f'<Author {self.uid}>'
+
+
+class User(AbstractUser):
+    author = models.OneToOneField(Author, on_delete=models.CASCADE)
+    
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            self.author = Author()
+            self.author.save()
+        super(User, self).save(*args, **kwargs)
 
 
 class Note(models.Model):

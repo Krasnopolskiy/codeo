@@ -8,7 +8,7 @@ from main import views, consumers, forms
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
-    path('login/', LoginView.as_view(
+    path('login/', views.ExtendedLoginView.as_view(
         template_name='registration/login.html',
         authentication_form=forms.LoginForm,
         extra_context={'pagename': 'Log in'},

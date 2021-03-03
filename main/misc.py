@@ -1,5 +1,4 @@
 from django.db.models import Model, Q
-from django.http.request import HttpRequest
 
 import json
 from secrets import choice
@@ -39,15 +38,3 @@ def retrieve_note(access_link: str, author: Model) -> Model:
         query = Q(edit_link=access_link)
     query = query & (Q(read=True) | Q(author__uid=author))
     return models.Note.objects.filter(query).first()
-
-
-def set_author(request: HttpRequest) -> HttpRequest:
-    if 'author' not in request.session:
-        author = None
-        if request.user.is_authenticated:
-            author = models.Author.objects.get(user=request.user)
-        if author is None:
-            author = models.Author()
-            author.save()
-        request.session['author'] = author.uid
-    return request
