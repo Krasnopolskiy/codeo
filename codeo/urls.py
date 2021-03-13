@@ -1,7 +1,6 @@
 from django.contrib import admin
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LogoutView
 from django.urls import path
-from django_registration.backends.one_step.views import RegistrationView
 from main import consumers, forms, views
 
 urlpatterns = [
@@ -11,7 +10,7 @@ urlpatterns = [
         authentication_form=forms.LoginForm,
         extra_context={'pagename': 'Log in'},
     ), name='login'),
-    path('signup/', RegistrationView.as_view(
+    path('signup/', views.ExtendedRegistrationView.as_view(
         template_name='registration/signup.html',
         form_class=forms.SignupForm,
         success_url='/',

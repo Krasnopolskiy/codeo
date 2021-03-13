@@ -2,6 +2,7 @@ import json
 from base64 import b64decode
 from urllib.parse import unquote
 
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.http import HttpRequest
@@ -9,16 +10,33 @@ from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
+from django_registration.backends.one_step.views import RegistrationView
 
-from . import misc, models
+from . import misc, models, forms
 
 
 class ExtendedLoginView(LoginView):
     def post(self, request: HttpRequest, *args, **kwargs):
         response = super(LoginView, self).post(request, *args, **kwargs)
-        request.session['author'] = request.user.author.uid
+        if request.user.is_authenticated:
+            request.session['author'] = request.user.author.uid
+            messages.add_message(request, messages.SUCCESS, 'Logged in')
+        else:
+            messages.add_message(request, messages.ERROR, 'Error')
         return response
 
+
+class ExtendedRegistrationView(RegistrationView):
+    def post(self, request: HttpRequest, *args, **kwargs):
+        response = super(RegistrationView, self).post(request, *args, **kwargs)
+        form = forms.SignupForm(request.POST)
+        if request.user.is_authenticated:
+            request.session['author'] = request.user.author.uid
+            messages.add_message(request, messages.SUCCESS, 'Signed up')
+        else:
+            for error in form.errors.values():
+                messages.add_message(request, messages.ERROR, error)
+        return response
 
 class DashboardView(LoginRequiredMixin, View):
     context = {'pagename': 'Dashboard'}
@@ -80,4 +98,5 @@ class DeleteView(View):
         note = misc.retrieve_note(access_link, request.session['author'])
         if note is not None and request.session['author'] == note.author.uid:
             note.delete()
+            messages.add_message(request, messages.SUCCESS, 'Note deleted')
         return redirect(request.GET.get('next', 'index'))

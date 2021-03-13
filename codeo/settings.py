@@ -1,6 +1,8 @@
 from os import environ, path
 from pathlib import Path
 
+from django.contrib.messages import constants as messages
+from django.core.checks.messages import ERROR, WARNING
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -59,6 +61,15 @@ INSTALLED_APPS = [
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+
+MESSAGE_TAGS = {
+    messages.SUCCESS: 'alert-success',
+    messages.INFO: 'alert-info',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger'
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

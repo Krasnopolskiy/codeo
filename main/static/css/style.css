@@ -31,3 +31,11 @@
 .col-4 {
     min-width: 350px
 }
+
+.messages {
+    position: absolute;
+    z-index: 100;
+    right: 10px;
+    top: 70px;
+    width: 20rem;
+}

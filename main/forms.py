@@ -30,6 +30,7 @@ class LoginForm(AuthenticationForm):
     def __init__(self, request: Any, *args: Any, **kwargs: Any) -> None:
         super().__init__(request=request, *args, **kwargs)
         self.helper = FormHelper()
+        self.helper.form_show_errors = False
         self.helper.layout = Layout(
             InputBuilder('username', 'username', 'Username', 'fa-user').build(),
             InputBuilder('password', 'password', 'Password', 'fa-lock').build(),
@@ -41,6 +42,7 @@ class SignupForm(RegistrationForm):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.form_show_errors = False
         self.helper.layout = Layout(
             InputBuilder('username', 'username', 'Username', 'fa-user').build(),
             InputBuilder('email', 'email', 'Email address', 'fa-envelope').build(),
