@@ -14,7 +14,7 @@
     </div>
     {% include 'components/statebar.html' with languages=languages note=init_data %}
 </div>
-{% if init_data != 'undefined' %}
+{% if init_data != 'null' %}
 {% include 'components/settings.html' with note=init_data %}
 {% endif %}
 {% endblock %}
