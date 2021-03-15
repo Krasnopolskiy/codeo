@@ -3,7 +3,7 @@
 }
 
 #editor {
-    height: calc(100vh - (56px))
+    height: calc(100vh - 56px);
 }
 
 #settings-btn,
@@ -40,4 +40,10 @@
 .ace_gutter-layer,
 option {
     background-color: #272822 !important;
+}
+
+@media (max-width: 465px) {
+    #caret-position {
+        display: none !important;
+    }
 }

@@ -6,6 +6,7 @@
 
 {% block content %}
 {% csrf_token %}
+{% include 'components/settings.html' with note=init_data %}
 <div class="container-fluid position-relative">
     <div class="row">
         <div class="col-12 p-0">
@@ -14,9 +15,6 @@
     </div>
     {% include 'components/statebar.html' with languages=languages note=init_data %}
 </div>
-{% if init_data != 'null' %}
-{% include 'components/settings.html' with note=init_data %}
-{% endif %}
 {% endblock %}
 
 

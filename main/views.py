@@ -22,7 +22,7 @@ class ExtendedLoginView(LoginView):
             request.session['author'] = request.user.author.uid
             messages.add_message(request, messages.SUCCESS, 'Logged in')
         else:
-            messages.add_message(request, messages.ERROR, 'Error')
+            messages.add_message(request, messages.ERROR, 'Invalid username or password')
         return response
 
 
@@ -34,9 +34,11 @@ class ExtendedRegistrationView(RegistrationView):
             request.session['author'] = request.user.author.uid
             messages.add_message(request, messages.SUCCESS, 'Signed up')
         else:
-            for error in form.errors.values():
-                messages.add_message(request, messages.ERROR, error)
+            for scope in form.errors.values():
+                for error in list(scope):
+                    messages.add_message(request, messages.ERROR, error)
         return response
+
 
 class DashboardView(LoginRequiredMixin, View):
     context = {'pagename': 'Dashboard'}
@@ -98,5 +100,5 @@ class DeleteView(View):
         note = misc.retrieve_note(access_link, request.session['author'])
         if note is not None and request.session['author'] == note.author.uid:
             note.delete()
-            messages.add_message(request, messages.SUCCESS, 'Note deleted')
+            messages.add_message(request, messages.WARNING, 'Note deleted')
         return redirect(request.GET.get('next', 'index'))

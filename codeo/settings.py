@@ -65,10 +65,10 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 
 MESSAGE_TAGS = {
-    messages.SUCCESS: 'alert-success',
-    messages.INFO: 'alert-info',
-    messages.WARNING: 'alert-warning',
-    messages.ERROR: 'alert-danger'
+    messages.SUCCESS: 'green',
+    messages.INFO: 'blue',
+    messages.WARNING: 'yellow',
+    messages.ERROR: 'red'
 }
 
 MIDDLEWARE = [
