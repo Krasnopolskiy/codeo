@@ -1,9 +1,12 @@
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import path
+from django.views.generic.base import RedirectView
 from main import consumers, forms, views
 
 urlpatterns = [
+    path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('favicon.png')),
     path('admin/', admin.site.urls, name='admin'),
     path('login/', views.ExtendedLoginView.as_view(
         template_name='registration/login.html',
