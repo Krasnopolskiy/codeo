@@ -13,6 +13,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         User = get_user_model()
         if not User.objects.filter(username=options['username']).exists():
-            User.objects.create_superuser(username=options['username'],
-                                          email=options['email'],
-                                          password=options['password'])
+            User.objects.create_superuser(
+                username=options['username'],
+                email=options['email'],
+                password=options['password']
+            )

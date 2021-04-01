@@ -8,7 +8,10 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'editor' %}">codeo</a>
+        <a class="navbar-brand" href="{% url 'editor' %}">
+            <img src="{% static 'favicon.png' %}" class="d-inline-block align-text-top">
+            codeo
+        </a>
         <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar">
             <span class="navbar-toggler-icon"></span>
         </button>
