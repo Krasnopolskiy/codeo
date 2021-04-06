@@ -16,7 +16,7 @@
         ```
    - Windows:
         ```powershell
-        .\venv\Scripts\Activate.ps1
+        .\venv\Scripts\activate
         ```
 4. Upgrade pip to the latest version:
     ```bash
